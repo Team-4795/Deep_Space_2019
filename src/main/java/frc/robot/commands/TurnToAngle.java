@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
+/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
@@ -9,33 +9,36 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Drivebase;
 
-public class ArcadeDrive extends Command {
-  public ArcadeDrive() {
+public class TurnToAngle extends Command {
+
+  private final double angle;
+
+  public TurnToAngle(double angle, double timeout) {
     requires(Robot.drivebase);
+    setTimeout(timeout);
+    this.angle = angle;
   }
 
   @Override
   protected void initialize() {
+    Robot.drivebase.TurnToAngle(angle);
   }
-
 
   @Override
   protected void execute() {
-    double throttle = 0.9 - (0.4 * Robot.oi.getMainRightTrigger());
-		double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
-
-		Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
   }
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return isTimedOut();
   }
 
 
   @Override
   protected void end() {
+    Robot.drivebase.setMotors(0.0, 0.0);
   }
 
   @Override

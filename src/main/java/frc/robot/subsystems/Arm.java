@@ -15,9 +15,6 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.Climb;
 
-/**
- * Add your docs here.
- */
 public class Arm extends Subsystem {
   
   private final TalonSRX armMotor;

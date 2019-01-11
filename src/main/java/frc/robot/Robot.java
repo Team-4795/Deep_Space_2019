@@ -8,9 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -18,25 +20,19 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.kauailabs.navx.frc.AHRS;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
- */
 public class Robot extends TimedRobot {
 
-	public static OI oi;
+  public static OI oi;
   public static Drivebase drivebase;
   public static Arm arm;
 
 	@Override
 	public void robotInit() {
-		oi = new OI();
+	oi = new OI();
     drivebase = new Drivebase();
-    arm = new Arm();	
+	arm = new Arm();
 	}
 
 	@Override
@@ -49,7 +45,8 @@ public class Robot extends TimedRobot {
 	}
 
 	public void autonomousInit() {
-		
+		//takes argument: angle, timeout
+		Scheduler.getInstance().add(new TurnToAngle(90.0, 5.0));
 	}
 
 	public void autonomousPeriodic() {

@@ -9,16 +9,19 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort.Port;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 
-/**
- * An example subsystem.  You can replace me with your own Subsystem.
- */
-public class Drivebase extends Subsystem {
+public class Drivebase extends Subsystem implements PIDOutput{
   
   private final TalonSRX leftMotorOne;
   private final TalonSRX leftMotorTwo;
@@ -26,8 +29,26 @@ public class Drivebase extends Subsystem {
   private final TalonSRX rightMotorOne;
   private final TalonSRX rightMotorTwo;
   private final TalonSRX rightMotorThree;
+  private final AHRS ahrs;
+  private final PIDController turnController;
+
+  private final static double P = 0.1;
+  private final static double I = 0.0;
+  private final static double D = 0.0;
+  private final static double Tolerance = 5.0f;
+
+  public final double WHEEL_DIAMETER_IN = 8.0;
+  public final int ENCODER_COUNTS_PER_REV = 4096;
+  public final double ENCODER_COUNTS_PER_FT = (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN);
   
   public Drivebase () {
+
+    ahrs = new AHRS(SPI.Port.kMXP);
+    turnController = new PIDController(P, I, D, ahrs, this);
+    turnController.setInputRange(-180.0f, 180.0f);
+    turnController.setOutputRange(-0.6, 0.6);
+    turnController.setAbsoluteTolerance(Tolerance);
+    turnController.setContinuous();
 
     leftMotorOne = new TalonSRX(RobotMap.LEFT_MOTOR_ONE.value);
     leftMotorTwo = new TalonSRX(RobotMap.LEFT_MOTOR_TWO.value);
@@ -35,7 +56,7 @@ public class Drivebase extends Subsystem {
     rightMotorOne = new TalonSRX(RobotMap.RIGHT_MOTOR_ONE.value);
     rightMotorTwo = new TalonSRX(RobotMap.RIGHT_MOTOR_TWO.value);
     rightMotorThree = new TalonSRX(RobotMap.RIGHT_MOTOR_THREE.value);
-
+    
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
 
@@ -49,12 +70,51 @@ public class Drivebase extends Subsystem {
 
     rightMotorTwo.follow(rightMotorOne);
     rightMotorThree.follow(rightMotorOne);
-    
   }
 
   public void setMotors(double left, double right) {
     leftMotorOne.set(ControlMode.PercentOutput, left);
     rightMotorOne.set(ControlMode.PercentOutput, right);
+  }
+
+  public double getYaw() {
+    return ahrs.getYaw();
+  }
+
+  public double getLeftEncoderCount() {
+    return leftMotorOne.getSensorCollection().getQuadraturePosition();
+  }
+
+  public double getRightEncoderCount() {
+    return rightMotorOne.getSensorCollection().getQuadraturePosition();
+  }
+
+  public double getLeftEncoderFeet() {
+    return leftMotorOne.getSensorCollection().getQuadraturePosition() / ENCODER_COUNTS_PER_FT;
+  }
+
+  public double getRightEncoderFeet() {
+    return rightMotorOne.getSensorCollection().getQuadraturePosition() / ENCODER_COUNTS_PER_FT;
+  }
+
+  //should give velocity in ft per second
+  public double getLeftVelocity() {
+    return leftMotorOne.getSensorCollection().getQuadratureVelocity() / (10 * ENCODER_COUNTS_PER_FT);
+  }
+  public double getRightVelocity() {
+    return rightMotorOne.getSensorCollection().getQuadratureVelocity() / (10 * ENCODER_COUNTS_PER_FT);
+  }
+
+  public void TurnToAngle(double angle) {
+    ahrs.reset();
+    turnController.reset();
+    turnController.setSetpoint(angle);
+    turnController.enable();
+  }
+
+  @Override
+  public void pidWrite(double output) {
+    setMotors(output, -output);
   }
 
   @Override
