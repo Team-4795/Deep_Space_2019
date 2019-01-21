@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -24,8 +25,8 @@ import frc.robot.commands.ArcadeDrive;
 public class Drivebase extends Subsystem implements PIDOutput{
   
   private final TalonSRX leftMotorOne;
-  private final TalonSRX leftMotorTwo;
-  private final TalonSRX leftMotorThree;
+  private final VictorSPX leftMotorTwo;
+  private final VictorSPX leftMotorThree;
   private final TalonSRX rightMotorOne;
   private final TalonSRX rightMotorTwo;
   private final TalonSRX rightMotorThree;
@@ -51,8 +52,8 @@ public class Drivebase extends Subsystem implements PIDOutput{
     turnController.setContinuous();
 
     leftMotorOne = new TalonSRX(RobotMap.LEFT_MOTOR_ONE.value);
-    leftMotorTwo = new TalonSRX(RobotMap.LEFT_MOTOR_TWO.value);
-    leftMotorThree = new TalonSRX(RobotMap.LEFT_MOTOR_THREE.value);
+    leftMotorTwo = new VictorSPX(RobotMap.LEFT_MOTOR_TWO.value);
+    leftMotorThree = new VictorSPX(RobotMap.LEFT_MOTOR_THREE.value);
     rightMotorOne = new TalonSRX(RobotMap.RIGHT_MOTOR_ONE.value);
     rightMotorTwo = new TalonSRX(RobotMap.RIGHT_MOTOR_TWO.value);
     rightMotorThree = new TalonSRX(RobotMap.RIGHT_MOTOR_THREE.value);
@@ -60,16 +61,23 @@ public class Drivebase extends Subsystem implements PIDOutput{
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
 
-    Robot.initTalon(leftMotorTwo);
-    Robot.initTalon(leftMotorThree);
+    Robot.initVictor(leftMotorTwo);
+    Robot.initVictor(leftMotorThree);
     Robot.initTalon(rightMotorTwo);
     Robot.initTalon(rightMotorThree);
+
+
+    rightMotorOne.setInverted(true);
+
+    rightMotorTwo.setInverted(true);
+    rightMotorThree.setInverted(true);
 
     leftMotorTwo.follow(leftMotorOne);
     leftMotorThree.follow(leftMotorOne);
 
     rightMotorTwo.follow(rightMotorOne);
     rightMotorThree.follow(rightMotorOne);
+    
   }
 
   public void setMotors(double left, double right) {

@@ -18,7 +18,7 @@ public class OI {
 
   public OI() { 
   MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
-  ARM_CONTROLLER =new Joystick(RobotMap.MAIN_CONTROLLER.value);
+  ARM_CONTROLLER =new Joystick(RobotMap.ARM_CONTROLLER.value);
   }
 
   public double getMainLeftJoyY() {
@@ -30,11 +30,14 @@ public class OI {
   }
 
   public double getMainRightTrigger() {
-		return Math.abs(MAIN_CONTROLLER.getRawAxis(3)) < DEADZONE ? 0.0 : MAIN_CONTROLLER.getRawAxis(3);
+		return Math.abs(MAIN_CONTROLLER.getRawAxis(3)) > DEADZONE ? MAIN_CONTROLLER.getRawAxis(3) : 0.0;
   }
 
   public double getArmLeftJoyY() {
     return Math.abs(ARM_CONTROLLER.getRawAxis(1)) > DEADZONE ? ARM_CONTROLLER.getRawAxis(1) : 0.0;
   }
 
+  public double getArmRightTrigger() {
+    return Math.abs(ARM_CONTROLLER.getRawAxis(3)) > DEADZONE ? ARM_CONTROLLER.getRawAxis(3) : 0.0;
+  }
 }

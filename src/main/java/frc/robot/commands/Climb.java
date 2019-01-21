@@ -12,6 +12,9 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
 public class Climb extends Command {
+
+  private double throttle;
+
   public Climb() {
     requires(Robot.arm);
   }
@@ -22,7 +25,8 @@ public class Climb extends Command {
 
   @Override
   protected void execute() {
-    Robot.arm.actuate(Robot.oi.getArmLeftJoyY() * 0.8);
+    throttle = ( 0.6 - (0.3 * Robot.oi.getArmRightTrigger()) );
+    Robot.arm.actuate(Robot.oi.getArmLeftJoyY() * throttle);
   }
 
   @Override

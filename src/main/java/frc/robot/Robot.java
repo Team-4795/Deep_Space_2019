@@ -71,6 +71,7 @@ public class Robot extends TimedRobot {
 		motor.enableCurrentLimit(true);
 		motor.configOpenloopRamp(0.8, 0);
 		motor.configClosedloopRamp(1.0, 0);
+		motor.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public static void initTalon(TalonSRX motor) {
@@ -81,6 +82,7 @@ public class Robot extends TimedRobot {
 		motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 		motor.configNominalOutputForward(0.0, 0);
 		motor.configNominalOutputReverse(0.0, 0);
+		motor.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public static void initVictor(VictorSPX motor) {
