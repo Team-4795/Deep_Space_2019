@@ -11,30 +11,49 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class OI {
 
-  private static final double DEADZONE = 0.1;
+  private static final double DEADZONE = 0.15 ;
 
   private Joystick MAIN_CONTROLLER;
   private Joystick ARM_CONTROLLER;
+  private double value;
 
   public OI() { 
     MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
-    ARM_CONTROLLER =new Joystick(RobotMap.MAIN_CONTROLLER.value);
+    ARM_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
   }
 
   public double getMainLeftJoyY() {
-    return Math.abs(MAIN_CONTROLLER.getRawAxis(1)) > DEADZONE ? MAIN_CONTROLLER.getRawAxis(1) : 0.0;
-  } 
+    double value = MAIN_CONTROLLER.getRawAxis(1);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
+  }
+  
+  public double getMainRightJoyY() {
+    double value = MAIN_CONTROLLER.getRawAxis(5);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
+  }
 
   public double getMainRightJoyX() {
-    return Math.abs(MAIN_CONTROLLER.getRawAxis(4)) > DEADZONE ? MAIN_CONTROLLER.getRawAxis(4) : 0.0;
+    double value = MAIN_CONTROLLER.getRawAxis(4);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
   }
 
   public double getMainRightTrigger() {
-    return Math.abs(MAIN_CONTROLLER.getRawAxis(3)) < DEADZONE ? 0.0 : MAIN_CONTROLLER.getRawAxis(3);
+		double value = MAIN_CONTROLLER.getRawAxis(3);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
+    //return Math.abs(value) > DEADZONE ? value : 0.0;
+  }
+
+  public boolean getMainAButton() {
+    return MAIN_CONTROLLER.getRawButton(1);
   }
 
   public double getArmLeftJoyY() {
-    return Math.abs(ARM_CONTROLLER.getRawAxis(1)) > DEADZONE ? ARM_CONTROLLER.getRawAxis(1) : 0.0;
+    double value = ARM_CONTROLLER.getRawAxis(1);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
   }
 
+  public double getArmRightTrigger() {
+    double value = ARM_CONTROLLER.getRawAxis(3);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
+  }
 }

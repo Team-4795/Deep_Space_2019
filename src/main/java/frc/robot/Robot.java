@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.TurnToAngle;
@@ -33,62 +34,66 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     oi = new OI();
     drivebase = new Drivebase();
-    arm = new Arm();
-  }
+	  arm = new Arm();
+	}
 
-  @Override
-  public void disabledInit() {
+	@Override
+	public void disabledInit() {
 
-  }
+	}
 
-  public void disabledPeriodic() {
-    Scheduler.getInstance().run();
-  }
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+	}
 
-  public void autonomousInit() {
-    // takes argument: angle, timeout
-    Scheduler.getInstance().add(new TurnToAngle(90.0, 5.0));
-  }
+	public void autonomousInit() {
+		// takes argument: angle, timeout
+		Scheduler.getInstance().add(new TurnToAngle(90.0, 5.0));
+	}
 
-  public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-  }
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Yaw", Robot.drivebase.getYaw());
+    SmartDashboard.putNumber("Pitch", Robot.drivebase.getPitch());
+		SmartDashboard.putNumber("Roll", Robot.drivebase.getRoll());
+	}
 
-  public void teleopInit() {
+	public void teleopInit() {
 
-  }
+	}
 
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-  }
+	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
+	}
 
-  public void testPeriodic() {
-  }
+	public void testPeriodic() {
+	}
 
-  public static void masterTalon(TalonSRX motor) {
-    motor.configContinuousCurrentLimit(10, 0);
-    motor.configPeakCurrentLimit(12, 0);
-    motor.configPeakCurrentDuration(20, 0);
-    motor.enableCurrentLimit(true);
-    motor.configOpenloopRamp(0.8, 0);
-    motor.configClosedloopRamp(1.0, 0);
-  }
+	public static void masterTalon(TalonSRX motor) {
+		motor.setNeutralMode(NeutralMode.Brake);
+		motor.configContinuousCurrentLimit(10, 0);
+		motor.configPeakCurrentLimit(12, 0);
+		motor.configPeakCurrentDuration(20, 0);
+		motor.enableCurrentLimit(true);
+		motor.configOpenloopRamp(0.2, 0);
+		motor.configClosedloopRamp(0.0, 0);
+	}
 
-  public static void initTalon(TalonSRX motor) {
-    motor.setNeutralMode(NeutralMode.Brake);
-    motor.neutralOutput();
-    motor.setSensorPhase(false);
-    motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-    motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-    motor.configNominalOutputForward(0.0, 0);
-    motor.configNominalOutputReverse(0.0, 0);
-  }
+	public static void initTalon(TalonSRX motor) {
+		motor.setNeutralMode(NeutralMode.Brake);
+		motor.neutralOutput();
+		motor.setSensorPhase(false);
+		motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+		motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+		motor.configNominalOutputForward(0.0, 0);
+		motor.configNominalOutputReverse(0.0, 0);
+	}
 
-  public static void initVictor(VictorSPX motor) {
-    motor.setNeutralMode(NeutralMode.Brake);
-    motor.neutralOutput();
-    motor.setSensorPhase(false);
-    motor.configNominalOutputForward(0.0, 0);
-    motor.configNominalOutputReverse(0.0, 0);
-  }
+	public static void initVictor(VictorSPX motor) {
+		motor.setNeutralMode(NeutralMode.Brake);
+		motor.neutralOutput();
+		motor.setSensorPhase(false);
+		motor.configNominalOutputForward(0.0, 0);
+		motor.configNominalOutputReverse(0.0, 0);
+	}
 }
