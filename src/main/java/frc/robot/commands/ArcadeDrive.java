@@ -8,15 +8,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ArcadeDrive extends Command {
+
+  private double maxVel;
+  private double pastVel;
+  private double maxAccel;
+
   public ArcadeDrive() {
     requires(Robot.drivebase);
   }
 
   @Override
   protected void initialize() {
+    Robot.drivebase.resetEncoders();
   }
 
 
@@ -25,7 +32,24 @@ public class ArcadeDrive extends Command {
     double throttle = 0.9 - (0.4 * Robot.oi.getMainRightTrigger());
 		double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
 
-		Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
+    Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
+
+    if (Robot.oi.getMainAButton()) {
+      Robot.drivebase.resetEncoders();
+    }
+    SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
+    SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
+    
+    SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
+    SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
+
+    SmartDashboard.putNumber("Left Velocity", Robot.drivebase.getLeftVelocity());
+    SmartDashboard.putNumber("Right Velocity", Robot.drivebase.getRightVelocity());
+
+    maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
+    SmartDashboard.putNumber("Max Velocity", maxVel);
+    maxAccel = Math.abs(Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) > Math.abs(maxAccel) ? (Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) / 0.05 : maxAccel;
+    pastVel = Robot.drivebase.getLeftVelocity();
   }
 
   @Override

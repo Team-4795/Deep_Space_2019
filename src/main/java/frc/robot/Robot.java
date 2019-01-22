@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
@@ -51,6 +52,9 @@ public class Robot extends TimedRobot {
 
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		SmartDashboard.putNumber("Yaw", Robot.drivebase.getYaw());
+    	SmartDashboard.putNumber("Pitch", Robot.drivebase.getPitch());
+		SmartDashboard.putNumber("Roll", Robot.drivebase.getRoll());
 	}
 
 	public void teleopInit() {
@@ -65,13 +69,13 @@ public class Robot extends TimedRobot {
 	}
 
 	public static void masterTalon(TalonSRX motor) {
+		motor.setNeutralMode(NeutralMode.Brake);
 		motor.configContinuousCurrentLimit(10, 0);
 		motor.configPeakCurrentLimit(12, 0);
 		motor.configPeakCurrentDuration(20, 0);
 		motor.enableCurrentLimit(true);
-		motor.configOpenloopRamp(0.8, 0);
-		motor.configClosedloopRamp(1.0, 0);
-		motor.setNeutralMode(NeutralMode.Brake);
+		motor.configOpenloopRamp(0.2, 0);
+		motor.configClosedloopRamp(0.0, 0);
 	}
 
 	public static void initTalon(TalonSRX motor) {
@@ -82,7 +86,6 @@ public class Robot extends TimedRobot {
 		motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 		motor.configNominalOutputForward(0.0, 0);
 		motor.configNominalOutputReverse(0.0, 0);
-		motor.setNeutralMode(NeutralMode.Brake);
 	}
 
 	public static void initVictor(VictorSPX motor) {

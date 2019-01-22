@@ -8,19 +8,25 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import com.kauailabs.navx.frc.AHRS.BoardAxis;
+import com.kauailabs.navx.frc.AHRS.BoardYawAxis;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.TankDrive;
 
 public class Drivebase extends Subsystem implements PIDOutput{
   
@@ -33,14 +39,14 @@ public class Drivebase extends Subsystem implements PIDOutput{
   private final AHRS ahrs;
   private final PIDController turnController;
 
-  private final static double P = 0.1;
+  private final static double P = -0.08;
   private final static double I = 0.0;
-  private final static double D = 0.0;
-  private final static double Tolerance = 5.0f;
+  private final static double D = -0.00;
+  private final static double Tolerance = 6.0f;
 
-  public final double WHEEL_DIAMETER_IN = 8.0;
-  public final int ENCODER_COUNTS_PER_REV = 4096;
-  public final double ENCODER_COUNTS_PER_FT = (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN);
+  private final double WHEEL_DIAMETER_IN = 8.0;
+  private final int ENCODER_COUNTS_PER_REV = 4096;
+  private final double ENCODER_COUNTS_PER_FT = 15689.8;//(ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN)
   
   public Drivebase () {
 
@@ -78,6 +84,13 @@ public class Drivebase extends Subsystem implements PIDOutput{
     rightMotorTwo.follow(rightMotorOne);
     rightMotorThree.follow(rightMotorOne);
     
+    rightMotorOne.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+    leftMotorOne.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+
+    rightMotorOne.setSelectedSensorPosition(0);
+    leftMotorOne.setSelectedSensorPosition(0);
+
+    ahrs.reset();
   }
 
   public void setMotors(double left, double right) {
@@ -89,35 +102,49 @@ public class Drivebase extends Subsystem implements PIDOutput{
     return ahrs.getYaw();
   }
 
+  public double getPitch() {
+    return ahrs.getPitch();
+  }
+
+  public double getRoll() {
+    return ahrs.getRoll();
+  }
   public double getLeftEncoderCount() {
-    return leftMotorOne.getSensorCollection().getQuadraturePosition();
+    return leftMotorOne.getSelectedSensorPosition();
   }
 
   public double getRightEncoderCount() {
-    return rightMotorOne.getSensorCollection().getQuadraturePosition();
+    return rightMotorOne.getSelectedSensorPosition();
   }
 
   public double getLeftEncoderFeet() {
-    return leftMotorOne.getSensorCollection().getQuadraturePosition() / ENCODER_COUNTS_PER_FT;
+    return leftMotorOne.getSelectedSensorPosition() / ENCODER_COUNTS_PER_FT;
   }
 
   public double getRightEncoderFeet() {
-    return rightMotorOne.getSensorCollection().getQuadraturePosition() / ENCODER_COUNTS_PER_FT;
+    return rightMotorOne.getSelectedSensorPosition() / ENCODER_COUNTS_PER_FT;
   }
 
   //should give velocity in ft per second
   public double getLeftVelocity() {
-    return leftMotorOne.getSensorCollection().getQuadratureVelocity() / (10 * ENCODER_COUNTS_PER_FT);
+    return leftMotorOne.getSelectedSensorVelocity() * 10 / ENCODER_COUNTS_PER_FT;
   }
+
   public double getRightVelocity() {
-    return rightMotorOne.getSensorCollection().getQuadratureVelocity() / (10 * ENCODER_COUNTS_PER_FT);
+    return rightMotorOne.getSelectedSensorVelocity() * 10 / ENCODER_COUNTS_PER_FT;
   }
 
   public void TurnToAngle(double angle) {
     ahrs.reset();
     turnController.reset();
+    SmartDashboard.putString("Axis", ahrs.getBoardYawAxis().toString());
     turnController.setSetpoint(angle);
     turnController.enable();
+  }
+
+  public void resetEncoders() {
+    rightMotorOne.setSelectedSensorPosition(0);
+    leftMotorOne.setSelectedSensorPosition(0);
   }
 
   @Override
