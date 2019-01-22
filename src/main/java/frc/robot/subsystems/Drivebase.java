@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -21,7 +22,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ArcadeDrive;
 
-public class Drivebase extends Subsystem implements PIDOutput{
+public class Drivebase extends Subsystem implements PIDOutput {
   
   private final TalonSRX leftMotorOne;
   private final TalonSRX leftMotorTwo;
@@ -36,6 +37,11 @@ public class Drivebase extends Subsystem implements PIDOutput{
   private final static double I = 0.0;
   private final static double D = 0.0;
   private final static double Tolerance = 5.0f;
+
+  private final static double kP = 0.1;
+  private final static double kI = 0.0;
+  private final static double kD = 0.0;
+  private final static int allowableError = 5;
 
   public final double WHEEL_DIAMETER_IN = 8.0;
   public final int ENCODER_COUNTS_PER_REV = 4096;
@@ -56,6 +62,21 @@ public class Drivebase extends Subsystem implements PIDOutput{
     rightMotorOne = new TalonSRX(RobotMap.RIGHT_MOTOR_ONE.value);
     rightMotorTwo = new TalonSRX(RobotMap.RIGHT_MOTOR_TWO.value);
     rightMotorThree = new TalonSRX(RobotMap.RIGHT_MOTOR_THREE.value);
+    
+    //config PID
+    leftMotorOne.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+    rightMotorOne.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
+
+    leftMotorOne.config_kP(0, kP);
+    leftMotorOne.config_kI(0, kI);
+    leftMotorOne.config_kD(0, kD);
+
+    rightMotorOne.config_kP(0, kP);
+    rightMotorOne.config_kI(0, kI);
+    rightMotorOne.config_kD(0, kD);
+
+    leftMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
+    rightMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
     
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
@@ -112,6 +133,11 @@ public class Drivebase extends Subsystem implements PIDOutput{
     turnController.enable();
   }
 
+  public void driveFeet(int feet)
+  {
+    leftMotorOne.set(ControlMode.Position, feet * ENCODER_COUNTS_PER_FT);
+    rightMotorOne.set(ControlMode.Position, feet * ENCODER_COUNTS_PER_FT);
+  }
   @Override
   public void pidWrite(double output) {
     setMotors(output, -output);

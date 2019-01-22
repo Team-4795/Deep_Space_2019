@@ -23,7 +23,7 @@ public enum RobotMap {
 
   public final int value;
 
-	RobotMap(int value) {
-	this.value = value;
-	}
+  RobotMap(int value) {
+    this.value = value;
+  }
 }
