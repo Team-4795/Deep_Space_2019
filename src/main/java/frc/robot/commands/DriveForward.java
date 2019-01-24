@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class DriveForward extends Command {
-  public DriveForward(double timeout) {
+
+  private double feet;
+
+  public DriveForward(double feet, double timeout) {
     requires(Robot.drivebase);
+    this.feet = feet;
     setTimeout(timeout);
   }
 
@@ -23,7 +27,7 @@ public class DriveForward extends Command {
 
   @Override
   protected void execute() {
-    Robot.drivebase.setMotors(0.2, 0.2);
+    Robot.drivebase.DriveFeet(feet);
   }
 
   @Override
