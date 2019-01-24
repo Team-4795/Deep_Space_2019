@@ -38,7 +38,7 @@ public class OI {
   }
 
   public double getMainRightTrigger() {
-		double value = MAIN_CONTROLLER.getRawAxis(3);
+    double value = MAIN_CONTROLLER.getRawAxis(3);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
     //return Math.abs(value) > DEADZONE ? value : 0.0;
   }

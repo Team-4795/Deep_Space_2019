@@ -7,18 +7,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GoToTargetAuto extends CommandGroup {
 
-    public GoToTargetAuto() {
-        double x = SmartDashboard.getNumber("X", 0.0);
-        double z = SmartDashboard.getNumber("Z", 0.0);
-        double angle = SmartDashboard.getNumber("Angle", 0.0);
-        addSequential(new TurnToAngle(angle - 90, 5000));
-        addSequential(new DriveForward(x, 5000));
-        addSequential(new TurnToAngle(90, 5000));
-        addSequential(new DriveForward(z, 5000));
-        /* Alternative Implementation:
-        addSequential(new TurnToAngle(angle, 1000));
-        addSequential(new DriveForward(Math.pow(x, 2.0) + Math.pow(z, 2.0)));
-        */
-    }
+  public GoToTargetAuto() {
+    double x = SmartDashboard.getNumber("X", 0.0);
+    double z = SmartDashboard.getNumber("Z", 0.0);
+    double angle = SmartDashboard.getNumber("Angle", 0.0);
+    addSequential(new TurnToAngle(angle - 90, 5000));
+    addSequential(new DriveForward(x, 5000));
+    addSequential(new TurnToAngle(90, 5000));
+    addSequential(new DriveForward(z, 5000));
+    /* Alternative Implementation:
+    addSequential(new TurnToAngle(angle, 1000));
+    addSequential(new DriveForward(Math.sqrt(x * x + z * z)));
+    */
+  }
 }
 
