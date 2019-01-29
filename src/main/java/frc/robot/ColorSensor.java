@@ -16,16 +16,11 @@ public class ColorSensor {
   private volatile ColorData color;
 
   public enum reg_t {
-    CS_CDATA  (0x14),
-    CS_CDATAH (0x15),
-    CS_RDATA  (0x16),
-    CS_RDATAH (0x17),
-    CS_GDATA  (0x18),
-    CS_GDATAH (0x19),
-    CS_BDATA  (0x1A),
-    CS_BDATAH (0x1B),
-    CS_PDATA  (0x1C),
-    CS_PDATAH (0x1D);
+    CS_CDATA (0x14),
+    CS_RDATA (0x16),
+    CS_GDATA (0x18),
+    CS_BDATA (0x1A),
+    CS_PDATA (0x1C);
 
     private final int val;
 
@@ -39,11 +34,11 @@ public class ColorSensor {
   };
   
   public class ColorData {
-    public short clear;
-    public short red;
-    public short green;
-    public short blue;
-    public short proximity;
+    public double clear;
+    public double red;
+    public double green;
+    public double blue;
+    public double proximity;
   }
   
   private ColorSensor(I2C.Port port, byte address) {
@@ -66,12 +61,12 @@ public class ColorSensor {
 
   private void update() {
     ColorData colorData = new ColorData();
-    
-    colorData.clear = read16(reg_t.CS_CDATA);
-    colorData.red = read16(reg_t.CS_RDATA);
-    colorData.green = read16(reg_t.CS_GDATA);
-    colorData.blue = read16(reg_t.CS_BDATA);
-    colorData.proximity = read16(reg_t.CS_PDATA);
+
+    colorData.clear = (read16(reg_t.CS_CDATA) & 0xffff) / 65535.0;
+    colorData.red = (read16(reg_t.CS_RDATA) & 0xffff) / 65535.0;
+    colorData.green = (read16(reg_t.CS_GDATA) & 0xffff) / 65535.0;
+    colorData.blue = (read16(reg_t.CS_BDATA) & 0xffff) / 65535.0;
+    colorData.proximity = (read16(reg_t.CS_PDATA) & 0xffff) / 65535.0;
 
     color = colorData;
   }
