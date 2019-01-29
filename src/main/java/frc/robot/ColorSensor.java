@@ -11,7 +11,8 @@ public class ColorSensor {
   
   public static final byte CS_ADDRESS = 0x39;
 
-  private static ColorSensor instance;
+  private static ColorSensor instanceOnboard;
+  private static ColorSensor instanceMXP;
   private static I2C cs;
   private volatile ColorData color;
 
@@ -41,22 +42,25 @@ public class ColorSensor {
     public double proximity;
   }
   
-  private ColorSensor(I2C.Port port, byte address) {
-    cs = new I2C(port, address);
-    
+  private ColorSensor(I2C.Port port) {
+    cs = new I2C(port, CS_ADDRESS);
+
     executor = new java.util.Timer();
     executor.schedule(new ColorSensorUpdateTask(this), 0L, THREAD_PERIOD);
   }
 
-  public static ColorSensor getInstance(I2C.Port port, byte address) {
-    if (instance == null) {
-      instance = new ColorSensor(port, address);
+  public static ColorSensor getInstanceOnboard() {
+    if (instanceOnboard == null) {
+      instanceOnboard = new ColorSensor(I2C.Port.kOnboard);
     }
-    return instance;
+    return instanceOnboard;
   }
 
-  public static ColorSensor getInstance() {
-    return getInstance(I2C.Port.kOnboard, CS_ADDRESS);
+  public static ColorSensor getInstanceMXP() {
+    if (instanceOnboard == null) {
+      instanceOnboard = new ColorSensor(I2C.Port.kMXP);
+    }
+    return instanceOnboard;
   }
 
   private void update() {
