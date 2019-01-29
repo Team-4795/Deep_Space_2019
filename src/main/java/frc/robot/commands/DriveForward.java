@@ -7,41 +7,65 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class DriveForward extends Command {
+  double Feet;
+  double Speed;
 
-  private double feet;
+  double distanceInTicks;
+  double leftTarget;
+  double rightTarget;
 
-  public DriveForward(double feet, double timeout) {
-    requires(Robot.drivebase);
-    this.feet = feet;
-    setTimeout(timeout);
+  boolean isFinished = false;
+
+  public DriveForward(double feet, double speed) {
+      requires(Robot.drivebase);
+      Feet = feet;
+      Speed = speed;
   }
-
-  @Override
+  
+  public DriveForward(double feet, double speed, double timeout) {
+      requires(Robot.drivebase);
+      Feet = feet;
+      Speed = speed;
+      setTimeout(timeout);
+  }
+  
   protected void initialize() {
+    Robot.drivebase.DriveFeet(Feet);
+    /*
+      distanceInTicks = Feet * Robot.drivebase.ENCODER_COUNTS_PER_FT;
+      leftTarget = (int) (Robot.drivebase.getLeftEncoderCount() + distanceInTicks);
+      rightTarget = (int) (Robot.drivebase.getRightEncoderCount() + distanceInTicks);
+      SmartDashboard.putNumber("left", Feet);
+      */
   }
 
-
-  @Override
   protected void execute() {
-    Robot.drivebase.DriveFeet(feet);
+      double leftSpeed =
+              Math.pow((leftTarget - Robot.drivebase.getLeftEncoderCount()) / distanceInTicks, 2)
+                      * Speed;
+      double rightSpeed =
+              Math.pow((rightTarget - Robot.drivebase.getRightEncoderCount()) / distanceInTicks, 2)
+                      * Speed;
+      if (Math.abs(leftSpeed) < 0.3 || Math.abs(rightSpeed) < 0.3) {
+          leftSpeed = 0;
+          rightSpeed = 0;
+          isFinished = true;
+      }
+      if (Feet > 0) {
+          Robot.drivebase.setMotors(leftSpeed, rightSpeed);
+      } else
+          Robot.drivebase.setMotors(-leftSpeed, -rightSpeed);
+
   }
 
-  @Override
   protected boolean isFinished() {
-    return isTimedOut();
-  }
-
-
-  @Override
-  protected void end() {
-    Robot.drivebase.setMotors(0.0, 0.0);
-  }
-
-  @Override
-  protected void interrupted() {
+      return isFinished || isTimedOut();
   }
 }

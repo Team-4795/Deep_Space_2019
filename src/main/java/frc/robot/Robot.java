@@ -47,8 +47,9 @@ public class Robot extends TimedRobot {
   }
 
   public void autonomousInit() {
-    // takes argument: angle, timeout
-    Scheduler.getInstance().add(new TurnToAngle(90.0, 5.0));
+    double dist = SmartDashboard.getNumber("Z", 1) - 0.5;
+    
+    Scheduler.getInstance().add(new DriveForward(-dist, 1.5, 2.5));
   }
 
   public void autonomousPeriodic() {

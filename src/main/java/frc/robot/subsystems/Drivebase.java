@@ -32,10 +32,10 @@ public class Drivebase extends Subsystem implements PIDOutput {
   
   private final TalonSRX leftMotorOne;
   private final VictorSPX leftMotorTwo;
-  private final VictorSPX leftMotorThree;
+  private final TalonSRX leftMotorThree;
   private final TalonSRX rightMotorOne;
   private final TalonSRX rightMotorTwo;
-  private final TalonSRX rightMotorThree;
+  private final VictorSPX rightMotorThree;
   private final AHRS ahrs;
   private final PIDController turnController;
 
@@ -44,14 +44,14 @@ public class Drivebase extends Subsystem implements PIDOutput {
   private final static double D = -0.00;
   private final static double Tolerance = 6.0f;
 
-  private final static double kP = 0.1;
+  private final static double kP = -0.4;
   private final static double kI = 0.0;
   private final static double kD = 0.0;
   private final static int allowableError = 5;
 
   private final double WHEEL_DIAMETER_IN = 8.0;
   private final int ENCODER_COUNTS_PER_REV = 4096;
-  private final double ENCODER_COUNTS_PER_FT = 15689.8;
+  public final double ENCODER_COUNTS_PER_FT = 15689.8;
   //in theory should equal: (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN)
   
   public Drivebase () {
@@ -65,10 +65,10 @@ public class Drivebase extends Subsystem implements PIDOutput {
 
     leftMotorOne = new TalonSRX(RobotMap.LEFT_MOTOR_ONE.value);
     leftMotorTwo = new VictorSPX(RobotMap.LEFT_MOTOR_TWO.value);
-    leftMotorThree = new VictorSPX(RobotMap.LEFT_MOTOR_THREE.value);
+    leftMotorThree = new TalonSRX(RobotMap.LEFT_MOTOR_THREE.value);
     rightMotorOne = new TalonSRX(RobotMap.RIGHT_MOTOR_ONE.value);
     rightMotorTwo = new TalonSRX(RobotMap.RIGHT_MOTOR_TWO.value);
-    rightMotorThree = new TalonSRX(RobotMap.RIGHT_MOTOR_THREE.value);
+    rightMotorThree = new VictorSPX(RobotMap.RIGHT_MOTOR_THREE.value);
     
     //config PID
     leftMotorOne.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, 0, 10);
@@ -89,9 +89,9 @@ public class Drivebase extends Subsystem implements PIDOutput {
     Robot.masterTalon(rightMotorOne);
 
     Robot.initVictor(leftMotorTwo);
-    Robot.initVictor(leftMotorThree);
+    Robot.initTalon(leftMotorThree);
     Robot.initTalon(rightMotorTwo);
-    Robot.initTalon(rightMotorThree);
+    Robot.initVictor(rightMotorThree);
 
 
     rightMotorOne.setInverted(true);

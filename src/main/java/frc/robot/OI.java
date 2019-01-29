@@ -47,6 +47,14 @@ public class OI {
     return MAIN_CONTROLLER.getRawButton(1);
   }
 
+  public boolean getMainXButton() {
+    return MAIN_CONTROLLER.getRawButton(3);
+  }
+
+  public boolean getMainYButton() {
+    return MAIN_CONTROLLER.getRawButton(4);
+  }
+
   public double getArmLeftJoyY() {
     double value = ARM_CONTROLLER.getRawAxis(1);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
