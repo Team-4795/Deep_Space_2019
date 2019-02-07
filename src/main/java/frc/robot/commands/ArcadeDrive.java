@@ -16,6 +16,9 @@ public class ArcadeDrive extends Command {
   private double maxVel;
   private double pastVel;
   private double maxAccel;
+  private boolean reverse;
+  private boolean buttonUsed;
+  private double tune;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
@@ -24,19 +27,51 @@ public class ArcadeDrive extends Command {
   @Override
   protected void initialize() {
     Robot.drivebase.resetEncoders();
+    reverse = false;
+    buttonUsed = true;
+    tune = 0.0;
   }
 
 
   @Override
   protected void execute() {
     double throttle = 0.9 - (0.4 * Robot.oi.getMainRightTrigger());
+    if (reverse) {
+      throttle *= -1.0;
+    }
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
 
-    Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
+    Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle * (1.0 + tune), (Robot.oi.getMainLeftJoyY() + turn) * throttle * (1.0 - tune));
 
-    if (Robot.oi.getMainAButton()) {
+    if (Robot.oi.getMainYButton()) {
       Robot.drivebase.resetEncoders();
     }
+    boolean buttonNotUsed = true;
+    if (Robot.oi.getMainAButton()) {
+      if (!buttonUsed) {
+        reverse = !reverse;
+      }
+      buttonUsed = true;
+      buttonNotUsed = false;
+    }
+    if (Robot.oi.getMainXButton()) {
+      if (!buttonUsed) {
+        tune -= 0.05;
+      }
+      buttonUsed = true;
+      buttonNotUsed = false;
+    }
+    if (Robot.oi.getMainBButton()) {
+      if (!buttonUsed) {
+        tune += 0.05;
+      }
+      buttonUsed = true;
+      buttonNotUsed = false;
+    }
+    if (buttonNotUsed) {
+      buttonUsed = false;
+    }
+
     SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
     SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
     

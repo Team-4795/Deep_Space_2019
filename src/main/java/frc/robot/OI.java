@@ -52,6 +52,10 @@ public class OI {
     return MAIN_CONTROLLER.getRawButton(3);
   }
 
+  public boolean getMainBButton() {
+    return MAIN_CONTROLLER.getRawButton(2);
+  }
+
   public boolean getMainYButton() {
     return MAIN_CONTROLLER.getRawButton(4);
   }
