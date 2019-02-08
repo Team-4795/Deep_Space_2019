@@ -5,7 +5,6 @@ import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;
 
 public class ColorSensor {
-  //Tread variables
   private java.util.Timer executor;
   private static final long THREAD_PERIOD = 20; //ms - max poll rate on sensor.
   
@@ -17,11 +16,12 @@ public class ColorSensor {
   private volatile ColorData color;
 
   public enum reg_t {
-    CS_CDATA (0x14),
-    CS_RDATA (0x16),
-    CS_GDATA (0x18),
-    CS_BDATA (0x1A),
-    CS_PDATA (0x1C);
+    CS_ENABLE (0x00),
+    CS_ATIME  (0x01),
+    CS_CDATA  (0x14),
+    CS_RDATA  (0x16),
+    CS_GDATA  (0x18),
+    CS_BDATA  (0x1A);
 
     private final int val;
 
@@ -39,11 +39,13 @@ public class ColorSensor {
     public double red;
     public double green;
     public double blue;
-    public double proximity;
   }
   
   private ColorSensor(I2C.Port port) {
     cs = new I2C(port, CS_ADDRESS);
+
+    write8(reg_t.CS_ENABLE, (byte) (1 | 2));
+    write8(reg_t.CS_ATIME, (byte) 0xEC);
 
     executor = new java.util.Timer();
     executor.schedule(new ColorSensorUpdateTask(this), 0L, THREAD_PERIOD);
@@ -57,10 +59,10 @@ public class ColorSensor {
   }
 
   public static ColorSensor getInstanceMXP() {
-    if (instanceOnboard == null) {
-      instanceOnboard = new ColorSensor(I2C.Port.kMXP);
+    if (instanceMXP == null) {
+      instanceMXP = new ColorSensor(I2C.Port.kMXP);
     }
-    return instanceOnboard;
+    return instanceMXP;
   }
 
   private void update() {
@@ -70,7 +72,6 @@ public class ColorSensor {
     colorData.red = (read16(reg_t.CS_RDATA) & 0xffff) / 65535.0;
     colorData.green = (read16(reg_t.CS_GDATA) & 0xffff) / 65535.0;
     colorData.blue = (read16(reg_t.CS_BDATA) & 0xffff) / 65535.0;
-    colorData.proximity = (read16(reg_t.CS_PDATA) & 0xffff) / 65535.0;
 
     color = colorData;
   }
