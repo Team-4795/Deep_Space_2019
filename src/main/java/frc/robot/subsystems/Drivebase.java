@@ -32,9 +32,9 @@ public class Drivebase extends Subsystem implements PIDOutput {
   
   private final TalonSRX leftMotorOne;
   private final VictorSPX leftMotorTwo;
-  private final TalonSRX leftMotorThree;
+  private final VictorSPX leftMotorThree;
   private final TalonSRX rightMotorOne;
-  private final TalonSRX rightMotorTwo;
+  private final VictorSPX rightMotorTwo;
   private final VictorSPX rightMotorThree;
   private final AHRS ahrs;
   private final PIDController turnController;
@@ -65,9 +65,9 @@ public class Drivebase extends Subsystem implements PIDOutput {
 
     leftMotorOne = new TalonSRX(RobotMap.LEFT_MOTOR_ONE.value);
     leftMotorTwo = new VictorSPX(RobotMap.LEFT_MOTOR_TWO.value);
-    leftMotorThree = new TalonSRX(RobotMap.LEFT_MOTOR_THREE.value);
+    leftMotorThree = new VictorSPX(RobotMap.LEFT_MOTOR_THREE.value);
     rightMotorOne = new TalonSRX(RobotMap.RIGHT_MOTOR_ONE.value);
-    rightMotorTwo = new TalonSRX(RobotMap.RIGHT_MOTOR_TWO.value);
+    rightMotorTwo = new VictorSPX(RobotMap.RIGHT_MOTOR_TWO.value);
     rightMotorThree = new VictorSPX(RobotMap.RIGHT_MOTOR_THREE.value);
     
     //config PID
@@ -89,8 +89,8 @@ public class Drivebase extends Subsystem implements PIDOutput {
     Robot.masterTalon(rightMotorOne);
 
     Robot.initVictor(leftMotorTwo);
-    Robot.initTalon(leftMotorThree);
-    Robot.initTalon(rightMotorTwo);
+    Robot.initVictor(leftMotorThree);
+    Robot.initVictor(rightMotorTwo);
     Robot.initVictor(rightMotorThree);
 
 
