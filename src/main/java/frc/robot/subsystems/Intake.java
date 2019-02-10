@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
@@ -16,23 +17,23 @@ import frc.robot.RobotMap;
  */
 public class Intake extends Subsystem {
   public final Spark motorIn;
-  public final boolean limitSwitch;
+  public final DigitalInput limitSwitch;
 
   public Intake() {
     motorIn = new Spark(RobotMap.INTAKE_MOTOR.value);
-    limitSwitch = false;
+    limitSwitch = new DigitalInput(RobotMap.LIMIT_SWITCH.value);
   }
 
   public void set(double speed)
   {
-    if(!(speed > 0 && !limitSwitch)) {
+    if(!(speed > 0 && !getLimitSwitch())) {
       motorIn.set(0);
     }
     motorIn.set(speed);
   }
 
   public boolean getLimitSwitch() {
-    limitSwitch = DigitalInput(RobotMap.LIMIT_SWITCH.value);
+    return limitSwitch.get();
   }
 
   @Override
