@@ -17,52 +17,48 @@ public class DriveForward extends Command {
   double Feet;
   double Speed;
 
-  double distanceInTicks;
-  double leftTarget;
-  double rightTarget;
-
+  private double feet;
+  boolean inErrorZone;
+  int count;
   boolean isFinished = false;
 
-  public DriveForward(double feet, double speed) {
-      requires(Robot.drivebase);
-      Feet = feet;
-      Speed = speed;
+  public DriveForward(double feet, double timeout)
+  {
+    Feet = feet;
+    setTimeout(timeout);
   }
-  
-  public DriveForward(double feet, double speed, double timeout) {
-      requires(Robot.drivebase);
-      Feet = feet;
-      Speed = speed;
-      setTimeout(timeout);
-  }
-  
+
+  @Override
   protected void initialize() {
-    Robot.drivebase.DriveFeet(Feet);
-    /*
-      distanceInTicks = Feet * Robot.drivebase.ENCODER_COUNTS_PER_FT;
-      leftTarget = (int) (Robot.drivebase.getLeftEncoderCount() + distanceInTicks);
-      rightTarget = (int) (Robot.drivebase.getRightEncoderCount() + distanceInTicks);
-      SmartDashboard.putNumber("left", Feet);
-      */
+    Robot.drivebase.DriveFeet(feet);
   }
 
+  @Override
   protected void execute() {
-      double leftSpeed =
-              Math.pow((leftTarget - Robot.drivebase.getLeftEncoderCount()) / distanceInTicks, 2)
-                      * Speed;
-      double rightSpeed =
-              Math.pow((rightTarget - Robot.drivebase.getRightEncoderCount()) / distanceInTicks, 2)
-                      * Speed;
-      if (Math.abs(leftSpeed) < 0.3 || Math.abs(rightSpeed) < 0.3) {
-          leftSpeed = 0;
-          rightSpeed = 0;
-          isFinished = true;
-      }
-      if (Feet > 0) {
-          Robot.drivebase.setMotors(leftSpeed, rightSpeed);
-      } else
-          Robot.drivebase.setMotors(-leftSpeed, -rightSpeed);
+    /*
+     * // check how close we are to the target angle, if we are within the tolerance
+     * for 10 roboRio // ticks then end the command double error =
+     * Robot.drivebase.leftMotorOne.getClosedLoopError(0); inErrorZone =
+     * Math.abs(error) < Robot.drivebase.allowableError ? true : false;
+     * 
+     * if (inErrorZone) { count++; if (count >= 6) { isFinished = true; } else {
+     * isFinished = false; } } else { count = 0; }
+     */
 
+    SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
+    SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
+
+    SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
+    SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
+
+    SmartDashboard.putNumber("Error", Robot.drivebase.leftMotorOne.getClosedLoopError());
+    SmartDashboard.putNumber("Setpoint", Robot.drivebase.leftMotorOne.getClosedLoopTarget());
+
+  }
+
+  @Override
+  protected void end() {
+    Robot.drivebase.setMotors(0.0, 0.0);
   }
 
   protected boolean isFinished() {
