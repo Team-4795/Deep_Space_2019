@@ -54,7 +54,7 @@ public class Drivebase extends Subsystem implements PIDOutput {
 
   private final double WHEEL_DIAMETER_IN = 8.0;
   private final int ENCODER_COUNTS_PER_REV = 4096;
-  private final double ENCODER_COUNTS_PER_FT = 15689.8;
+  public final double ENCODER_COUNTS_PER_FT = 15689.8;
   //in theory should equal: (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN)
   
   public Drivebase () {

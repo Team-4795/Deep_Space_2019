@@ -7,20 +7,24 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class DriveForward extends Command {
+  double Feet;
+  double Speed;
 
   private double feet;
   boolean inErrorZone;
-  boolean isFinished;
   int count;
+  boolean isFinished = false;
 
-  public DriveForward(double feet, double timeout) {
-    requires(Robot.drivebase);
-    this.feet = feet;
+  public DriveForward(double feet, double timeout)
+  {
+    Feet = feet;
     setTimeout(timeout);
   }
 
@@ -53,16 +57,11 @@ public class DriveForward extends Command {
   }
 
   @Override
-  protected boolean isFinished() {
-    return isTimedOut() || isFinished;
-  }
-
-  @Override
   protected void end() {
     Robot.drivebase.setMotors(0.0, 0.0);
   }
 
-  @Override
-  protected void interrupted() {
+  protected boolean isFinished() {
+      return isFinished || isTimedOut();
   }
 }
