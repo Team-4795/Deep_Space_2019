@@ -17,6 +17,8 @@ import frc.robot.commands.DriveForward;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivebase;
+import frc.robot.subsystems.Intake;
+
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -29,6 +31,8 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Drivebase drivebase;
   public static Arm arm;
+  public static Intake intake;
+  public static ColorSensor colorsensor;
 
   @Override
   public void robotInit() {

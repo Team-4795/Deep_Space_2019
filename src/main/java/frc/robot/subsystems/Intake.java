@@ -23,10 +23,13 @@ public class Intake extends Subsystem {
     limitSwitch = false;
   }
 
-  public void TakeIn() {
-    while (limitSwitch == true) {
-      motorIn.set(0.5);
+  public void set(double speed)
+  {
+    if(!(speed > 0 && !limitSwitch))
+    {
+      motorIn.set(0);
     }
+    motorIn.set(speed);
   }
 
   @Override
