@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class TakeIn extends Command {
-  public TakeIn() {
+  
+  double Speed;
+  public TakeIn(double speed) {
+    Speed = speed;
     requires(Robot.intake);
   }
 
@@ -23,7 +26,7 @@ public class TakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.intake.TakeIn();
+    Robot.intake.set(Speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
