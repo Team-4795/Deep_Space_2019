@@ -10,15 +10,18 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.ColorSensor;
 
 public class ArcadeDrive extends Command {
 
   private double maxVel;
   private double pastVel;
   private double maxAccel;
+  ColorSensor cs;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
+    cs = ColorSensor.getInstanceOnboard();
   }
 
   @Override
@@ -45,6 +48,10 @@ public class ArcadeDrive extends Command {
 
     SmartDashboard.putNumber("Left Velocity", Robot.drivebase.getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", Robot.drivebase.getRightVelocity());
+    SmartDashboard.putNumber("Clear", cs.getColor().clear);
+    SmartDashboard.putNumber("Red", cs.getColor().red);
+    SmartDashboard.putNumber("Green", cs.getColor().green);
+    SmartDashboard.putNumber("Blue", cs.getColor().blue);
 
     maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
     SmartDashboard.putNumber("Max Velocity", maxVel);

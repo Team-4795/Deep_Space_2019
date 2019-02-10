@@ -5,27 +5,23 @@ import java.util.TimerTask;
 import edu.wpi.first.wpilibj.I2C;
 
 public class ColorSensor {
-  //Tread variables
   private java.util.Timer executor;
   private static final long THREAD_PERIOD = 20; //ms - max poll rate on sensor.
   
   public static final byte CS_ADDRESS = 0x39;
 
-  private static ColorSensor instance;
+  private static ColorSensor instanceOnboard;
+  private static ColorSensor instanceMXP;
   private static I2C cs;
   private volatile ColorData color;
 
   public enum reg_t {
+    CS_ENABLE (0x00),
+    CS_ATIME  (0x01),
     CS_CDATA  (0x14),
-    CS_CDATAH (0x15),
     CS_RDATA  (0x16),
-    CS_RDATAH (0x17),
     CS_GDATA  (0x18),
-    CS_GDATAH (0x19),
-    CS_BDATA  (0x1A),
-    CS_BDATAH (0x1B),
-    CS_PDATA  (0x1C),
-    CS_PDATAH (0x1D);
+    CS_BDATA  (0x1A);
 
     private final int val;
 
@@ -39,39 +35,43 @@ public class ColorSensor {
   };
   
   public class ColorData {
-    public short clear;
-    public short red;
-    public short green;
-    public short blue;
-    public short proximity;
+    public double clear;
+    public double red;
+    public double green;
+    public double blue;
   }
   
-  private ColorSensor(I2C.Port port, byte address) {
-    cs = new I2C(port, address);
-    
+  private ColorSensor(I2C.Port port) {
+    cs = new I2C(port, CS_ADDRESS);
+
+    write8(reg_t.CS_ENABLE, (byte) (1 | 2));
+    write8(reg_t.CS_ATIME, (byte) 0xEC);
+
     executor = new java.util.Timer();
     executor.schedule(new ColorSensorUpdateTask(this), 0L, THREAD_PERIOD);
   }
 
-  public static ColorSensor getInstance(I2C.Port port, byte address) {
-    if (instance == null) {
-      instance = new ColorSensor(port, address);
+  public static ColorSensor getInstanceOnboard() {
+    if (instanceOnboard == null) {
+      instanceOnboard = new ColorSensor(I2C.Port.kOnboard);
     }
-    return instance;
+    return instanceOnboard;
   }
 
-  public static ColorSensor getInstance() {
-    return getInstance(I2C.Port.kOnboard, CS_ADDRESS);
+  public static ColorSensor getInstanceMXP() {
+    if (instanceMXP == null) {
+      instanceMXP = new ColorSensor(I2C.Port.kMXP);
+    }
+    return instanceMXP;
   }
 
   private void update() {
     ColorData colorData = new ColorData();
-    
-    colorData.clear = read16(reg_t.CS_CDATA);
-    colorData.red = read16(reg_t.CS_RDATA);
-    colorData.green = read16(reg_t.CS_GDATA);
-    colorData.blue = read16(reg_t.CS_BDATA);
-    colorData.proximity = read16(reg_t.CS_PDATA);
+
+    colorData.clear = (read16(reg_t.CS_CDATA) & 0xffff) / 65535.0;
+    colorData.red = (read16(reg_t.CS_RDATA) & 0xffff) / 65535.0;
+    colorData.green = (read16(reg_t.CS_GDATA) & 0xffff) / 65535.0;
+    colorData.blue = (read16(reg_t.CS_BDATA) & 0xffff) / 65535.0;
 
     color = colorData;
   }
