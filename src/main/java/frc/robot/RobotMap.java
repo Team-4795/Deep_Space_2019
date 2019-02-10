@@ -22,7 +22,7 @@ public enum RobotMap {
   ARM_MOTOR(7),
   INTAKE_MOTOR(8),
   INTAKE_MOTOR_FOLLOWER(9),
-  LIMIT_SWITCH(0);
+  HATCH_MOTOR(10);
 
   public final int value;
 
