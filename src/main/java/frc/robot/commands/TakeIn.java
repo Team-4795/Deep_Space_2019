@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -38,7 +40,7 @@ public class TakeIn extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.intake.limitSwitch || isTimedOut();
+    return  Robot.intake.getFwdLimitSwitch() || isTimedOut();
   }
 
   // Called once after isFinished returns true

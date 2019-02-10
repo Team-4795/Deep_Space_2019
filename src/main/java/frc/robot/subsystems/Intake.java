@@ -7,33 +7,40 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Spark;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-
+import frc.robot.Robot;
 /**
  * Add your docs here.
  */
 public class Intake extends Subsystem {
-  public final Spark motorIn;
-  public final DigitalInput limitSwitch;
+  public final TalonSRX wheelMotor;
+  public final VictorSPX rollerMotor;
 
   public Intake() {
-    motorIn = new Spark(RobotMap.INTAKE_MOTOR.value);
-    limitSwitch = new DigitalInput(RobotMap.LIMIT_SWITCH.value);
+    wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
+    rollerMotor = new VictorSPX(RobotMap.INTAKE_MOTOR_FOLLOWER.value);
+
+    Robot.masterTalon(wheelMotor);
+    Robot.initVictor(rollerMotor);
+
+    rollerMotor.follow(wheelMotor);
   }
 
   public void set(double speed)
   {
-    if(!(speed > 0 && !getLimitSwitch())) {
-      motorIn.set(0);
-    }
-    motorIn.set(speed);
+    wheelMotor.set(ControlMode.PercentOutput, speed);
   }
 
-  public boolean getLimitSwitch() {
-    return limitSwitch.get();
+  public boolean getRevLimitSwitch() {
+    return wheelMotor.getSensorCollection().isRevLimitSwitchClosed();
+  }
+
+  public boolean getFwdLimitSwitch() {
+    return wheelMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
 
   @Override

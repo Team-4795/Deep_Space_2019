@@ -21,6 +21,7 @@ public enum RobotMap {
   RIGHT_MOTOR_THREE(6),
   ARM_MOTOR(7),
   INTAKE_MOTOR(8),
+  INTAKE_MOTOR_FOLLOWER(9),
   LIMIT_SWITCH(0);
 
   public final int value;
