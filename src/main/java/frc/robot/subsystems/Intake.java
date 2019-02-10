@@ -25,11 +25,14 @@ public class Intake extends Subsystem {
 
   public void set(double speed)
   {
-    if(!(speed > 0 && !limitSwitch))
-    {
+    if(!(speed > 0 && !limitSwitch)) {
       motorIn.set(0);
     }
     motorIn.set(speed);
+  }
+
+  public boolean getLimitSwitch() {
+    limitSwitch = DigitalInput(RobotMap.LIMIT_SWITCH.value);
   }
 
   @Override

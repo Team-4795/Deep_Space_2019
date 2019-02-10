@@ -10,18 +10,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TakeIn extends Command {
+public class TeleOpTakeIn extends Command {
   
   double Speed;
-  public TakeIn(double speed) {
-    Speed = speed;
-    requires(Robot.intake);
-  }
-  
-  public TakeIn(double speed, double timeOut){
+
+  public TeleOpTakeIn(double speed, double timeOut){
     Speed = speed;
     requires(Robot.intake);
     setTimeout(timeOut);
+
   }
 
   // Called just before this Command runs the first time
@@ -32,7 +29,9 @@ public class TakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.intake.set(Speed);
+    if (Robot.oi.getMainRightTrigger() > 0.25){
+      Robot.intake.set(Speed);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -44,7 +43,6 @@ public class TakeIn extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-
   }
 
   // Called when another command which requires one or more of the same
