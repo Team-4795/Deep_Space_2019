@@ -16,7 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.Climb;
+import frc.robot.commands.ManualArmControl;
 
 public class Arm extends Subsystem {
   
@@ -29,7 +29,7 @@ public class Arm extends Subsystem {
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     rightArmMotor.setIdleMode(IdleMode.kBrake);
-    
+
     rightArmMotor.follow(leftArmMotor);
   }
   public void actuate(double output) {
@@ -38,6 +38,6 @@ public class Arm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new Climb());
+    setDefaultCommand(new ManualArmControl());
   }
 }

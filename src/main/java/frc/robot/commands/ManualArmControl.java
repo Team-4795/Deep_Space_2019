@@ -11,11 +11,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 
-public class Climb extends Command {
+public class ManualArmControl extends Command {
 
   private double throttle;
 
-  public Climb() {
+  public ManualArmControl() {
     requires(Robot.arm);
   }
 
@@ -25,7 +25,7 @@ public class Climb extends Command {
 
   @Override
   protected void execute() {
-    throttle = ( 0.6 - (0.3 * Robot.oi.getArmRightTrigger()) );
+    throttle = (0.6 - (0.3 * Robot.oi.getArmRightTrigger()));
     Robot.arm.actuate(Robot.oi.getArmLeftJoyY() * throttle);
   }
 
