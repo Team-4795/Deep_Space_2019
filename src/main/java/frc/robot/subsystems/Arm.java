@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
@@ -17,15 +20,20 @@ import frc.robot.commands.Climb;
 
 public class Arm extends Subsystem {
   
-  private final TalonSRX armMotor;
+  private final CANSparkMax leftArmMotor;
+  private final CANSparkMax rightArmMotor;
 
   public Arm() {
-    armMotor = new TalonSRX(RobotMap.ARM_MOTOR.value);
+    leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
+    rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
 
-    Robot.masterTalon(armMotor);
+    leftArmMotor.setIdleMode(IdleMode.kBrake);
+    rightArmMotor.setIdleMode(IdleMode.kBrake);
+    
+    rightArmMotor.follow(leftArmMotor);
   }
   public void actuate(double output) {
-    armMotor.set(ControlMode.PercentOutput, output);
+    leftArmMotor.set(output);
   }
 
   @Override
