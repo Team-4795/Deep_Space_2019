@@ -29,8 +29,10 @@ public class OutTakeHatch extends Command {
     if (pushTime == 0.0 || pushTime == 0.75) {
       if (Robot.oi.getMainXButton())
         pushTime = timeSinceInitialized();
-      else
+      else {
+        Robot.hatch.set(0.0);
         pushTime = 0.0;
+      }
     }
     if (pushTime > 0.0 && pushTime <= 0.37) {
       Robot.hatch.set(0.25);
