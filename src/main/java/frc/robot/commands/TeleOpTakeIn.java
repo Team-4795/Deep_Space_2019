@@ -13,14 +13,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class TeleOpTakeIn extends Command {
-  
-  double Speed;
 
-  public TeleOpTakeIn(double speed, double timeOut){
-    Speed = speed;
+  public TeleOpTakeIn(){
     requires(Robot.intake);
-    setTimeout(timeOut);
-
   }
 
   // Called just before this Command runs the first time
@@ -31,8 +26,8 @@ public class TeleOpTakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getMainRightTrigger() > 0.25){
-      Robot.intake.set(Speed);
+    if (Robot.oi.getArmRightTrigger() > 0.25){
+      Robot.intake.set(1.0);
     }
   }
 

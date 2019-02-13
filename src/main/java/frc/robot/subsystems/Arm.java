@@ -13,6 +13,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.PIDController;
@@ -25,9 +26,9 @@ import frc.robot.commands.ManualArmControl;
 public class Arm extends Subsystem{
   
   private final CANSparkMax leftArmMotor;
-  private final CANSparkMax rightArmMotor;
+  //private final CANSparkMax rightArmMotor;
 
-  private final CANPIDController armController;
+  //private final CANPIDController armController;
   private final static double P = -0.08;
   private final static double I = 0.0;
   private final static double D = -0.00;
@@ -36,19 +37,20 @@ public class Arm extends Subsystem{
 
   public Arm() {
     leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
-    rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
+    //rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
-    rightArmMotor.setIdleMode(IdleMode.kBrake);
+    //rightArmMotor.setIdleMode(IdleMode.kBrake);
 
-    rightArmMotor.follow(leftArmMotor);
-
+    //rightArmMotor.follow(leftArmMotor);
+    /*
     armController = new CANPIDController(leftArmMotor);
     armController.setOutputRange(-0.6, 0.6);
     armController.setP(P);
     armController.setI(I);
     armController.setD(D);
     armController.setFF(F);
+    */
   }
   public void actuate(double output) {
     leftArmMotor.set(output);
@@ -56,7 +58,7 @@ public class Arm extends Subsystem{
 
   public void setPosition(double position)
   {
-    armController.setReference(position, ControlType.kPosition);
+    //armController.setReference(position, ControlType.kPosition);
   }
 
   @Override

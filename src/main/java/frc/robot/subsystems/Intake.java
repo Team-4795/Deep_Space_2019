@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.TeleOpTakeIn;
 import frc.robot.Robot;
 /**
  * Add your docs here.
@@ -46,6 +47,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    //setDefaultCommand(new TeleOpTakeIn());
   }
 }

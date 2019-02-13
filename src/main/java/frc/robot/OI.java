@@ -20,7 +20,7 @@ public class OI {
 
   public OI() { 
     MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
-    ARM_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
+    ARM_CONTROLLER = new Joystick(RobotMap.ARM_CONTROLLER.value);
   }
 
   public double getMainLeftJoyY() {
