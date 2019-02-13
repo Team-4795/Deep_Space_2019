@@ -9,42 +9,52 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot; 
+import java.lang.System;
 
 public class OutTakeHatch extends Command {
-  double pushTime = 0.0;
-  public OutTakeHatch(double time, double timeOut) {
+  
+  private boolean beenPressed = false;
+  private boolean reachedFront = false;
+
+  public OutTakeHatch(double time) {
     requires(Robot.hatch);
-    setTimeout(timeOut);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    pushTime = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (pushTime == 0.0 || pushTime == 0.75) {
-      if (Robot.oi.getMainXButton())
-        pushTime = timeSinceInitialized();
-      else {
-        Robot.hatch.set(0.0);
-        pushTime = 0.0;
+    if(Robot.oi.getMainXButton())
+    {
+      beenPressed = true;
+    }
+
+    reachedFront = Robot.hatch.getForwardlimit();
+
+    if(beenPressed)
+    {
+      if(!reachedFront)
+      {
+        Robot.hatch.set(0.8);
+      }
+      else
+      {
+        Robot.hatch.set(-0.8);
       }
     }
-    if (pushTime > 0.0 && pushTime <= 0.37) {
-      Robot.hatch.set(0.25);
-    } else if (pushTime > 0.37 && pushTime <= 0.75) {
-      Robot.hatch.set(-0.25);
-    } 
+
+    if(Robot.hatch.getReverselimit())
+      beenPressed = false;
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished() || isTimedOut();
+    return false;
   }
 
   // Called once after isFinished returns true

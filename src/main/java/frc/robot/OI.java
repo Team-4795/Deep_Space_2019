@@ -65,4 +65,9 @@ public class OI {
     double value = ARM_CONTROLLER.getRawAxis(3);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
   }
+
+  public double getArmLeftTrigger() {
+    double value = ARM_CONTROLLER.getRawAxis(3);
+    return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
+  }
 }

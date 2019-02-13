@@ -12,11 +12,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleOpTakeIn extends Command {
+public class CargoIntake extends Command {
   
   double Speed;
 
-  public TeleOpTakeIn(double speed, double timeOut){
+  public CargoIntake(double speed, double timeOut){
     Speed = speed;
     requires(Robot.intake);
     setTimeout(timeOut);
@@ -31,15 +31,18 @@ public class TeleOpTakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getMainRightTrigger() > 0.25){
+    if (Robot.oi.getArmRightTrigger() > 0.25){
       Robot.intake.set(Speed);
+    }
+    if (Robot.oi.getArmLeftTrigger() > 0.25){
+      Robot.intake.set(-Speed);
     }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.intake.getFwdLimitSwitch() || isTimedOut(); //change to getRevLimitSwitch if needed later
+    return (Robot.intake.getFwdLimitSwitch() || Robot.intake.getRevLimitSwitch()) || isTimedOut(); //change to getRevLimitSwitch if needed later
   }
 
   // Called once after isFinished returns true

@@ -14,12 +14,19 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+// import java.lang.System;
+
 /**
  * Add your docs here.
  */
+ 
 
 public class Hatch extends Subsystem {
   public final TalonSRX hatchMotor;
+
+  // double start;
+  // double stop;
+  // double inital; 
 
   public Hatch() {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
@@ -29,6 +36,16 @@ public class Hatch extends Subsystem {
 
   public void set(double speed) {
     hatchMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public boolean getForwardlimit()
+  {
+    return hatchMotor.getSensorCollection().isFwdLimitSwitchClosed();
+  }
+
+  public boolean getReverselimit()
+  {
+    return hatchMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
   @Override
   public void initDefaultCommand() {
