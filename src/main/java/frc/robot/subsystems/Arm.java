@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -26,7 +27,7 @@ import frc.robot.commands.ManualArmControl;
 public class Arm extends Subsystem{
   
   private final CANSparkMax leftArmMotor;
-  //private final CANSparkMax rightArmMotor;
+  private final CANSparkMax rightArmMotor;
 
   //private final CANPIDController armController;
   private final static double P = -0.08;
@@ -37,12 +38,13 @@ public class Arm extends Subsystem{
 
   public Arm() {
     leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
-    //rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
+    rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR_FOLLOWER.value, MotorType.kBrushless);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
-    //rightArmMotor.setIdleMode(IdleMode.kBrake);
-
-    //rightArmMotor.follow(leftArmMotor);
+    leftArmMotor.setRampRate(0.5);
+    leftArmMotor.setParameter(ConfigParameter.kHardLimitRevEn, true);
+    rightArmMotor.setIdleMode(IdleMode.kBrake);
+    rightArmMotor.follow(leftArmMotor, true);
     /*
     armController = new CANPIDController(leftArmMotor);
     armController.setOutputRange(-0.6, 0.6);

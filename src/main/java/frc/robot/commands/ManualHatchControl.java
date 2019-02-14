@@ -7,44 +7,64 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot; 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class OutTakeHatch extends Command {
-  double pushTime = 0.0;
-  public OutTakeHatch(double time, double timeOut) {
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+
+public class ManualHatchControl extends Command {
+
+  boolean beenPressed = false;
+  boolean reachedFront = false;
+
+  public ManualHatchControl(){
     requires(Robot.hatch);
-    setTimeout(timeOut);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    pushTime = 0.0;
   }
 
   // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    if (pushTime == 0.0 || pushTime == 0.75) {
-      if (Robot.oi.getMainXButton())
-        pushTime = timeSinceInitialized();
-      else {
-        Robot.hatch.set(0.0);
-        pushTime = 0.0;
-      }
+   // Called repeatedly when this Command is scheduled to run
+   @Override
+   protected void execute() {
+
+    if(Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed() && beenPressed)
+    {
+     beenPressed = false;
+     reachedFront = false;
+     Robot.hatch.set(0.0);
     }
-    if (pushTime > 0.0 && pushTime <= 0.37) {
-      Robot.hatch.set(0.25);
-    } else if (pushTime > 0.37 && pushTime <= 0.75) {
-      Robot.hatch.set(-0.25);
-    } 
-  }
+
+     if(Robot.oi.getMainXButton())
+     {
+       beenPressed = true;
+     } 
+     if(beenPressed)
+     {
+       if(Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed())
+       {
+         reachedFront = true;
+       }
+       if(!reachedFront)
+       {
+         Robot.hatch.set(1.0);
+       }
+       else
+       {
+         Robot.hatch.set(-0.1);
+       }
+     }
+
+   }
+ 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isFinished() || isTimedOut();
+    return false; //change to getRevLimitSwitch if needed later
   }
 
   // Called once after isFinished returns true

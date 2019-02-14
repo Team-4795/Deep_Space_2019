@@ -23,12 +23,13 @@ public class Intake extends Subsystem {
 
   public Intake() {
     wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
-    rollerMotor = new VictorSPX(RobotMap.INTAKE_MOTOR_FOLLOWER.value);
+    rollerMotor = new VictorSPX(RobotMap.CLIMBER_WHEELS.value);
 
     Robot.masterTalon(wheelMotor);
     Robot.initVictor(rollerMotor);
 
     rollerMotor.follow(wheelMotor);
+    wheelMotor.configOpenloopRamp(0.3);
   }
 
   public void set(double speed)
@@ -47,6 +48,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    //setDefaultCommand(new TeleOpTakeIn());
+    setDefaultCommand(new TeleOpTakeIn());
   }
 }
