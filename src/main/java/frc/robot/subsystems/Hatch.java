@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ManualArmControl;
+import frc.robot.commands.ManualHatchControl;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -25,6 +27,7 @@ public class Hatch extends Subsystem {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
 
     Robot.initTalon(hatchMotor);
+    hatchMotor.configOpenloopRamp(0.0);
   }
 
   public void set(double speed) {
@@ -33,6 +36,6 @@ public class Hatch extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ManualHatchControl());
   }
 }

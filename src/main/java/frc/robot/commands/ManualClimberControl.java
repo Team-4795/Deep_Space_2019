@@ -1,23 +1,14 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands;
-
-import javax.lang.model.util.ElementScanner6;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleOpTakeIn extends Command {
+public class ManualClimberControl extends Command {
 
-  public TeleOpTakeIn(){
-    requires(Robot.intake);
+  public ManualClimberControl(){
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
@@ -28,16 +19,16 @@ public class TeleOpTakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getArmLeftTrigger() > 0.25){
-      Robot.intake.set(0.6);
+    if (Robot.oi.getMainYButton()){
+      Robot.climber.set(0.4);
     }
-    else if(Robot.oi.getArmRightTrigger() > 0.25)
+    else if(Robot.oi.getMainAButton())
     {
-      Robot.intake.set(-1.0);
+        Robot.climber.set(-0.4);
     }
     else
     {
-      Robot.intake.set(0.0);
+        Robot.climber.set(0.0);
     }
   }
 

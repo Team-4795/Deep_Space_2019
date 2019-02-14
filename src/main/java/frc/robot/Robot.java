@@ -16,6 +16,7 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
@@ -35,12 +36,16 @@ public class Robot extends TimedRobot {
   public static Intake intake;
   public static ColorSensor colorsensor;
   public static Hatch hatch;
+  public static Climber climber;
 
   @Override
   public void robotInit() {
     oi = new OI();
     drivebase = new Drivebase();
     arm = new Arm();
+    climber = new Climber();
+    intake = new Intake();
+    hatch = new Hatch();
   }
 
   @Override
