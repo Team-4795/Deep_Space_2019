@@ -14,9 +14,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TeleOpTakeIn extends Command {
+public class ManualIntakeControl extends Command {
 
-  public TeleOpTakeIn(){
+  public ManualIntakeControl(){
     requires(Robot.intake);
   }
 
@@ -28,17 +28,21 @@ public class TeleOpTakeIn extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getArmLeftTrigger() > 0.25){
-      Robot.intake.set(0.6);
+    if (Robot.oi.getArmAButton()){
+      Robot.intake.setRoller(0.6);
+      Robot.intake.setWheels(0.6);
     }
-    else if(Robot.oi.getArmRightTrigger() > 0.25)
+    else if(Robot.oi.getArmXButton())
     {
-      Robot.intake.set(-1.0);
+      Robot.intake.setRoller(-1.0);
+      Robot.intake.setWheels(-1.0);
     }
     else
     {
-      Robot.intake.set(0.0);
+      Robot.intake.setRoller(0.0);
+      Robot.intake.setWheels(Robot.oi.getMainLeftTrigger());
     }
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

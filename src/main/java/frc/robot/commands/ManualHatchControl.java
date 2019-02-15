@@ -38,7 +38,7 @@ public class ManualHatchControl extends Command {
      Robot.hatch.set(0.0);
     }
 
-     if(Robot.oi.getMainXButton())
+     if(Robot.oi.getArmYButton())
      {
        beenPressed = true;
      } 

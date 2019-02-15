@@ -37,9 +37,9 @@ public class ArcadeDrive extends Command {
 
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
 
-    if (Robot.oi.getMainAButton()) {
+    /*if (Robot.oi.getMainAButton()) {
       Robot.drivebase.resetEncoders();
-    }
+    }*/
     SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
     SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
     
@@ -52,11 +52,11 @@ public class ArcadeDrive extends Command {
     SmartDashboard.putNumber("Red", cs.getColor().red);
     SmartDashboard.putNumber("Green", cs.getColor().green);
     SmartDashboard.putNumber("Blue", cs.getColor().blue);
-    */
+    
     maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
     SmartDashboard.putNumber("Max Velocity", maxVel);
     maxAccel = Math.abs(Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) > Math.abs(maxAccel) ? (Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) / 0.05 : maxAccel;
-    pastVel = Robot.drivebase.getLeftVelocity();
+    pastVel = Robot.drivebase.getLeftVelocity();*/
   }
 
   @Override

@@ -12,7 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.TeleOpTakeIn;
+import frc.robot.commands.ManualIntakeControl;
 import frc.robot.Robot;
 /**
  * Add your docs here.
@@ -28,13 +28,18 @@ public class Intake extends Subsystem {
     Robot.masterTalon(wheelMotor);
     Robot.initVictor(rollerMotor);
 
-    rollerMotor.follow(wheelMotor);
-    wheelMotor.configOpenloopRamp(0.3);
+    wheelMotor.configOpenloopRamp(0.0);
+    rollerMotor.configOpenloopRamp(0.0);
   }
 
-  public void set(double speed)
+  public void setWheels(double speed)
   {
     wheelMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setRoller(double speed)
+  {
+    rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public boolean getRevLimitSwitch() {
@@ -48,6 +53,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new TeleOpTakeIn());
+    setDefaultCommand(new ManualIntakeControl());
   }
 }
