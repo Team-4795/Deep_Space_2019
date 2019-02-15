@@ -19,14 +19,14 @@ import frc.robot.Robot;
  */
 public class Intake extends Subsystem {
   public final TalonSRX wheelMotor;
-  public final VictorSPX rollerMotor;
+  public final TalonSRX rollerMotor;
 
   public Intake() {
     wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
-    rollerMotor = new VictorSPX(RobotMap.CLIMBER_WHEELS.value);
+    rollerMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
 
     Robot.masterTalon(wheelMotor);
-    Robot.initVictor(rollerMotor);
+    Robot.initTalon(rollerMotor);
 
     wheelMotor.configOpenloopRamp(0.0);
     rollerMotor.configOpenloopRamp(0.0);
