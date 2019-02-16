@@ -50,11 +50,13 @@ public class ManualHatchControl extends Command {
        }
        if(!reachedFront)
        {
+         Robot.hatch.setRamp(0.0);
          Robot.hatch.set(1.0);
        }
        else
        {
-         Robot.hatch.set(-0.1);
+         Robot.hatch.setRamp(0.3);
+         Robot.hatch.set(-0.3);
        }
      }
 

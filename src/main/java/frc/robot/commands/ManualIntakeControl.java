@@ -40,7 +40,7 @@ public class ManualIntakeControl extends Command {
     else
     {
       Robot.intake.setRoller(0.0);
-      Robot.intake.setWheels(Robot.oi.getMainLeftTrigger());
+      Robot.intake.setWheels(-Robot.oi.getMainLeftTrigger());
     }
 
   }

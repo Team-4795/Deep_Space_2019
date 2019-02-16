@@ -88,6 +88,8 @@ public class Drivebase extends Subsystem implements PIDOutput {
     
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
+    leftMotorOne.configOpenloopRamp(.4);
+    rightMotorOne.configOpenloopRamp(.4);
 
     Robot.initVictor(leftMotorTwo);
     Robot.initVictor(leftMotorThree);

@@ -14,10 +14,11 @@ import frc.robot.ColorSensor;
 
 public class ArcadeDrive extends Command {
 
-  private double maxVel;
+  /*private double maxVel;
   private double pastVel;
-  private double maxAccel;
+  private double maxAccel;*/
   //ColorSensor cs;
+  //private Boolean beenPressed;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
@@ -32,8 +33,17 @@ public class ArcadeDrive extends Command {
 
   @Override
   protected void execute() {
-    double throttle = 0.9 - (0.4 * Robot.oi.getMainRightTrigger());
+
+    /*if (Robot.oi.getRightBumperPress()){
+      beenPressed = !beenPressed;
+    }*/
+
+    double throttle = 1.0 - (0.65 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
+
+    /*if (beenPressed) {
+      throttle *= -1.0;
+    }*/
 
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
 

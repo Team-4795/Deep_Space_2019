@@ -20,16 +20,17 @@ public class ManualClimberControl extends Command {
   @Override
   protected void execute() {
     if (Robot.oi.getMainYButton()){
-      Robot.climber.set(0.4);
+      Robot.climber.set(0.5);
     }
     else if(Robot.oi.getMainAButton())
     {
-        Robot.climber.set(-0.4);
+        Robot.climber.set(-0.5);
     }
     else
     {
         Robot.climber.set(0.0);
     }
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()

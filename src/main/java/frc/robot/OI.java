@@ -64,6 +64,11 @@ public class OI {
     return MAIN_CONTROLLER.getRawButton(3);
   }
 
+  //toggles which way is "forward" for drivebase
+  public boolean getRightBumperPress() {
+    return MAIN_CONTROLLER.getRawButtonPressed(6);
+  }
+
   //Elevator control
   public boolean getMainYButton() {
     return MAIN_CONTROLLER.getRawButton(4);

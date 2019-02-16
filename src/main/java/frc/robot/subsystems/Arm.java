@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -29,6 +30,8 @@ public class Arm extends Subsystem{
   private final CANSparkMax leftArmMotor;
   private final CANSparkMax rightArmMotor;
 
+  DigitalInput lowerLimit;
+
   //private final CANPIDController armController;
   private final static double P = -0.08;
   private final static double I = 0.0;
@@ -39,6 +42,8 @@ public class Arm extends Subsystem{
   public Arm() {
     leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
     rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR_FOLLOWER.value, MotorType.kBrushless);
+
+    lowerLimit = new DigitalInput(0);
 
     leftArmMotor.setIdleMode(IdleMode.kBrake);
     leftArmMotor.setRampRate(0.5);
@@ -55,7 +60,11 @@ public class Arm extends Subsystem{
     */
   }
   public void actuate(double output) {
-    leftArmMotor.set(output);
+    leftArmMotor.set(-output);
+    if(output > 0 && !lowerLimit.get())
+    {
+      leftArmMotor.set(0);
+    }
   }
 
   public void setPosition(double position)
