@@ -15,16 +15,27 @@ import frc.robot.commands.ManualClimberControl;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Climber extends Subsystem {
-    public final CANSparkMax climberMotor;
+    
+    private final CANSparkMax climberMotor;
+    private Boolean climbTime;
   
     public Climber() {
       climberMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR.value, MotorType.kBrushless);
-      climberMotor.setIdleMode(IdleMode.kBrake);
+      climberMotor.setIdleMode(IdleMode.kBrake); 
+      climbTime = true;
     }
   
     public void set(double speed) {
       climberMotor.set(speed);
     }
+
+    public void changeClimbTime(){
+      climbTime = !climbTime;
+    }
+    public boolean getClimbTime(){
+      return climbTime;
+    }
+
     @Override
     public void initDefaultCommand() {
       // Set the default command for a subsystem here.

@@ -18,10 +18,11 @@ public class ArcadeDrive extends Command {
   private double pastVel;
   private double maxAccel;*/
   //ColorSensor cs;
-  //private Boolean beenPressed;
+  private Boolean beenPressed;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
+    beenPressed = false;
    // cs = ColorSensor.getInstanceOnboard();
   }
 
@@ -34,16 +35,20 @@ public class ArcadeDrive extends Command {
   @Override
   protected void execute() {
 
-    /*if (Robot.oi.getRightBumperPress()){
+    if (Robot.oi.getMainRightBumperPressed()){
       beenPressed = !beenPressed;
-    }*/
+    }
 
     double throttle = 1.0 - (0.65 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
 
-    /*if (beenPressed) {
+    if (beenPressed) {
       throttle *= -1.0;
-    }*/
+    }
+
+    if(Robot.climber.getClimbTime()) {
+      throttle *= 0.3;
+    }
 
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
 

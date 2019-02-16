@@ -7,8 +7,11 @@ import frc.robot.Robot;
 
 public class ManualClimberControl extends Command {
 
+  private double speed;
+
   public ManualClimberControl(){
     requires(Robot.climber);
+    speed = 0.5;
   }
 
   // Called just before this Command runs the first time
@@ -19,12 +22,16 @@ public class ManualClimberControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getMainYButton()){
-      Robot.climber.set(0.5);
+
+    if (Robot.oi.getArmBPressed()){
+      Robot.climber.changeClimbTime();
     }
-    else if(Robot.oi.getMainAButton())
-    {
-        Robot.climber.set(-0.5);
+
+    if (Robot.oi.getMainYButton() && Robot.climber.getClimbTime()){
+      Robot.climber.set(speed);
+    }
+    else if(Robot.oi.getMainAButton() && Robot.climber.getClimbTime()){
+        Robot.climber.set(-speed);
     }
     else
     {

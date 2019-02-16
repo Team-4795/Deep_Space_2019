@@ -65,7 +65,7 @@ public class OI {
   }
 
   //toggles which way is "forward" for drivebase
-  public boolean getRightBumperPress() {
+  public boolean getMainRightBumperPressed() {
     return MAIN_CONTROLLER.getRawButtonPressed(6);
   }
 
@@ -87,6 +87,11 @@ public class OI {
   //Hatch control
   public boolean getArmYButton() {
     return ARM_CONTROLLER.getRawButton(4);
+  }
+
+  //activates or deactivates climb time
+  public boolean getArmBPressed() {
+    return ARM_CONTROLLER.getRawButtonPressed(2);
   }
 
   //Arm control
