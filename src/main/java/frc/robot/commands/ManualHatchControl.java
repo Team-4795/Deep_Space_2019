@@ -48,16 +48,26 @@ public class ManualHatchControl extends Command {
        {
          reachedFront = true;
        }
-       if(!reachedFront)
+       if(!reachedFront && !Robot.climber.getClimbTime())
        {
+         Robot.hatch.setRamp(0.0);
          Robot.hatch.set(1.0);
        }
-       else
+       else if (!Robot.climber.getClimbTime())
        {
-         Robot.hatch.set(-0.1);
+         Robot.hatch.setRamp(0.6);
+         Robot.hatch.set(-0.3);
        }
      }
-
+     if (Robot.climber.getClimbTime() && !Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed())
+     {
+      Robot.hatch.setRamp(0.3);
+      Robot.hatch.set(0.35);
+     }
+     else if (Robot.climber.getClimbTime())
+     {
+      Robot.hatch.set(0.0);
+     }
    }
  
 

@@ -8,19 +8,53 @@
 // test comment
 package frc.robot;
 
+import java.awt.Button;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.ArmPIDBalance;
+import frc.robot.commands.AutoClimb;
+import frc.robot.commands.ClimberPIDControl;
+import frc.robot.commands.ManualArmControl;
+import frc.robot.commands.ManualClimberControl;
+import frc.robot.commands.ToggleClimbTime;
 
 public class OI {
 
   private static final double DEADZONE = 0.15 ;
 
-  private Joystick MAIN_CONTROLLER;
-  private Joystick ARM_CONTROLLER;
+  private final Joystick MAIN_CONTROLLER;
+  private final JoystickButton XButton;
+  private final JoystickButton YButton;
+  private final Joystick ARM_CONTROLLER;
   private double value;
+  private final JoystickButton AButton;
+  private final JoystickButton BButton;
+  private final JoystickButton ArmLeftBumper;
+  private final JoystickButton ArmBButton;
 
   public OI() { 
     MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
     ARM_CONTROLLER = new Joystick(RobotMap.ARM_CONTROLLER.value);
+
+    YButton = new JoystickButton(MAIN_CONTROLLER, 4);
+    AButton = new JoystickButton(MAIN_CONTROLLER, 1);
+    XButton = new JoystickButton(MAIN_CONTROLLER, 3);
+    BButton = new JoystickButton(MAIN_CONTROLLER, 2);
+    ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
+    ArmBButton = new JoystickButton(ARM_CONTROLLER, 2);
+
+    ArmLeftBumper.whenPressed(new ToggleClimbTime());
+    
+    YButton.whileHeld(new ManualClimberControl(.5));
+    AButton.whileHeld(new ManualClimberControl(-.5));
+    XButton.whenPressed(new AutoClimb());
+    //XButton.whenPressed(new ClimberPIDControl(218));
+    BButton.whenPressed(new ClimberPIDControl(9));
+
+    //ArmBButton.toggleWhenPressed(new ArmPIDBalance());
+
+
   }
 
   //Drivebase control
@@ -60,8 +94,21 @@ public class OI {
     return MAIN_CONTROLLER.getRawButton(1);
   }
 
+  public boolean getMainAButtonPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(1);
+  }
+
+  public boolean getMainYButtonPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(4);
+  }
+
   public boolean getMainXButton() {
     return MAIN_CONTROLLER.getRawButton(3);
+  }
+
+  //toggles which way is "forward" for drivebase
+  public boolean getMainRightBumperPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(6);
   }
 
   //Elevator control
@@ -82,6 +129,11 @@ public class OI {
   //Hatch control
   public boolean getArmYButton() {
     return ARM_CONTROLLER.getRawButton(4);
+  }
+
+  //activates or deactivates climb time
+  public boolean getArmBPressed() {
+    return ARM_CONTROLLER.getRawButtonPressed(2);
   }
 
   //Arm control

@@ -38,7 +38,6 @@ public class Drivebase extends Subsystem implements PIDOutput {
   public final TalonSRX rightMotorOne;
   private final VictorSPX rightMotorTwo;
   private final VictorSPX rightMotorThree;
-  private final AHRS ahrs;
   public final PIDController turnController;
 
   private final static double P = -0.08;
@@ -59,8 +58,8 @@ public class Drivebase extends Subsystem implements PIDOutput {
   
   public Drivebase () {
 
-    ahrs = new AHRS(SPI.Port.kMXP);
-    turnController = new PIDController(P, I, D, ahrs, this);
+    
+    turnController = new PIDController(P, I, D, Robot.ahrs, this);
     turnController.setInputRange(-180.0f, 180.0f);
     turnController.setOutputRange(-0.6, 0.6);
     turnController.setAbsoluteTolerance(Tolerance);
@@ -82,12 +81,13 @@ public class Drivebase extends Subsystem implements PIDOutput {
     rightMotorOne.config_kI(0, kI);
     rightMotorOne.config_kD(0, kD);
     rightMotorOne.config_kF(0, kF);
-
     leftMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
     rightMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
     
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
+    leftMotorOne.configOpenloopRamp(.4);
+    rightMotorOne.configOpenloopRamp(.4);
 
     Robot.initVictor(leftMotorTwo);
     Robot.initVictor(leftMotorThree);
@@ -111,8 +111,6 @@ public class Drivebase extends Subsystem implements PIDOutput {
 
     rightMotorOne.setSelectedSensorPosition(0);
     leftMotorOne.setSelectedSensorPosition(0);
-
-    ahrs.reset();
   }
 
   public void setMotors(double left, double right) {
@@ -120,17 +118,6 @@ public class Drivebase extends Subsystem implements PIDOutput {
     rightMotorOne.set(ControlMode.PercentOutput, right);
   }
 
-  public double getYaw() {
-    return ahrs.getYaw();
-  }
-
-  public double getPitch() {
-    return ahrs.getPitch();
-  }
-
-  public double getRoll() {
-    return ahrs.getRoll();
-  }
   public double getLeftEncoderCount() {
     return leftMotorOne.getSelectedSensorPosition();
   }
@@ -157,11 +144,11 @@ public class Drivebase extends Subsystem implements PIDOutput {
   }
 
   public void TurnToAngle(double angle) {
-    ahrs.reset();
+    Robot.ahrs.reset();
     turnController.reset();
-    SmartDashboard.putString("Axis", ahrs.getBoardYawAxis().toString());
     turnController.setSetpoint(angle);
     turnController.enable();
+    
   }
 
   

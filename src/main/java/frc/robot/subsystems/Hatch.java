@@ -30,6 +30,10 @@ public class Hatch extends Subsystem {
     hatchMotor.configOpenloopRamp(0.0);
   }
 
+  public void setRamp(double rate) {
+    hatchMotor.configOpenloopRamp(rate);
+  }
+
   public void set(double speed) {
     hatchMotor.set(ControlMode.PercentOutput, speed);
   }
