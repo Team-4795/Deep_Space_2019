@@ -7,9 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.SerialPort.Port;
-import edu.wpi.first.wpilibj.command.Command;
+
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
@@ -37,20 +37,24 @@ public class Robot extends TimedRobot {
   public static ColorSensor colorsensor;
   public static Hatch hatch;
   public static Climber climber;
+  public static AHRS ahrs;
 
   @Override
   public void robotInit() {
-    oi = new OI();
+    ahrs = new AHRS(SPI.Port.kMXP);
+
     drivebase = new Drivebase();
     arm = new Arm();
     climber = new Climber();
     intake = new Intake();
     hatch = new Hatch();
+    oi = new OI();
+
   }
 
   @Override
   public void disabledInit() {
-
+    Robot.climber.setClimbTime(false);
   }
 
   public void disabledPeriodic() {
@@ -61,13 +65,15 @@ public class Robot extends TimedRobot {
     // takes argument: angle, timeout
     double dist = -1 * SmartDashboard.getNumber("Z", 3) - 0.5;
     Scheduler.getInstance().add(new DriveForward(dist, 2));
+    ahrs.reset();
+    Robot.climber.resetEnc();
   }
 
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putNumber("Yaw", Robot.drivebase.getYaw());
-    SmartDashboard.putNumber("Pitch", Robot.drivebase.getPitch());
-    SmartDashboard.putNumber("Roll", Robot.drivebase.getRoll());
+    SmartDashboard.putNumber("Yaw", ahrs.getYaw());
+    SmartDashboard.putNumber("Pitch", ahrs.getPitch());
+    SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
 
   public void teleopInit() {
@@ -76,6 +82,9 @@ public class Robot extends TimedRobot {
 
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    SmartDashboard.putNumber("Pitch", ahrs.getPitch());
+    SmartDashboard.putNumber("Roll", ahrs.getRoll());
+    SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
   }
 
   public void testPeriodic() {
@@ -88,7 +97,7 @@ public class Robot extends TimedRobot {
     motor.configPeakCurrentDuration(20, 0);
     motor.enableCurrentLimit(true);
     motor.configOpenloopRamp(0.2, 0);
-    motor.configClosedloopRamp(0.0, 0);
+    motor.configClosedloopRamp(0.2, 0);
   }
 
   public static void initTalon(TalonSRX motor) {

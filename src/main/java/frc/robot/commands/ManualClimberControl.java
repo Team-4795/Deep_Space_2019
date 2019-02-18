@@ -1,17 +1,18 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ManualClimberControl extends Command {
 
-  private double speed;
+  private final double speed;
+  private double output;
 
-  public ManualClimberControl(){
+  public ManualClimberControl(double speed){
     requires(Robot.climber);
-    speed = 0.5;
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
@@ -23,20 +24,26 @@ public class ManualClimberControl extends Command {
   @Override
   protected void execute() {
 
-    if (Robot.oi.getArmBPressed()){
-      Robot.climber.changeClimbTime();
-    }
+    SmartDashboard.putNumber("Elevator Position", Robot.climber.getPos());
+    SmartDashboard.putBoolean("TopLimit Elevator", Robot.climber.getTopLimit());
 
-    if (Robot.oi.getMainYButton() && Robot.climber.getClimbTime()){
+    if (Robot.climber.getTopLimit()) {
+      Robot.climber.resetEnc();
+    }
+    /*
+    if (Robot.oi.getMainYButton() && Robot.climber.getClimbTime() && !Robot.climber.getTopLimit()){
+      output = speed;
       Robot.climber.set(speed);
     }
     else if(Robot.oi.getMainAButton() && Robot.climber.getClimbTime()){
-        Robot.climber.set(-speed);
+        output = -speed;
+        Robot.climber.set(output);
     }
     else
     {
-        Robot.climber.set(0.0);
-    }
+        Robot.climber.set(output);
+    }*/
+    Robot.climber.set(speed);
     
   }
 
