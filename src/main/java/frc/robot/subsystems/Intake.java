@@ -18,36 +18,36 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class Intake extends Subsystem {
-  public final TalonSRX wheelMotor;
-  public final TalonSRX rollerMotor;
+  //public final TalonSRX wheelMotor;
+  //public final TalonSRX rollerMotor;
 
   public Intake() {
-    wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
-    rollerMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
+    //wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
+    //rollerMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
 
-    Robot.masterTalon(wheelMotor);
-    Robot.initTalon(rollerMotor);
+    //Robot.masterTalon(wheelMotor);
+    //Robot.initTalon(rollerMotor);
 
-    wheelMotor.configOpenloopRamp(0.0);
-    rollerMotor.configOpenloopRamp(0.0);
+    //wheelMotor.configOpenloopRamp(0.0);
+    //rollerMotor.configOpenloopRamp(0.0);
   }
 
   public void setWheels(double speed)
   {
-    wheelMotor.set(ControlMode.PercentOutput, speed);
+    //wheelMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public void setRoller(double speed)
   {
-    rollerMotor.set(ControlMode.PercentOutput, speed);
+    //rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
   public boolean getRevLimitSwitch() {
-    return wheelMotor.getSensorCollection().isRevLimitSwitchClosed();
+    return false; //wheelMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
 
   public boolean getFwdLimitSwitch() {
-    return wheelMotor.getSensorCollection().isFwdLimitSwitchClosed();
+    return false; //wheelMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
 
   @Override

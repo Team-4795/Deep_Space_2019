@@ -21,21 +21,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 
 public class Hatch extends Subsystem {
-  public final TalonSRX hatchMotor;
+  //public final TalonSRX hatchMotor;
 
   public Hatch() {
-    hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
+    //hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
 
-    Robot.initTalon(hatchMotor);
-    hatchMotor.configOpenloopRamp(0.0);
+    //Robot.initTalon(hatchMotor);
+    //hatchMotor.configOpenloopRamp(0.0);
   }
 
   public void setRamp(double rate) {
-    hatchMotor.configOpenloopRamp(rate);
+    //hatchMotor.configOpenloopRamp(rate);
   }
 
   public void set(double speed) {
-    hatchMotor.set(ControlMode.PercentOutput, speed);
+    //hatchMotor.set(ControlMode.PercentOutput, speed);
   }
   @Override
   public void initDefaultCommand() {

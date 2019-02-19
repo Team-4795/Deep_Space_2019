@@ -33,8 +33,8 @@ import frc.robot.commands.ManualArmControl;
 
 public class Arm extends Subsystem implements PIDOutput, PIDSource{
   
-  private final CANSparkMax leftArmMotor;
-  private final CANSparkMax rightArmMotor;
+  // private final CANSparkMax leftArmMotor;
+  // private final CANSparkMax rightArmMotor;
 
   DigitalInput lowerLimit;
 
@@ -48,17 +48,17 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
 
   public Arm() {
 
-    leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
-    rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR_FOLLOWER.value, MotorType.kBrushless);
+    // leftArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR.value, MotorType.kBrushless);
+    // rightArmMotor = new CANSparkMax(RobotMap.ARM_MOTOR_FOLLOWER.value, MotorType.kBrushless);
 
     lowerLimit = new DigitalInput(0);
 
-    leftArmMotor.setIdleMode(IdleMode.kBrake);
-    leftArmMotor.setOpenLoopRampRate(0.5);
-    leftArmMotor.setClosedLoopRampRate(0.5);
-    leftArmMotor.setParameter(ConfigParameter.kHardLimitRevEn, true);
-    rightArmMotor.setIdleMode(IdleMode.kBrake);
-    rightArmMotor.follow(leftArmMotor, true);
+    // leftArmMotor.setIdleMode(IdleMode.kBrake);
+    // leftArmMotor.setOpenLoopRampRate(0.5);
+    // leftArmMotor.setClosedLoopRampRate(0.5);
+    // leftArmMotor.setParameter(ConfigParameter.kHardLimitRevEn, true);
+    // rightArmMotor.setIdleMode(IdleMode.kBrake);
+    // rightArmMotor.follow(leftArmMotor, true);
 
     armController = new PIDController(P, I, D, this, this);
     armController.setInputRange(-180.0f, 180.0f);
@@ -86,11 +86,11 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   }
 
   public void actuate(double output) {
-    leftArmMotor.set(-output);
-    if(output > 0 && !lowerLimit.get())
-    {
-      leftArmMotor.set(0);
-    }
+    // leftArmMotor.set(-output);
+    // if(output > 0 && !lowerLimit.get())
+    // {
+    //   leftArmMotor.set(0);
+    // }
   }
 
   /*public void setPosition(double position)
@@ -100,7 +100,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
 
   @Override
   public void pidWrite(double output) {
-    leftArmMotor.set(output);
+    // leftArmMotor.set(output);
   }
 
   @Override

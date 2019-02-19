@@ -22,80 +22,80 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Climber extends Subsystem {
     
-    private final CANSparkMax climberMotor;
-    private final CANPIDController climbPID;
-    private Boolean climbTime;
-    private final double GEAR_RATIO = 49.0;
-    private final CANEncoder climbEnc;
-    private final CANDigitalInput topLimit;
-    private final CANDigitalInput botLimit;
+    // private final CANSparkMax climberMotor;
+    // private final CANPIDController climbPID;
+    // private Boolean climbTime;
+    // private final double GEAR_RATIO = 49.0;
+    // private final CANEncoder climbEnc;
+    // private final CANDigitalInput topLimit;
+    // private final CANDigitalInput botLimit;
       
     public Climber() {
-      climberMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR.value, MotorType.kBrushless);
-      climbPID = new CANPIDController(climberMotor);
-      topLimit = climberMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-      botLimit = climberMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
-      climbEnc = new CANEncoder(climberMotor);
-      climberMotor.setIdleMode(IdleMode.kBrake);
-      climberMotor.setOpenLoopRampRate(0.5);
-      climberMotor.setClosedLoopRampRate(0.5);
-      climbPID.setP(0.005);
-      climbPID.setI(0.0000);
-      climbPID.setD(0.0);
-      climbPID.setFF(0.0);
-      climbPID.setOutputRange(0, 0.65);
-      climbTime = false;
+      // climberMotor = new CANSparkMax(RobotMap.CLIMBER_MOTOR.value, MotorType.kBrushless);
+      // climbPID = new CANPIDController(climberMotor);
+      // topLimit = climberMotor.getReverseLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+      // botLimit = climberMotor.getForwardLimitSwitch(LimitSwitchPolarity.kNormallyOpen);
+      // climbEnc = new CANEncoder(climberMotor);
+      // climberMotor.setIdleMode(IdleMode.kBrake);
+      // climberMotor.setOpenLoopRampRate(0.5);
+      // climberMotor.setClosedLoopRampRate(0.5);
+      // climbPID.setP(0.005);
+      // climbPID.setI(0.0000);
+      // climbPID.setD(0.0);
+      // climbPID.setFF(0.0);
+      // climbPID.setOutputRange(0, 0.65);
+      // climbTime = false;
     }
   
     //normally open
     public Boolean getTopLimit() {
-     return topLimit.get();
+     return false; // topLimit.get();
     } 
 
     public Boolean getBotLimit () {
-      return botLimit.get();
+      return false; // botLimit.get();
     }
 
     public void resetEnc() {
-      climberMotor.setEncPosition(0.0);
+      // climberMotor.setEncPosition(0.0);
     }
 
     public void setPIDPos (double goal) {
-      if (climbTime) {
-      climbPID.setReference(goal, ControlType.kPosition);
-      SmartDashboard.putNumber("Elevator Position (PID)", climbEnc.getPosition());
-      SmartDashboard.putNumber("Elevator Output", climberMotor.getAppliedOutput());
-      }
+      // if (climbTime) {
+      // climbPID.setReference(goal, ControlType.kPosition);
+      // SmartDashboard.putNumber("Elevator Position (PID)", climbEnc.getPosition());
+      // SmartDashboard.putNumber("Elevator Output", climberMotor.getAppliedOutput());
+      // }
       
     }
 
     public double getPos () {
-      return climbEnc.getPosition();
+      return 0; // climbEnc.getPosition();
     }
 
     public void clearIAccum() {
-      climbPID.setIAccum(0.0);
+      // climbPID.setIAccum(0.0);
     }
 
     public void setClimbTime(Boolean state) {
-      climbTime = state;
+      // climbTime = state;
     }
 
     public void set(double speed) {
-      if (climbTime) {
-      climberMotor.set(speed);
-      }
-      else {
-        climberMotor.set(0.0);
-      }
-      SmartDashboard.putNumber("Elevator Position", climbEnc.getPosition());
+      // if (climbTime) {
+      // climberMotor.set(speed);
+      // }
+      // else {
+      //   climberMotor.set(0.0);
+      // }
+      // SmartDashboard.putNumber("Elevator Position", climbEnc.getPosition());
     }
 
     public void changeClimbTime(){
-      climbTime = !climbTime;
+      // climbTime = !climbTime;
     }
     public boolean getClimbTime(){
-      return climbTime;
+      return false; //climbTime;
     }
 
     @Override

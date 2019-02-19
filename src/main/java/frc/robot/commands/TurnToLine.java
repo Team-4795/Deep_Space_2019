@@ -29,10 +29,10 @@ public class TurnToLine extends Command {
   protected void execute() {
     ColorData dataLeft = csLeft.getColor();
     ColorData dataRight = csRight.getColor();
-    double whiteLeft = (dataLeft.red + dataLeft.green + dataLeft.blue) / 3.0;
-    double whiteRight = (dataRight.red + dataRight.green + dataRight.blue) / 3.0;
+    double whiteLeft = dataLeft.clear / 500.0;
+    double whiteRight = dataRight.red / 500.0;
     double left = whiteLeft - whiteRight;
-    Robot.drivebase.setMotors(left, -left);
+    //Robot.drivebase.setMotors(left, -left);
   }
 
   @Override
