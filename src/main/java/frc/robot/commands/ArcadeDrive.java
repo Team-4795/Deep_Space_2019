@@ -17,13 +17,15 @@ public class ArcadeDrive extends Command {
   /*private double maxVel;
   private double pastVel;
   private double maxAccel;*/
-  //ColorSensor cs;
+  ColorSensor cs1;
+  ColorSensor cs2;
   private Boolean beenPressed;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
     beenPressed = false;
-   // cs = ColorSensor.getInstanceOnboard();
+    cs1 = ColorSensor.getInstanceOnboard();
+    cs2 = ColorSensor.getInstanceMXP();
   }
 
   @Override
@@ -60,14 +62,13 @@ public class ArcadeDrive extends Command {
     
     SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
-    /*
+
     SmartDashboard.putNumber("Left Velocity", Robot.drivebase.getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", Robot.drivebase.getRightVelocity());
-    SmartDashboard.putNumber("Clear", cs.getColor().clear);
-    SmartDashboard.putNumber("Red", cs.getColor().red);
-    SmartDashboard.putNumber("Green", cs.getColor().green);
-    SmartDashboard.putNumber("Blue", cs.getColor().blue);
-    
+    SmartDashboard.putNumber("Clear 1", cs1.getColor().clear * 10000);
+    SmartDashboard.putNumber("Clear 2", cs2.getColor().clear * 10000);
+    SmartDashboard.putNumber("Clear Diff", (cs1.getColor().clear - cs2.getColor().clear) * 10000);
+    /*
     maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
     SmartDashboard.putNumber("Max Velocity", maxVel);
     maxAccel = Math.abs(Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) > Math.abs(maxAccel) ? (Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) / 0.05 : maxAccel;
