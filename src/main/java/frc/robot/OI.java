@@ -30,8 +30,8 @@ public class OI {
   private double value;
   private final JoystickButton AButton;
   private final JoystickButton BButton;
-  private final JoystickButton ArmLeftBumper;
-  private final JoystickButton ArmBButton;
+  //private final JoystickButton ArmLeftBumper;
+  private final JoystickButton ArmAButton;
 
   public OI() { 
     MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
@@ -41,10 +41,10 @@ public class OI {
     AButton = new JoystickButton(MAIN_CONTROLLER, 1);
     XButton = new JoystickButton(MAIN_CONTROLLER, 3);
     BButton = new JoystickButton(MAIN_CONTROLLER, 2);
-    ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
-    ArmBButton = new JoystickButton(ARM_CONTROLLER, 2);
+    //ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
+    ArmAButton = new JoystickButton(ARM_CONTROLLER, 1);
 
-    ArmLeftBumper.whenPressed(new ToggleClimbTime());
+    ArmAButton.whenPressed(new ToggleClimbTime());
     
     YButton.whileHeld(new ManualClimberControl(.5));
     AButton.whileHeld(new ManualClimberControl(-.5));
@@ -116,12 +116,12 @@ public class OI {
     return MAIN_CONTROLLER.getRawButton(4);
   }
 
-  //Cargo outtake
+  //None
   public boolean getArmXButton() {
     return ARM_CONTROLLER.getRawButton(3);
   }
 
-  //Cargo intake
+  //activates or deactivates climb time
   public boolean getArmAButton() {
     return ARM_CONTROLLER.getRawButton(1);
   }
@@ -131,7 +131,17 @@ public class OI {
     return ARM_CONTROLLER.getRawButton(4);
   }
 
-  //activates or deactivates climb time
+  //Cargo outtake
+  public boolean getArmLeftBumper() {
+    return ARM_CONTROLLER.getRawButton(5);
+  }
+
+  //Cargo intake
+  public boolean getArmRightBumper() {
+    return ARM_CONTROLLER.getRawButton(6);
+  }
+
+  //None
   public boolean getArmBPressed() {
     return ARM_CONTROLLER.getRawButtonPressed(2);
   }
