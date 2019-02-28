@@ -7,8 +7,9 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.CameraServerJNI;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSink;
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,8 +42,9 @@ public class Robot extends TimedRobot {
   public static Hatch hatch;
   public static Climber climber;
   public static AHRS ahrs;
-  public UsbCamera hatchCam;
-  public UsbCamera cargoCam;
+  public static UsbCamera hatchCam;
+  public static UsbCamera cargoCam;
+  public static VideoSink switcher;
 
   @Override
   public void robotInit() {
@@ -55,11 +57,25 @@ public class Robot extends TimedRobot {
     hatch = new Hatch();
     oi = new OI();
     //hatchCam = new UsbCamera("hatch", 0);
-    CameraServer.getInstance().startAutomaticCapture("hatchCam", 0);
+    hatchCam = CameraServer.getInstance().startAutomaticCapture("hatchCam", 0);
     //CameraServer.getInstance().addCamera(hatchCam);
     //CameraServer.getInstance().startAutomaticCapture(hatchCam);
     //CameraServer.getInstance().removeCamera("hatchCam");
-    CameraServer.getInstance().startAutomaticCapture("cargoCam", 1);
+    cargoCam = CameraServer.getInstance().startAutomaticCapture("cargoCam", 1);
+
+    hatchCam.setFPS(15);
+    hatchCam.setResolution(780, 640);
+    hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    hatchCam.setExposureAuto();
+    hatchCam.setWhiteBalanceAuto();
+    
+    cargoCam.setFPS(15);
+    cargoCam.setResolution(780, 640);
+    cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    cargoCam.setExposureAuto();
+    cargoCam.setWhiteBalanceAuto();
+
+    switcher = CameraServer.getInstance().addSwitchedCamera("Switched Camera");
   }
 
   @Override
@@ -95,6 +111,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
     SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
     SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
+    SmartDashboard.putBoolean("Has Ball", Robot.intake.hasBall());
     if (Robot.arm.getTopLimit()) {
       Robot.arm.resetEnc();
     }

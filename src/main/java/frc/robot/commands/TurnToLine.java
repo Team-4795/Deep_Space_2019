@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.ColorSensor;
 import frc.robot.ColorSensor.ColorData;
@@ -32,7 +33,8 @@ public class TurnToLine extends Command {
     double whiteLeft = dataLeft.clear * 30;
     double whiteRight = dataRight.clear * 30;
     double left = whiteLeft - whiteRight;
-    Robot.drivebase.setMotors(0.0 + left, 0.0 - left);
+    SmartDashboard.putNumber("Color Sensor Turn Output", left);
+    Robot.drivebase.setMotors(0.1 + left, 0.1 - left);
   }
 
   @Override

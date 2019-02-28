@@ -9,12 +9,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
 public class CameraToggle extends InstantCommand {
-  private double cameraCount = 1;
+  private boolean toggle = false;
   public CameraToggle() {
     super();
     // Use requires() here to declare subsystem dependencies
@@ -24,15 +26,15 @@ public class CameraToggle extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if (cameraCount == 0) {
-      CameraServer.getInstance().removeCamera("cargoCam");
-      CameraServer.getInstance().startAutomaticCapture("hatchCam", 0);
-      cameraCount = 1;
+    if (toggle) {
+      SmartDashboard.putBoolean("Hatch Cam Active", toggle);
+      Robot.switcher.setSource(Robot.hatchCam);
+      toggle = !toggle;
     }
-    else if (cameraCount == 1) {
-      CameraServer.getInstance().removeCamera("hatchCam");
-      CameraServer.getInstance().startAutomaticCapture("cargoCam", 1);
-      cameraCount = 0;
+    else {
+      SmartDashboard.putBoolean("Hatch Cam Active", toggle);
+      Robot.switcher.setSource(Robot.cargoCam);
+      toggle = !toggle;
     }
   }
 

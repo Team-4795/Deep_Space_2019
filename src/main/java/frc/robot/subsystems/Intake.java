@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualIntakeControl;
@@ -18,8 +20,10 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class Intake extends Subsystem {
+
   private final TalonSRX wheelMotor;
   private final TalonSRX rollerMotor;
+  private DigitalInput cargoZero, cargoOne, cargoTwo, cargoThree;
 
   public Intake() {
     wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
@@ -28,11 +32,18 @@ public class Intake extends Subsystem {
     Robot.masterTalon(wheelMotor);
     Robot.initTalon(rollerMotor);
 
-    wheelMotor.configOpenloopRamp(.00069);
-    rollerMotor.configOpenloopRamp(.00069);
+    wheelMotor.configOpenloopRamp(0);
+    rollerMotor.configOpenloopRamp(0);
 
-    wheelMotor.configClosedloopRamp(.00069);
-    rollerMotor.configClosedloopRamp(.00069);
+    cargoZero = new DigitalInput(0);
+    cargoOne = new DigitalInput(1);
+    cargoTwo = new DigitalInput(2);
+    cargoThree = new DigitalInput(3);
+
+  }
+
+  public boolean hasBall() {
+    return !cargoZero.get() || !cargoOne.get() || !cargoTwo.get() || !cargoThree.get();
   }
 
   public void setWheels(double speed)

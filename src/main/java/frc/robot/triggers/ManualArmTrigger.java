@@ -5,17 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.robot.triggers;
 
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class TriggerManualArm extends Trigger {
+public class ManualArmTrigger extends Trigger {
   @Override
   public boolean get() {
-    //return Math.abs(Robot.oi.getArmLeftJoyY()) > 0.0;
-    return false;
+    return Math.abs(Robot.oi.getArmLeftJoyY()) > 0.0;
   }
 }
