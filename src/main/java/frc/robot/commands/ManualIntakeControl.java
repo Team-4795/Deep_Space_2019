@@ -28,11 +28,11 @@ public class ManualIntakeControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getArmAButton()){
+    if (Robot.oi.getArmRightBumper()){
       Robot.intake.setRoller(0.6);
       Robot.intake.setWheels(1.0);
     }
-    else if(Robot.oi.getArmXButton())
+    else if(Robot.oi.getArmLeftBumper())
     {
       Robot.intake.setRoller(-1.0);
       Robot.intake.setWheels(-1.0);

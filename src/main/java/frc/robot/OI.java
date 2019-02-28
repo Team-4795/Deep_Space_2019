@@ -28,7 +28,7 @@ public class OI {
   private static final double DEADZONE = 0.15 ;
 
   private final Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
-  private final JoystickButton XButton, YButton, AButton, BButton, ArmLeftBumper, ArmBButton;
+  private final JoystickButton XButton, YButton, AButton, BButton, ArmBButton;
   private double value;
   private final TriggerManualArm ArmOverride;
   private final POVButton ArmDPadUp, ArmDPadDown, MainDPadDown;
@@ -41,7 +41,6 @@ public class OI {
     AButton = new JoystickButton(MAIN_CONTROLLER, 1);
     XButton = new JoystickButton(MAIN_CONTROLLER, 3);
     BButton = new JoystickButton(MAIN_CONTROLLER, 2);
-    ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
     ArmBButton = new JoystickButton(ARM_CONTROLLER, 2);
     ArmOverride = new TriggerManualArm();
     ArmDPadUp = new POVButton(ARM_CONTROLLER, 0);
@@ -50,7 +49,7 @@ public class OI {
     MainDPadDown = new POVButton(ARM_CONTROLLER, 90);
 
     MainDPadDown.whenPressed(new CameraToggle());
-    ArmLeftBumper.whenPressed(new ToggleClimbTime());
+    ArmBButton.whenPressed(new ToggleClimbTime());
     
     YButton.whileHeld(new ManualClimberControl(.4));
     AButton.whileHeld(new ManualClimberControl(-.4));
@@ -61,8 +60,6 @@ public class OI {
     ArmDPadUp.whenPressed(new AutoPositionArm(15.0));
 
     ArmOverride.whileActive(new ManualArmControl());
-
-    //ArmBButton.toggleWhenPressed(new ArmPIDBalance());
   }
 
   //Drivebase control
@@ -99,6 +96,14 @@ public class OI {
 
   public boolean getMainLeftBumper() {
     return MAIN_CONTROLLER.getRawButton(5);
+  }
+
+  public boolean getArmLeftBumper() {
+    return ARM_CONTROLLER.getRawButton(5);
+  }
+
+  public boolean getArmRightBumper() {
+    return ARM_CONTROLLER.getRawButton(6);
   }
 
   //toggles which way is "forward" for drivebase
