@@ -39,12 +39,14 @@ public class ArcadeDrive extends Command {
       beenPressed = !beenPressed;
     }
 
-    double throttle = 1.0 - (0.65 * Robot.oi.getMainRightTrigger());
+    double throttle = 1.0 - (0.75 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .8 : Robot.oi.getMainRightJoyX() * 0.5;
 
     if (beenPressed) {
       throttle *= -1.0;
+      turn *= -1.0;
     }
+    SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
 
     if(Robot.climber.getClimbTime()) {
       throttle *= 0.3;

@@ -18,8 +18,8 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class Intake extends Subsystem {
-  public final TalonSRX wheelMotor;
-  public final TalonSRX rollerMotor;
+  private final TalonSRX wheelMotor;
+  private final TalonSRX rollerMotor;
 
   public Intake() {
     wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
@@ -28,8 +28,11 @@ public class Intake extends Subsystem {
     Robot.masterTalon(wheelMotor);
     Robot.initTalon(rollerMotor);
 
-    wheelMotor.configOpenloopRamp(0.0);
-    rollerMotor.configOpenloopRamp(0.0);
+    wheelMotor.configOpenloopRamp(.00069);
+    rollerMotor.configOpenloopRamp(.00069);
+
+    wheelMotor.configClosedloopRamp(.00069);
+    rollerMotor.configClosedloopRamp(.00069);
   }
 
   public void setWheels(double speed)

@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.CameraServerJNI;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -38,18 +41,25 @@ public class Robot extends TimedRobot {
   public static Hatch hatch;
   public static Climber climber;
   public static AHRS ahrs;
+  public UsbCamera hatchCam;
+  public UsbCamera cargoCam;
 
   @Override
   public void robotInit() {
-    ahrs = new AHRS(SPI.Port.kMXP);
 
+    ahrs = new AHRS(SPI.Port.kMXP);
     drivebase = new Drivebase();
     arm = new Arm();
     climber = new Climber();
     intake = new Intake();
     hatch = new Hatch();
     oi = new OI();
-
+    //hatchCam = new UsbCamera("hatch", 0);
+    CameraServer.getInstance().startAutomaticCapture("hatchCam", 0);
+    //CameraServer.getInstance().addCamera(hatchCam);
+    //CameraServer.getInstance().startAutomaticCapture(hatchCam);
+    //CameraServer.getInstance().removeCamera("hatchCam");
+    CameraServer.getInstance().startAutomaticCapture("cargoCam", 1);
   }
 
   @Override
@@ -67,13 +77,11 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().add(new DriveForward(dist, 2));
     ahrs.reset();
     Robot.climber.resetEnc();
+    
   }
 
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putNumber("Yaw", ahrs.getYaw());
-    SmartDashboard.putNumber("Pitch", ahrs.getPitch());
-    SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
 
   public void teleopInit() {
@@ -82,9 +90,14 @@ public class Robot extends TimedRobot {
 
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    SmartDashboard.putNumber("Pitch", ahrs.getPitch());
-    SmartDashboard.putNumber("Roll", ahrs.getRoll());
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
+    SmartDashboard.putNumber("Arm Encoder", Robot.arm.getPos());
+    SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
+    SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
+    SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
+    if (Robot.arm.getTopLimit()) {
+      Robot.arm.resetEnc();
+    }
   }
 
   public void testPeriodic() {
@@ -117,4 +130,5 @@ public class Robot extends TimedRobot {
     motor.configNominalOutputForward(0.0, 0);
     motor.configNominalOutputReverse(0.0, 0);
   }
+
 }

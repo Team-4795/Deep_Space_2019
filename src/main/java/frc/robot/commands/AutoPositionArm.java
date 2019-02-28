@@ -7,17 +7,16 @@
 
 package frc.robot.commands;
 
-import javax.lang.model.util.ElementScanner6;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ManualIntakeControl extends Command {
+public class AutoPositionArm extends Command {
+  private double position;
 
-  public ManualIntakeControl(){
-    requires(Robot.intake);
+  public AutoPositionArm(double pos) {
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.arm);
+    position = pos;
   }
 
   // Called just before this Command runs the first time
@@ -28,32 +27,19 @@ public class ManualIntakeControl extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.oi.getArmAButton()){
-      Robot.intake.setRoller(0.6);
-      Robot.intake.setWheels(1.0);
-    }
-    else if(Robot.oi.getArmXButton())
-    {
-      Robot.intake.setRoller(-1.0);
-      Robot.intake.setWheels(-1.0);
-    }
-    else
-    {
-      Robot.intake.setRoller(0.0);
-      Robot.intake.setWheels(-Robot.oi.getMainLeftTrigger());
-    }
-
+    Robot.arm.autoActuate(position);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false; //change to getRevLimitSwitch if needed later
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.arm.actuate(0.0);
   }
 
   // Called when another command which requires one or more of the same
