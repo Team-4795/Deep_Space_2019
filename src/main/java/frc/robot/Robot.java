@@ -56,12 +56,13 @@ public class Robot extends TimedRobot {
     intake = new Intake();
     hatch = new Hatch();
     oi = new OI();
+    oi.init();
     //hatchCam = new UsbCamera("hatch", 0);
-    hatchCam = CameraServer.getInstance().startAutomaticCapture("hatchCam", 0);
+    hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
     //CameraServer.getInstance().addCamera(hatchCam);
     //CameraServer.getInstance().startAutomaticCapture(hatchCam);
     //CameraServer.getInstance().removeCamera("hatchCam");
-    cargoCam = CameraServer.getInstance().startAutomaticCapture("cargoCam", 1);
+    cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
 
     hatchCam.setFPS(15);
     hatchCam.setResolution(780, 640);
@@ -112,6 +113,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
     SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
     SmartDashboard.putBoolean("Has Ball", Robot.intake.hasBall());
+    SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());
     if (Robot.arm.getTopLimit()) {
       Robot.arm.resetEnc();
     }

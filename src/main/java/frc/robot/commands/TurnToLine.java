@@ -34,7 +34,7 @@ public class TurnToLine extends Command {
     double whiteRight = dataRight.clear * 30;
     double left = whiteLeft - whiteRight;
     SmartDashboard.putNumber("Color Sensor Turn Output", left);
-    Robot.drivebase.setMotors(0.1 + left, 0.1 - left);
+    Robot.drivebase.setMotors(-0.1 + left, -0.1 - left);
   }
 
   @Override

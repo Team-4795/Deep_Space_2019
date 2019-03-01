@@ -52,7 +52,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
 
   //PID values for moving arm to position
   private static double P = 0.00055;
-  private static double I = 0.0;
+  private static double I = 0.00000;
   private static double D = 0.00;
   private static double F = 0.00;
 

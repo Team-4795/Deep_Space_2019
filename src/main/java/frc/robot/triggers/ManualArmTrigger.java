@@ -8,6 +8,7 @@
 package frc.robot.triggers;
 
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 /**
@@ -16,6 +17,7 @@ import frc.robot.Robot;
 public class ManualArmTrigger extends Trigger {
   @Override
   public boolean get() {
-    return Math.abs(Robot.oi.getArmLeftJoyY()) > 0.0;
+    SmartDashboard.putBoolean("Trigger", Math.abs(Robot.oi.MAIN_CONTROLLER.getRawAxis(1)) > 0.15);
+    return Math.abs(Robot.oi.getMainLeftJoyY()) > 0.00;
   }
 }

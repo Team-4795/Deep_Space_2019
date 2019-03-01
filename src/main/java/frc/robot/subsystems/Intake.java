@@ -43,7 +43,7 @@ public class Intake extends Subsystem {
   }
 
   public boolean hasBall() {
-    return !cargoZero.get() || !cargoOne.get() || !cargoTwo.get() || !cargoThree.get();
+    return cargoZero.get() || cargoOne.get() || cargoTwo.get() || cargoThree.get();
   }
 
   public void setWheels(double speed)

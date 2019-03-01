@@ -23,18 +23,23 @@ import frc.robot.commands.ToggleClimbTime;
 import frc.robot.triggers.ManualArmTrigger;
 import frc.robot.commands.AutoPositionArm;
 import frc.robot.commands.CameraToggle;
+import frc.robot.commands.TurnToLine;
 
 public class OI {
 
   private static final double DEADZONE = 0.15 ;
 
-  private final Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
-  private final JoystickButton XButton, YButton, AButton, BButton, ArmBButton;
+  public Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
+  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton;
   private double value;
-  private final ManualArmTrigger ArmOverride;
-  private final POVButton ArmDPadUp, ArmDPadDown, MainDPadDown;
+  public ManualArmTrigger ArmOverride;
+  private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown;
 
   public OI() { 
+    
+  }
+
+  public void init() {
     MAIN_CONTROLLER = new Joystick(RobotMap.MAIN_CONTROLLER.value);
     ARM_CONTROLLER = new Joystick(RobotMap.ARM_CONTROLLER.value);
 
@@ -47,11 +52,12 @@ public class OI {
     ArmDPadUp = new POVButton(ARM_CONTROLLER, 0);
     ArmDPadDown = new POVButton(ARM_CONTROLLER, 180);
 
-    MainDPadDown = new POVButton(ARM_CONTROLLER, 90);
+    MainDPadDown = new POVButton(MAIN_CONTROLLER, 180);
 
     MainDPadDown.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
+    BButton.whileActive(new TurnToLine(5));
     YButton.whileHeld(new ManualClimberControl(.4));
     AButton.whileHeld(new ManualClimberControl(-.4));
     XButton.whenPressed(new AutoClimb());
