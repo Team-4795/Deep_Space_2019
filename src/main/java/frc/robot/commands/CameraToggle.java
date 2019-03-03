@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,11 +29,21 @@ public class CameraToggle extends InstantCommand {
   protected void initialize() {
     if (toggle) {
       SmartDashboard.putBoolean("Hatch Cam Active", toggle);
+      Robot.hatchCam.setFPS(15);
+      Robot.hatchCam.setResolution(240, 360);
+      Robot.hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+      //Robot.hatchCam.setExposureAuto();
+      //Robot.hatchCam.setWhiteBalanceAuto();
       Robot.switcher.setSource(Robot.hatchCam);
       toggle = !toggle;
     }
     else {
       SmartDashboard.putBoolean("Hatch Cam Active", toggle);
+      Robot.cargoCam.setFPS(15);
+      Robot.cargoCam.setResolution(240, 360);
+      Robot.cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+      //Robot.cargoCam.setExposureAuto();
+      //Robot.cargoCam.setWhiteBalanceAuto();
       Robot.switcher.setSource(Robot.cargoCam);
       toggle = !toggle;
     }

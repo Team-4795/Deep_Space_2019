@@ -18,6 +18,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.ManualHatchControl;
+import frc.robot.commands.Teleop;
 import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
@@ -65,23 +67,25 @@ public class Robot extends TimedRobot {
     cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
 
     hatchCam.setFPS(15);
-    hatchCam.setResolution(780, 640);
+    hatchCam.setResolution(240, 360);
     hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
     hatchCam.setExposureAuto();
     hatchCam.setWhiteBalanceAuto();
     
     cargoCam.setFPS(15);
-    cargoCam.setResolution(780, 640);
+    cargoCam.setResolution(240, 360);
     cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
     cargoCam.setExposureAuto();
     cargoCam.setWhiteBalanceAuto();
 
     switcher = CameraServer.getInstance().addSwitchedCamera("Switched Camera");
+    switcher.setSource(CameraServer.getInstance().startAutomaticCapture(0));
   }
 
   @Override
   public void disabledInit() {
     Robot.climber.setClimbTime(false);
+    ManualHatchControl.beenPressed = false;
   }
 
   public void disabledPeriodic() {
@@ -90,8 +94,7 @@ public class Robot extends TimedRobot {
 
   public void autonomousInit() {
     // takes argument: angle, timeout
-    double dist = -1 * SmartDashboard.getNumber("Z", 3) - 0.5;
-    Scheduler.getInstance().add(new DriveForward(dist, 2));
+    Scheduler.getInstance().enable();
     ahrs.reset();
     Robot.climber.resetEnc();
     
@@ -109,9 +112,13 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
     SmartDashboard.putNumber("Arm Encoder", Robot.arm.getPos());
-    SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
-    SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
-    SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
+    SmartDashboard.putBoolean("zero", Robot.intake.getLimitZero());
+    SmartDashboard.putBoolean("one", Robot.intake.getLimitOne());
+    SmartDashboard.putBoolean("two", Robot.intake.getLimitTwo());
+    SmartDashboard.putBoolean("three", Robot.intake.getLimitThree());
+    //SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
+    //SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
+    //SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
     SmartDashboard.putBoolean("Has Ball", Robot.intake.hasBall());
     SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());
     if (Robot.arm.getTopLimit()) {
@@ -124,9 +131,9 @@ public class Robot extends TimedRobot {
 
   public static void masterTalon(TalonSRX motor) {
     motor.setNeutralMode(NeutralMode.Brake);
-    motor.configContinuousCurrentLimit(10, 0);
-    motor.configPeakCurrentLimit(12, 0);
-    motor.configPeakCurrentDuration(20, 0);
+    motor.configContinuousCurrentLimit(12, 0);
+    motor.configPeakCurrentLimit(14, 0);
+    motor.configPeakCurrentDuration(50, 0);
     motor.enableCurrentLimit(true);
     motor.configOpenloopRamp(0.2, 0);
     motor.configClosedloopRamp(0.2, 0);

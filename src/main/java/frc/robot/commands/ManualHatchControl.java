@@ -14,7 +14,8 @@ import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
 
-  boolean beenPressed = false;
+  public static boolean beenPressed = false;
+  private double position = 0.5;
   boolean reachedFront = false;
 
   public ManualHatchControl(){
@@ -31,6 +32,16 @@ public class ManualHatchControl extends Command {
    @Override
    protected void execute() {
 
+    if (Robot.oi.getMainBButtonPressed()){
+      if (position == 0.5){
+        position = 1.0;
+      }
+      else {
+        position = 0.5;
+      }
+    }
+
+    Robot.hatch.setServo(position);
     if(Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed() && beenPressed)
     {
      beenPressed = false;
@@ -69,7 +80,6 @@ public class ManualHatchControl extends Command {
       Robot.hatch.set(0.0);
      }
    }
- 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

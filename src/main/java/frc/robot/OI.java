@@ -57,7 +57,7 @@ public class OI {
     MainDPadDown.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
-    BButton.whileActive(new TurnToLine(5));
+    //BButton.whileActive(new TurnToLine(5));
     YButton.whileHeld(new ManualClimberControl(.4));
     AButton.whileHeld(new ManualClimberControl(-.4));
     XButton.whenPressed(new AutoClimb());
@@ -98,6 +98,10 @@ public class OI {
     double value = MAIN_CONTROLLER.getRawAxis(2);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
     //return Math.abs(value) > DEADZONE ? value : 0.0;
+  }
+
+  public boolean getMainBButtonPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(2);
   }
 
   public boolean getMainLeftBumper() {

@@ -26,10 +26,10 @@ public class Intake extends Subsystem {
   private DigitalInput cargoZero, cargoOne, cargoTwo, cargoThree;
 
   public Intake() {
-    wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
-    rollerMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
+    wheelMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
+    rollerMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
 
-    Robot.masterTalon(wheelMotor);
+    Robot.initTalon(wheelMotor);
     Robot.initTalon(rollerMotor);
 
     wheelMotor.configOpenloopRamp(0);
@@ -41,9 +41,22 @@ public class Intake extends Subsystem {
     cargoThree = new DigitalInput(3);
 
   }
+  public boolean getLimitZero() {
+    return cargoZero.get();
+  }
+  public boolean getLimitOne() {
+    return cargoOne.get();
+  }
+  public boolean getLimitTwo() {
+    return cargoTwo.get();
+  }
+  public boolean getLimitThree() {
+    return cargoThree.get();
+  }
+  
 
   public boolean hasBall() {
-    return cargoZero.get() || cargoOne.get() || cargoTwo.get() || cargoThree.get();
+    return cargoZero.get() || cargoTwo.get() || cargoThree.get();
   }
 
   public void setWheels(double speed)
@@ -56,6 +69,7 @@ public class Intake extends Subsystem {
     rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  /*
   public boolean getRevLimitSwitch() {
     return wheelMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
@@ -63,7 +77,7 @@ public class Intake extends Subsystem {
   public boolean getFwdLimitSwitch() {
     return wheelMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
-
+*/
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

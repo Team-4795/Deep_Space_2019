@@ -14,6 +14,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualHatchControl;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -22,9 +23,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Hatch extends Subsystem {
   public final TalonSRX hatchMotor;
+  private final Servo hold1;
 
   public Hatch() {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
+    hold1 = new Servo(0);
+
+    setServo(0.6);
 
     Robot.initTalon(hatchMotor);
     hatchMotor.configOpenloopRamp(0.0);
@@ -34,6 +39,9 @@ public class Hatch extends Subsystem {
     hatchMotor.configOpenloopRamp(rate);
   }
 
+  public void setServo(double pos) {
+    hold1.set(pos);
+  }
   public void set(double speed) {
     hatchMotor.set(ControlMode.PercentOutput, speed);
   }

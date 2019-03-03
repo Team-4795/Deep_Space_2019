@@ -39,7 +39,7 @@ public class Climber extends Subsystem {
       climberMotor.setIdleMode(IdleMode.kBrake);
       climberMotor.setOpenLoopRampRate(0.5);
       climberMotor.setClosedLoopRampRate(0.5);
-      climbPID.setP(0.005);
+      climbPID.setP(0.0055);
       climbPID.setI(0.0000);
       climbPID.setD(0.0);
       climbPID.setFF(0.0);

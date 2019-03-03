@@ -15,9 +15,10 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class ManualArmTrigger extends Trigger {
+  
   @Override
   public boolean get() {
-    SmartDashboard.putBoolean("Trigger", Math.abs(Robot.oi.MAIN_CONTROLLER.getRawAxis(1)) > 0.15);
-    return Math.abs(Robot.oi.getMainLeftJoyY()) > 0.00;
+    SmartDashboard.putBoolean("Trigger", Math.abs(Robot.oi.getArmLeftJoyY()) > 0.00);
+    return Math.abs(Robot.oi.getArmLeftJoyY()) > 0.00;
   }
 }

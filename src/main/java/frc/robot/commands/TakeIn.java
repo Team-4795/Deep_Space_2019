@@ -14,11 +14,7 @@ import frc.robot.Robot;
 
 public class TakeIn extends Command {
   
-  double Speed;
-  public TakeIn(double speed) {
-    Speed = speed;
-    requires(Robot.intake);
-  }
+  private double Speed;
   
   public TakeIn(double speed, double timeOut){
     Speed = speed;
@@ -41,7 +37,7 @@ public class TakeIn extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return  Robot.intake.getFwdLimitSwitch() || isTimedOut();
+    return  isTimedOut();
   }
 
   // Called once after isFinished returns true

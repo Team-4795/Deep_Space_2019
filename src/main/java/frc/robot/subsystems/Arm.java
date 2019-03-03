@@ -41,12 +41,12 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   private final CANSparkMax rightArmMotor;
 
   //soft limit for arm in encoder ticks
-  private final double lowerLimit = 77.69;
+  private final double lowerLimit = -77.69;
 
   private final CANPIDController armController;
 
   //PIDF values for balancing when climbing
-  private static double Pb = -0.01;
+  private static double Pb = 0.018;
   private static double Ib = 0.0;
   private static double Db = 0.00;
 
@@ -74,6 +74,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
     leftArmMotor.setClosedLoopRampRate(0.5);
     leftArmMotor.setParameter(ConfigParameter.kHardLimitRevEn, true);
     leftArmMotor.setParameter(ConfigParameter.kCanID, RobotMap.ARM_MOTOR.value);
+    leftArmMotor.setInverted(true);
 
     rightArmMotor.setParameter(ConfigParameter.kCanID, RobotMap.ARM_MOTOR_FOLLOWER.value);
     rightArmMotor.setIdleMode(IdleMode.kBrake);
@@ -121,12 +122,16 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   }
 
   public void actuate(double output) {
-    leftArmMotor.set(-output);
+    leftArmMotor.set(output);
     
-    if(output < 0 && armEnc.getPosition() > lowerLimit && !Robot.climber.getClimbTime())
+    if(output < 0 && armEnc.getPosition() < lowerLimit && !Robot.climber.getClimbTime())
     {
       leftArmMotor.set(0);
-    }  
+    } 
+    else if (output > 0 && armEnc.getPosition() > -3.0 && !Robot.climber.getClimbTime())
+    {
+      leftArmMotor.set(0);
+    } 
   }
 
   public void autoActuate(double position) {
