@@ -10,12 +10,13 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
 
   public static boolean beenPressed = false;
-  private double position = 0.5;
+  private boolean servoUp = true;
   boolean reachedFront = false;
 
   public ManualHatchControl(){
@@ -25,22 +26,24 @@ public class ManualHatchControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    //servoUp = true;
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    
     if (Robot.oi.getMainBButtonPressed()) {
-      if (position == 0.5) {
-        position = 1.0;
+      servoUp = !servoUp;
+      /*if (position == 0.6 + 0.35) {
+        position = 0.6;
       }
       else {
-        position = 0.5;
-      }
+        position = 0.6 + 0.35;
+      }*/
     }
-    Robot.hatch.setServo(position);
-
+    Robot.hatch.setServoUp(servoUp);
+    SmartDashboard.putBoolean("servoUp", servoUp);
     if (Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed() && beenPressed) {
       beenPressed = false;
       reachedFront = false;

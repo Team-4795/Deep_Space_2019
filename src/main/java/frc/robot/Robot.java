@@ -66,18 +66,20 @@ public class Robot extends TimedRobot {
     //CameraServer.getInstance().removeCamera("hatchCam");
     cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
 
-    hatchCam.setFPS(15);
+    /*hatchCam.setFPS(25);
     hatchCam.setResolution(240, 360);
     hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    */
     hatchCam.setExposureAuto();
     hatchCam.setWhiteBalanceAuto();
-    
+    /*
     cargoCam.setFPS(15);
     cargoCam.setResolution(240, 360);
     cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    */
     cargoCam.setExposureAuto();
     cargoCam.setWhiteBalanceAuto();
-
+    
     switcher = CameraServer.getInstance().addSwitchedCamera("Switched Camera");
     switcher.setSource(CameraServer.getInstance().startAutomaticCapture(0));
   }
@@ -93,7 +95,6 @@ public class Robot extends TimedRobot {
   }
 
   public void autonomousInit() {
-    // takes argument: angle, timeout
     Scheduler.getInstance().enable();
     ahrs.reset();
     Robot.climber.resetEnc();
@@ -112,15 +113,16 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
     SmartDashboard.putNumber("Arm Encoder", Robot.arm.getPos());
-    SmartDashboard.putBoolean("zero", Robot.intake.getLimitZero());
-    SmartDashboard.putBoolean("one", Robot.intake.getLimitOne());
-    SmartDashboard.putBoolean("two", Robot.intake.getLimitTwo());
-    SmartDashboard.putBoolean("three", Robot.intake.getLimitThree());
+    //SmartDashboard.putBoolean("zero", Robot.intake.getLimitZero());
+    //SmartDashboard.putBoolean("one", Robot.intake.getLimitOne());
+    //SmartDashboard.putBoolean("two", Robot.intake.getLimitTwo());
+    //SmartDashboard.putBoolean("three", Robot.intake.getLimitThree());
     //SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
     //SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
     //SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
     SmartDashboard.putBoolean("Has Ball", Robot.intake.hasBall());
-    SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());
+    SmartDashboard.putNumber("Roll", ahrs.getRoll());
+    //SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());
     if (Robot.arm.getTopLimit()) {
       Robot.arm.resetEnc();
     }

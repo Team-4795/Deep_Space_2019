@@ -24,6 +24,7 @@ public class DriveForward extends Command {
 
   public DriveForward(double feet, double timeout)
   {
+    requires(Robot.drivebase);
     Feet = feet;
     setTimeout(timeout);
   }
@@ -45,14 +46,14 @@ public class DriveForward extends Command {
      * isFinished = false; } } else { count = 0; }
      */
 
-    SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
-    SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
+    //SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
+    //SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
 
-    SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
-    SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
+    //SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
+    //SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
 
-    SmartDashboard.putNumber("Error", Robot.drivebase.leftMotorOne.getClosedLoopError());
-    SmartDashboard.putNumber("Setpoint", Robot.drivebase.leftMotorOne.getClosedLoopTarget());
+    //SmartDashboard.putNumber("Error", Robot.drivebase.leftMotorOne.getClosedLoopError());
+    //SmartDashboard.putNumber("Setpoint", Robot.drivebase.leftMotorOne.getClosedLoopTarget());
 
   }
 

@@ -32,7 +32,7 @@ public class ClimberPIDControl extends Command {
   @Override
   protected void execute() {
     Robot.climber.setPIDPos(position);
-    SmartDashboard.putNumber("Climber Goal", position);
+    //SmartDashboard.putNumber("Climber Goal", position);
   }
 
   // Make this return true when this Command no longer needs to run execute()

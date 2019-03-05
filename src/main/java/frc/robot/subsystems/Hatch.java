@@ -23,14 +23,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class Hatch extends Subsystem {
   public final TalonSRX hatchMotor;
-  private final Servo hold1;
+  private final Servo armLeft;
+  private final Servo armRight;
 
   public Hatch() {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
-    hold1 = new Servo(0);
+    armLeft = new Servo(RobotMap.SERVO_ONE.value);
+    armRight = new Servo(RobotMap.SERVO_TWO.value);
 
-    setServo(0.6);
-
+    //setServo(Robot.ManualHatchControl.initPosition);
     Robot.initTalon(hatchMotor);
     hatchMotor.configOpenloopRamp(0.0);
   }
@@ -39,8 +40,11 @@ public class Hatch extends Subsystem {
     hatchMotor.configOpenloopRamp(rate);
   }
 
-  public void setServo(double pos) {
-    hold1.set(pos);
+  public void setServoUp(boolean servoUp) {
+    double posLeft = servoUp ? 0.575 : 0.95;
+    double posRight = servoUp ? 0.95 : 0.55;
+    armLeft.set(posLeft);
+    armRight.set(posRight);
   }
   public void set(double speed) {
     hatchMotor.set(ControlMode.PercentOutput, speed);

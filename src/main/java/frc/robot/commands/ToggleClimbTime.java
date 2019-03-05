@@ -28,7 +28,7 @@ public class ToggleClimbTime extends InstantCommand {
   @Override
   protected void initialize() {
     Robot.climber.changeClimbTime();
-    SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
+    //SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
   }
 
 }

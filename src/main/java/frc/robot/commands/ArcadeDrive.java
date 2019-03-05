@@ -48,7 +48,7 @@ public class ArcadeDrive extends Command {
       throttle *= -1.0;
       turn *= -1.0;
     }
-    SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
+    //SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
 
     if(Robot.climber.getClimbTime()) {
       throttle *= 0.275;
@@ -59,11 +59,11 @@ public class ArcadeDrive extends Command {
     /*if (Robot.oi.getMainAButton()) {
       Robot.drivebase.resetEncoders();
     }*/
-    SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
-    SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
+    //SmartDashboard.putNumber("Left Encoder Count", Robot.drivebase.getLeftEncoderCount());
+    //SmartDashboard.putNumber("Right Encoder Count", Robot.drivebase.getRightEncoderCount());
     
-    SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
-    SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
+    //SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
+    //SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
     /*
     SmartDashboard.putNumber("Left Velocity", Robot.drivebase.getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", Robot.drivebase.getRightVelocity());

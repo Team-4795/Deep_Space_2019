@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArmPIDBalance;
 import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ClimberPIDControl;
+import frc.robot.commands.DriveForward;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualClimberControl;
 import frc.robot.commands.ToggleClimbTime;
@@ -57,7 +59,8 @@ public class OI {
     MainDPadDown.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
-    //BButton.whileActive(new TurnToLine(5));
+    //BButton.whenPressed(new DriveForward(5.0, 50000));
+    //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
     YButton.whileHeld(new ManualClimberControl(.4));
     AButton.whileHeld(new ManualClimberControl(-.4));
     XButton.whenPressed(new AutoClimb());

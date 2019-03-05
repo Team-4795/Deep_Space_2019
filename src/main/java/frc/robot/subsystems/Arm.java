@@ -101,7 +101,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
 
   public void balance(){
     if (Robot.climber.getClimbTime()) {
-    SmartDashboard.putNumber("Angle error", armBalancer.getError());
+    //SmartDashboard.putNumber("Angle error", armBalancer.getError());
     armBalancer.setSetpoint(0.0f);
     armBalancer.enable();
     } else {
