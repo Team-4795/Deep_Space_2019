@@ -15,64 +15,57 @@ import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
 
-  public static boolean beenPressed = false;
   private boolean servoUp = true;
-  boolean reachedFront = false;
+  private static boolean hatchUp = false;
 
-  public ManualHatchControl(){
+  public ManualHatchControl() {
     requires(Robot.hatch);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //servoUp = true;
+    servoUp = true;
+    hatchUp = false;
   }
 
+  public static void hatchDown() {
+    hatchUp = false;
+  }
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    boolean hatchActuallyUp = Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed();
+    boolean hatchActuallyDown = Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed();
+
     if (Robot.oi.getMainBButtonPressed()) {
       servoUp = !servoUp;
-      /*if (position == 0.6 + 0.35) {
-        position = 0.6;
-      }
-      else {
-        position = 0.6 + 0.35;
-      }*/
     }
-    Robot.hatch.setServoUp(servoUp);
-    SmartDashboard.putBoolean("servoUp", servoUp);
-    if (Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed() && beenPressed) {
-      beenPressed = false;
-      reachedFront = false;
-      Robot.hatch.set(0.0);
+    if (Robot.oi.getMainLeftBumperPressed()) {
+      hatchUp = !hatchUp;
     }
 
-    if (Robot.oi.getMainLeftBumper()) {
-      beenPressed = true;
-    } 
-    if (beenPressed) {
-      if (Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
-        reachedFront = true;
-      }
-      if (!reachedFront && !Robot.climber.getClimbTime()) {
-        Robot.hatch.setRamp(0.0);
-        Robot.hatch.set(1.0);
-      }
-      else if (!Robot.climber.getClimbTime()) {
-        Robot.hatch.setRamp(0.6);
-        Robot.hatch.set(-0.3);
-      }
-    }
-    if (Robot.climber.getClimbTime() && !Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed()) {
+    if (hatchActuallyUp) hatchUp = false;
+    if (Robot.climber.getClimbTime()) {
       Robot.hatch.setRamp(0.3);
-      Robot.hatch.set(0.35);
-    }
-    else if (Robot.climber.getClimbTime()) {
+      Robot.hatch.set(hatchActuallyUp ? 0.0 : 0.35);
+    } else if (hatchUp) {
+      servoUp = false;
+      Robot.hatch.setRamp(0.0);
+      Robot.hatch.set(1.0);
+    } else if (hatchActuallyDown) {
       Robot.hatch.set(0.0);
+    } else {
+      Robot.hatch.setRamp(0.6);
+      Robot.hatch.set(-0.3);
     }
+
+    Robot.hatch.setServoUp(servoUp);
+
+    SmartDashboard.putBoolean("Reverse Limit", hatchActuallyUp);
+    SmartDashboard.putBoolean("Forward Limit", hatchActuallyDown);
+    SmartDashboard.putBoolean("servoUp", servoUp);
+    SmartDashboard.putBoolean("hatchUp", hatchUp);
   }
 
   // Make this return true when this Command no longer needs to run execute()

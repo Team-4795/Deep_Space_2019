@@ -32,10 +32,10 @@ public class OI {
   private static final double DEADZONE = 0.15 ;
 
   public Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
-  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton;
+  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton, RightBumper;
   private double value;
   public ManualArmTrigger ArmOverride;
-  private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown;
+  private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, ArmDPadRight;
 
   public OI() { 
     
@@ -53,20 +53,24 @@ public class OI {
     ArmOverride = new ManualArmTrigger();
     ArmDPadUp = new POVButton(ARM_CONTROLLER, 0);
     ArmDPadDown = new POVButton(ARM_CONTROLLER, 180);
-
+    RightBumper = new JoystickButton(MAIN_CONTROLLER, 6);
+    MainDPadUp = new POVButton(MAIN_CONTROLLER, 0);
     MainDPadDown = new POVButton(MAIN_CONTROLLER, 180);
+    ArmDPadRight = new POVButton(ARM_CONTROLLER, 90);
 
-    MainDPadDown.whenPressed(new CameraToggle());
+    RightBumper.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
     //BButton.whenPressed(new DriveForward(5.0, 50000));
     //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
-    YButton.whileHeld(new ManualClimberControl(.4));
-    AButton.whileHeld(new ManualClimberControl(-.4));
+    AButton.whenPressed(new TurnToLine(10));
+    MainDPadUp.whileHeld(new ManualClimberControl(.8));
+    MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
 
-    ArmDPadDown.whenPressed(new AutoPositionArm(35.0));
-    ArmDPadUp.whenPressed(new AutoPositionArm(15.0));
+    ArmDPadDown.whenPressed(new AutoPositionArm(-72.0));
+    ArmDPadUp.whenPressed(new AutoPositionArm(-17.38));
+    ArmDPadRight.whenPressed(new AutoPositionArm(-42.3));
 
     ArmOverride.whileActive(new ManualArmControl());
   }
@@ -107,8 +111,8 @@ public class OI {
     return MAIN_CONTROLLER.getRawButtonPressed(2);
   }
 
-  public boolean getMainLeftBumper() {
-    return MAIN_CONTROLLER.getRawButton(5);
+  public boolean getMainLeftBumperPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(5);
   }
 
   public boolean getArmLeftBumper() {

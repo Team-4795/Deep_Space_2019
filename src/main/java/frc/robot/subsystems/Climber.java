@@ -82,6 +82,7 @@ public class Climber extends Subsystem {
     }
 
     public void set(double speed) {
+      speed = climbEnc.getPosition() > 40 ? speed : 0.45 * speed;
       if (climbTime) {
       climberMotor.set(speed);
       }

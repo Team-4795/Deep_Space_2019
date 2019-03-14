@@ -9,6 +9,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.ColorSensor;
 
@@ -37,6 +38,7 @@ public class ArcadeDrive extends Command {
 
     if (Robot.oi.getMainRightBumperPressed()){
       beenPressed = !beenPressed;
+      NetworkTableInstance.getDefault().getEntry("CamID").setDouble(beenPressed ? 0 : 1);
     }
 
     double throttle = 0.9 - (0.65 * Robot.oi.getMainRightTrigger());
@@ -50,7 +52,7 @@ public class ArcadeDrive extends Command {
     }
     //SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
 
-    if(Robot.climber.getClimbTime()) {
+    if (Robot.climber.getClimbTime()) {
       throttle *= 0.275;
     }
 

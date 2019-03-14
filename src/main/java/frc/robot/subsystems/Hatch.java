@@ -41,8 +41,8 @@ public class Hatch extends Subsystem {
   }
 
   public void setServoUp(boolean servoUp) {
-    double posLeft = servoUp ? 0.575 : 0.95;
-    double posRight = servoUp ? 0.95 : 0.55;
+    double posLeft = servoUp ? 0.6 : 0.9;
+    double posRight = servoUp ? 0.4 : 0.1;
     armLeft.set(posLeft);
     armRight.set(posRight);
   }

@@ -53,7 +53,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   //PID values for moving arm to position
   private static double P = 0.00055;
   private static double I = 0.00000;
-  private static double D = 0.00;
+  private static double D = 0.0000000;
   private static double F = 0.00;
 
   private final static double Tolerance = 6.0f;
@@ -93,8 +93,8 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
     armController.setD(D, 0);
     armController.setFF(F, 0);
     armController.setOutputRange(-0.45, 0.45, 0);
-    armController.setSmartMotionMaxVelocity(1200, 0);
-    armController.setSmartMotionMaxAccel(800, 0); 
+    armController.setSmartMotionMaxVelocity(3800, 0);
+    armController.setSmartMotionMaxAccel(1600, 0); 
     armController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
     armController.setSmartMotionAllowedClosedLoopError(0.8, 0); 
   }

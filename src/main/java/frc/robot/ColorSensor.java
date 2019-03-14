@@ -12,7 +12,7 @@ public class ColorSensor {
 
   private static ColorSensor instanceOnboard;
   private static ColorSensor instanceMXP;
-  private static I2C cs;
+  private I2C cs;
   private volatile ColorData color;
 
   public enum reg_t {

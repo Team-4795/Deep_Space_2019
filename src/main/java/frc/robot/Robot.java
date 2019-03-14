@@ -47,6 +47,8 @@ public class Robot extends TimedRobot {
   public static UsbCamera hatchCam;
   public static UsbCamera cargoCam;
   public static VideoSink switcher;
+  public static ColorSensor csLeft = ColorSensor.getInstanceMXP();
+  public static ColorSensor csRight = ColorSensor.getInstanceOnboard();
 
   @Override
   public void robotInit() {
@@ -87,7 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Robot.climber.setClimbTime(false);
-    ManualHatchControl.beenPressed = false;
+    ManualHatchControl.hatchDown();
   }
 
   public void disabledPeriodic() {
@@ -120,6 +122,8 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putBoolean("Arm Top Limit", Robot.arm.getTopLimit());
     //SmartDashboard.putBoolean("Climber Top Limit", Robot.climber.getTopLimit());
     //SmartDashboard.putBoolean("Climber Bot Limit", Robot.climber.getBotLimit());
+    SmartDashboard.putNumber("Color Sensor Left", csLeft.getColor().clear);
+    SmartDashboard.putNumber("Color Sensor Right", csRight.getColor().clear);
     SmartDashboard.putBoolean("Has Ball", Robot.intake.hasBall());
     SmartDashboard.putNumber("Roll", ahrs.getRoll());
     //SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());

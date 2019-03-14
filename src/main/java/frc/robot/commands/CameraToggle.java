@@ -7,13 +7,9 @@
 
 package frc.robot.commands;
 
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.cscore.VideoMode.PixelFormat;
-import edu.wpi.cscore.VideoSource.ConnectionStrategy;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * Add your docs here.
@@ -29,7 +25,7 @@ public class CameraToggle extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    if (toggle) {
+    /*if (toggle) {
       SmartDashboard.putBoolean("Hatch Cam Active", toggle);
       //Robot.hatchCam.setFPS(15);
       //Robot.hatchCam.setPixelFormat(PixelFormat.kGray);
@@ -40,11 +36,11 @@ public class CameraToggle extends InstantCommand {
       Robot.hatchCam.setExposureHoldCurrent();
       Robot.hatchCam.setWhiteBalanceHoldCurrent();
       Robot.switcher.setSource(Robot.hatchCam);
-      toggle = !toggle;
     }
     else {
       SmartDashboard.putBoolean("Hatch Cam Active", toggle);
       
+
       //Robot.cargoCam.setFPS(15);
       //Robot.cargoCam.setResolution(4, 3);
       SmartDashboard.putBoolean("set cargo res", Robot.cargoCam.setVideoMode(PixelFormat.kMJPEG, 360, 240, 20));
@@ -52,8 +48,10 @@ public class CameraToggle extends InstantCommand {
       Robot.cargoCam.setExposureHoldCurrent();
       Robot.cargoCam.setWhiteBalanceHoldCurrent();
       Robot.switcher.setSource(Robot.cargoCam);
-      toggle = !toggle;
-    }
+    }*/
+    //SmartDashboard.putBoolean("Camera ID", toggle);
+    //NetworkTableInstance.getDefault().getEntry("CamID").setDouble(toggle ? 0 : 1);
+    toggle = !toggle;
   }
 
 }
