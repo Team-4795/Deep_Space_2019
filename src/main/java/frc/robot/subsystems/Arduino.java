@@ -29,8 +29,13 @@ public class Arduino extends Subsystem {
     executor.schedule(new ArduinoUpdateTask(this), 0L, THREAD_PERIOD);
   }
 
-  public void setLights(double goal) {
-    registers[0] = 0;
+  public void regColor(int i, double r, double g, double b) {
+    registers[i + 0] = (byte)(r <= 0.0 ? 0 : r >= 1.0 ? 255 : r * 256.0);
+    registers[i + 1] = (byte)(g <= 0.0 ? 0 : g >= 1.0 ? 255 : g * 256.0);
+    registers[i + 2] = (byte)(b <= 0.0 ? 0 : b >= 1.0 ? 255 : b * 256.0);
+  }
+  public void regPosition(int i, double position) {
+    registers[i] = (byte)(position <= 0.0 ? 0 : position >= 60.0 ? 240 : position * 4.0);
   }
   private void update() {
     if (registerPosition == 0) {
