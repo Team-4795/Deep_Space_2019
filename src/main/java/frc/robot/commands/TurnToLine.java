@@ -30,9 +30,9 @@ public class TurnToLine extends Command {
   protected void execute() {
     ColorData dataLeft = csLeft.getColor();
     ColorData dataRight = csRight.getColor();
-    double whiteLeft = dataLeft.clear * 300;
-    double whiteRight = dataRight.clear * 300;
-    double left = whiteLeft - whiteRight;
+    double leftClear = dataLeft.clear * 300;
+    double rightClear = dataRight.clear * 300;
+    double left = leftClear - rightClear;
     SmartDashboard.putNumber("Color Sensor Turn Output", left);
     Robot.drivebase.setMotors(-0.0 + left, -0.0 - left);
   }

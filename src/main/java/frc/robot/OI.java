@@ -19,9 +19,13 @@ import frc.robot.commands.ArmPIDBalance;
 import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ClimberPIDControl;
 import frc.robot.commands.DriveForward;
+import frc.robot.commands.Intake;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualClimberControl;
+import frc.robot.commands.Outtake;
+import frc.robot.commands.SlowRoll;
 import frc.robot.commands.ToggleClimbTime;
+import frc.robot.triggers.IntakeTrigger;
 import frc.robot.triggers.ManualArmTrigger;
 import frc.robot.commands.AutoPositionArm;
 import frc.robot.commands.CameraToggle;
@@ -32,9 +36,10 @@ public class OI {
   private static final double DEADZONE = 0.15 ;
 
   public Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
-  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton, RightBumper;
+  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton, RightBumper, ArmLeftBumper, ArmRightBumper;
   private double value;
   public ManualArmTrigger ArmOverride;
+  private IntakeTrigger SlowMode;
   private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, ArmDPadRight;
 
   public OI() { 
@@ -57,22 +62,28 @@ public class OI {
     MainDPadUp = new POVButton(MAIN_CONTROLLER, 0);
     MainDPadDown = new POVButton(MAIN_CONTROLLER, 180);
     ArmDPadRight = new POVButton(ARM_CONTROLLER, 90);
+    ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
+    ArmRightBumper = new JoystickButton(ARM_CONTROLLER, 6);
+    SlowMode = new IntakeTrigger();
 
     RightBumper.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
     //BButton.whenPressed(new DriveForward(5.0, 50000));
     //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
-    AButton.whenPressed(new TurnToLine(10));
+    //AButton.whenPressed(new TurnToLine(10));
     MainDPadUp.whileHeld(new ManualClimberControl(.8));
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
 
-    ArmDPadDown.whenPressed(new AutoPositionArm(-72.0));
+    ArmDPadDown.whenPressed(new AutoPositionArm(-76.0));
     ArmDPadUp.whenPressed(new AutoPositionArm(-17.38));
     ArmDPadRight.whenPressed(new AutoPositionArm(-42.3));
 
     ArmOverride.whileActive(new ManualArmControl());
+    ArmRightBumper.whileHeld(new Intake());
+    ArmLeftBumper.whileHeld(new Outtake());
+    SlowMode.whileActive(new SlowRoll());
   }
 
   //Drivebase control

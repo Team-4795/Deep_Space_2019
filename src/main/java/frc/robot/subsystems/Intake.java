@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualIntakeControl;
+import frc.robot.commands.SlowRoll;
 import frc.robot.Robot;
 /**
  * Add your docs here.
@@ -81,6 +82,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new ManualIntakeControl());
+    setDefaultCommand(new SlowRoll());
   }
 }

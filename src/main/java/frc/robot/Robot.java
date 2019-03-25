@@ -94,6 +94,7 @@ public class Robot extends TimedRobot {
 
   public void disabledPeriodic() {
     Scheduler.getInstance().run();
+    SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
 
   public void autonomousInit() {
@@ -108,7 +109,6 @@ public class Robot extends TimedRobot {
   }
 
   public void teleopInit() {
-
   }
 
   public void teleopPeriodic() {

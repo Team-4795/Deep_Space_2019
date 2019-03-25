@@ -41,7 +41,7 @@ public class ManualHatchControl extends Command {
     if (Robot.oi.getMainBButtonPressed()) {
       servoUp = !servoUp;
     }
-    if (Robot.oi.getMainLeftBumperPressed()) {
+    if (Robot.oi.getMainLeftBumperPressed() && !servoUp) {
       hatchUp = !hatchUp;
     }
 
@@ -52,12 +52,12 @@ public class ManualHatchControl extends Command {
     } else if (hatchUp) {
       servoUp = false;
       Robot.hatch.setRamp(0.0);
-      Robot.hatch.set(1.0);
+      Robot.hatch.set(.85);
     } else if (hatchActuallyDown) {
       Robot.hatch.set(0.0);
     } else {
       Robot.hatch.setRamp(0.6);
-      Robot.hatch.set(-0.3);
+      Robot.hatch.set(-0.225);
     }
 
     Robot.hatch.setServoUp(servoUp);

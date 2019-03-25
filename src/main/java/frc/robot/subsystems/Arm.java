@@ -94,15 +94,15 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
     armController.setFF(F, 0);
     armController.setOutputRange(-0.45, 0.45, 0);
     armController.setSmartMotionMaxVelocity(3800, 0);
-    armController.setSmartMotionMaxAccel(1600, 0); 
+    armController.setSmartMotionMaxAccel(2000, 0); 
     armController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
-    armController.setSmartMotionAllowedClosedLoopError(0.8, 0); 
+    armController.setSmartMotionAllowedClosedLoopError(0.2, 0); 
   }
 
   public void balance(){
     if (Robot.climber.getClimbTime()) {
     //SmartDashboard.putNumber("Angle error", armBalancer.getError());
-    armBalancer.setSetpoint(0.0f);
+    armBalancer.setSetpoint(6.0f);
     armBalancer.enable();
     } else {
       armBalancer.disable();

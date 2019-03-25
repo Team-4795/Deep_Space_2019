@@ -34,6 +34,7 @@ public class AutoPositionArm extends Command {
   @Override
   protected boolean isFinished() {
     return false;
+    //return Math.abs(Robot.arm.getPos() - position) < 2;
   }
 
   // Called once after isFinished returns true

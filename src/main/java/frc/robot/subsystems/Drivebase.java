@@ -81,8 +81,8 @@ public class Drivebase extends Subsystem implements PIDOutput {
     rightMotorOne.config_kI(0, kI);
     rightMotorOne.config_kD(0, kD);
     rightMotorOne.config_kF(0, kF);
-    leftMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
-    rightMotorOne.configAllowableClosedloopError(allowableError, 0, 10);
+    leftMotorOne.configAllowableClosedloopError(0, allowableError, 10);
+    rightMotorOne.configAllowableClosedloopError(0, allowableError, 10);
     
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);

@@ -38,12 +38,12 @@ public class Climber extends Subsystem {
       climbEnc = new CANEncoder(climberMotor);
       climberMotor.setIdleMode(IdleMode.kBrake);
       climberMotor.setOpenLoopRampRate(0.5);
-      climberMotor.setClosedLoopRampRate(0.5);
-      climbPID.setP(0.0055);
+      climberMotor.setClosedLoopRampRate(0.45);
+      climbPID.setP(0.0059);
       climbPID.setI(0.0000);
       climbPID.setD(0.0);
       climbPID.setFF(0.0);
-      climbPID.setOutputRange(0, 0.65);
+      climbPID.setOutputRange(0, 0.75);
       climbTime = false;
     }
   
@@ -82,7 +82,7 @@ public class Climber extends Subsystem {
     }
 
     public void set(double speed) {
-      speed = climbEnc.getPosition() > 40 ? speed : 0.45 * speed;
+      speed = climbEnc.getPosition() > 40 ? speed : 0.35 * speed;
       if (climbTime) {
       climberMotor.set(speed);
       }
