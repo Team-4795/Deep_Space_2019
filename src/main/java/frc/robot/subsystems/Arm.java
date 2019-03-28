@@ -46,20 +46,22 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   private final CANPIDController armController;
 
   //PIDF values for balancing when climbing
-  private static double Pb = 0.018;
+  private static double Pb = 0.0225;
   private static double Ib = 0.0;
   private static double Db = 0.00;
 
   //PID values for moving arm to position
-  private static double P = 0.00055;
-  private static double I = 0.00000;
+  //private static double P = 0.00055;
+  private static double P = 0.00015;
+  private static double I = 0.000001;
   private static double D = 0.0000000;
-  private static double F = 0.00;
+  private static double F = 0.0002;
 
-  private final static double Tolerance = 6.0f;
+  private final static double Tolerance = 5.0f;
   private final PIDController armBalancer;
   private final CANEncoder armEnc;
   private final CANDigitalInput topLimit;
+  private boolean gucci;
 
   public Arm() {
 
@@ -82,21 +84,21 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
 
     armBalancer = new PIDController(Pb, Ib, Db, this, this);
     armBalancer.setInputRange(-180.0f, 180.0f);
-    armBalancer.setOutputRange(-0.45, 0.45);
+    armBalancer.setOutputRange(-0.50, 0.50);
     armBalancer.setAbsoluteTolerance(Tolerance);
     armBalancer.setContinuous();
 
     armController = new CANPIDController(leftArmMotor);
     armController.setP(P, 0);
     armController.setI(I, 0);
-    armController.setIZone(0.0, 0);
+    armController.setIZone(20, 0);
     armController.setD(D, 0);
     armController.setFF(F, 0);
-    armController.setOutputRange(-0.45, 0.45, 0);
-    armController.setSmartMotionMaxVelocity(3800, 0);
-    armController.setSmartMotionMaxAccel(2000, 0); 
+    armController.setOutputRange(-0.55, 0.55, 0);
+    armController.setSmartMotionMaxVelocity(4200, 0);
+    armController.setSmartMotionMaxAccel(2750, 0); 
     armController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
-    armController.setSmartMotionAllowedClosedLoopError(0.2, 0); 
+    armController.setSmartMotionAllowedClosedLoopError(1.0, 0); 
   }
 
   public void balance(){
@@ -138,6 +140,11 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
     if (!Robot.climber.getClimbTime()) {
     armController.setReference(position, ControlType.kSmartMotion, 0);
     }
+    gucci = Math.abs(Math.abs(position) - Math.abs(armEnc.getPosition())) < 2.0;
+  }
+
+  public boolean withinTolerance() {
+    return gucci;
   }
 
   /*public void setPosition(double position)

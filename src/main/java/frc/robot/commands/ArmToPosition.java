@@ -8,13 +8,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 
-public class Intake extends Command {
-  public Intake() {
+public class ArmToPosition extends Command {
+  private double position;
+
+  public ArmToPosition(double pos) {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.intake);
+    requires(Robot.arm);
+    position = pos;
   }
 
   // Called just before this Command runs the first time
@@ -25,20 +28,20 @@ public class Intake extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.intake.setRoller(0.6);
-    Robot.intake.setWheels(1.0);
+    Robot.arm.autoActuate(position);
   }
-
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.arm.withinTolerance();
+    //return Math.abs(Robot.arm.getPos() - position) < 2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Scheduler.getInstance().add(new ManualArmControl());
   }
 
   // Called when another command which requires one or more of the same

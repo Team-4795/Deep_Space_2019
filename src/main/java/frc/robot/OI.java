@@ -19,15 +19,16 @@ import frc.robot.commands.ArmPIDBalance;
 import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ClimberPIDControl;
 import frc.robot.commands.DriveForward;
-import frc.robot.commands.Intake;
+import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualClimberControl;
-import frc.robot.commands.Outtake;
+import frc.robot.commands.OuttakeCargo;
 import frc.robot.commands.SlowRoll;
 import frc.robot.commands.ToggleClimbTime;
 import frc.robot.triggers.IntakeTrigger;
+import frc.robot.triggers.LeftTriggerPressed;
 import frc.robot.triggers.ManualArmTrigger;
-import frc.robot.commands.AutoPositionArm;
+import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.CameraToggle;
 import frc.robot.commands.TurnToLine;
 
@@ -40,6 +41,7 @@ public class OI {
   private double value;
   public ManualArmTrigger ArmOverride;
   private IntakeTrigger SlowMode;
+  private LeftTriggerPressed CargoOuttake;
   private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, ArmDPadRight;
 
   public OI() { 
@@ -65,6 +67,7 @@ public class OI {
     ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
     ArmRightBumper = new JoystickButton(ARM_CONTROLLER, 6);
     SlowMode = new IntakeTrigger();
+    CargoOuttake = new LeftTriggerPressed();
 
     RightBumper.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
@@ -76,13 +79,14 @@ public class OI {
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
 
-    ArmDPadDown.whenPressed(new AutoPositionArm(-76.0));
-    ArmDPadUp.whenPressed(new AutoPositionArm(-17.38));
-    ArmDPadRight.whenPressed(new AutoPositionArm(-42.3));
+    ArmDPadDown.whenPressed(new ArmToPosition(-76.0));
+    ArmDPadUp.whenPressed(new ArmToPosition(-17.38));
+    ArmDPadRight.whenPressed(new ArmToPosition(-42.3));
 
     ArmOverride.whileActive(new ManualArmControl());
-    ArmRightBumper.whileHeld(new Intake());
-    ArmLeftBumper.whileHeld(new Outtake());
+    ArmRightBumper.whileHeld(new IntakeCargo());
+    CargoOuttake.whileActive(new OuttakeCargo(.9));
+    ArmLeftBumper.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
   }
 

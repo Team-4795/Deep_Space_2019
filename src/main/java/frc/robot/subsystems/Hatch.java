@@ -25,6 +25,8 @@ public class Hatch extends Subsystem {
   public final TalonSRX hatchMotor;
   private final Servo armLeft;
   private final Servo armRight;
+  public boolean servoUp = true;
+  public boolean hatchUp = false;
 
   public Hatch() {
     hatchMotor = new TalonSRX(RobotMap.HATCH_MOTOR.value);
@@ -40,9 +42,9 @@ public class Hatch extends Subsystem {
     hatchMotor.configOpenloopRamp(rate);
   }
 
-  public void setServoUp(boolean servoUp) {
-    double posLeft = servoUp ? 0.54 : 0.887;
-    double posRight = servoUp ? 0.49 : 0.107;
+  public void setServoUp(boolean setServoUp) {
+    double posLeft = setServoUp ? 1.00 : 0.68;
+    double posRight = setServoUp ? 0.02 : 0.42;
     armLeft.set(posLeft);
     armRight.set(posRight);
   }

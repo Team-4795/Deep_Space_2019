@@ -14,8 +14,8 @@ import frc.robot.ColorSensor;
 import frc.robot.ColorSensor.ColorData;
 
 public class TurnToLine extends Command {
-  ColorSensor csLeft = ColorSensor.getInstanceMXP();
-  ColorSensor csRight = ColorSensor.getInstanceOnboard();
+  //ColorSensor csLeft = ColorSensor.getInstanceMXP();
+  //ColorSensor csRight = ColorSensor.getInstanceOnboard();
 
   public TurnToLine(double timeout) {
     requires(Robot.drivebase);
@@ -28,8 +28,8 @@ public class TurnToLine extends Command {
 
   @Override
   protected void execute() {
-    ColorData dataLeft = csLeft.getColor();
-    ColorData dataRight = csRight.getColor();
+    ColorData dataLeft = Robot.csLeft.getColor();
+    ColorData dataRight = Robot.csRight.getColor();
     double leftClear = dataLeft.clear * 300;
     double rightClear = dataRight.clear * 300;
     double left = leftClear - rightClear;

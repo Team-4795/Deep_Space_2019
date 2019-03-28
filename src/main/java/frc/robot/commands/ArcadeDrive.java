@@ -41,7 +41,7 @@ public class ArcadeDrive extends Command {
       NetworkTableInstance.getDefault().getEntry("CamID").setDouble(beenPressed ? 0 : 1);
     }
 
-    double throttle = 0.9 - (0.65 * Robot.oi.getMainRightTrigger());
+    double throttle = 0.85 - (0.65 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .6 : Robot.oi.getMainRightJoyX() * 0.35;
     if (Robot.oi.getMainRightTrigger() > .5) {
       turn *= 1.3;

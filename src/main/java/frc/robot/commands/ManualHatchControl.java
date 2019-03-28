@@ -15,9 +15,6 @@ import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
 
-  private boolean servoUp = true;
-  private static boolean hatchUp = false;
-
   public ManualHatchControl() {
     requires(Robot.hatch);
   }
@@ -25,12 +22,12 @@ public class ManualHatchControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    servoUp = true;
-    hatchUp = false;
+    Robot.hatch.servoUp = true;
+    Robot.hatch.hatchUp = false;
   }
 
   public static void hatchDown() {
-    hatchUp = false;
+    Robot.hatch.hatchUp = false;
   }
   // Called repeatedly when this Command is scheduled to run
   @Override
@@ -39,18 +36,18 @@ public class ManualHatchControl extends Command {
     boolean hatchActuallyDown = Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed();
 
     if (Robot.oi.getMainBButtonPressed()) {
-      servoUp = !servoUp;
+      Robot.hatch.servoUp = !Robot.hatch.servoUp;
     }
-    if (Robot.oi.getMainLeftBumperPressed() && !servoUp) {
-      hatchUp = !hatchUp;
+    if (Robot.oi.getMainLeftBumperPressed() && !Robot.hatch.servoUp) {
+      Robot.hatch.hatchUp = !Robot.hatch.hatchUp;
     }
 
-    if (hatchActuallyUp) hatchUp = false;
+    if (hatchActuallyUp) Robot.hatch.hatchUp = false;
     if (Robot.climber.getClimbTime()) {
       Robot.hatch.setRamp(0.3);
       Robot.hatch.set(hatchActuallyUp ? 0.0 : 0.35);
-    } else if (hatchUp) {
-      servoUp = false;
+    } else if (Robot.hatch.hatchUp) {
+      Robot.hatch.servoUp = false;
       Robot.hatch.setRamp(0.0);
       Robot.hatch.set(.85);
     } else if (hatchActuallyDown) {
@@ -60,12 +57,12 @@ public class ManualHatchControl extends Command {
       Robot.hatch.set(-0.225);
     }
 
-    Robot.hatch.setServoUp(servoUp);
+    Robot.hatch.setServoUp(Robot.hatch.servoUp);
 
     SmartDashboard.putBoolean("Reverse Limit", hatchActuallyUp);
     SmartDashboard.putBoolean("Forward Limit", hatchActuallyDown);
-    SmartDashboard.putBoolean("servoUp", servoUp);
-    SmartDashboard.putBoolean("hatchUp", hatchUp);
+    SmartDashboard.putBoolean("servoUp", Robot.hatch.servoUp);
+    SmartDashboard.putBoolean("hatchUp", Robot.hatch.hatchUp);
   }
 
   // Make this return true when this Command no longer needs to run execute()

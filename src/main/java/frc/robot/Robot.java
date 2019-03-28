@@ -112,6 +112,7 @@ public class Robot extends TimedRobot {
   }
 
   public void teleopPeriodic() {
+    SmartDashboard.putBoolean("withinTolerance", Robot.arm.withinTolerance());
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
     SmartDashboard.putNumber("Arm Encoder", Robot.arm.getPos());
