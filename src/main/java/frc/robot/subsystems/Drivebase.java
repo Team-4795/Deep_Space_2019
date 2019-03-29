@@ -40,20 +40,20 @@ public class Drivebase extends Subsystem implements PIDOutput {
   private final VictorSPX rightMotorThree;
   public final PIDController turnController;
 
-  private final static double P = -0.08;
+  private final static double P = -0.009;
   private final static double I = 0.0;
   private final static double D = -0.00;
   private final static double Tolerance = 6.0f;
 
-  private final static double kP = 0.02;
-  private final static double kI = 0.0;
-  private final static double kD = 0.0;
-  private final static double kF = 0.0;
-  public final int allowableError = 5;
+  private final double kP = 0.008;
+  private final double kI = -0.00;
+  private final double kD = 0.0;
+  private final double kF = .065;
+  public final int allowableError = 100;
 
   private final double WHEEL_DIAMETER_IN = 8.0;
   private final int ENCODER_COUNTS_PER_REV = 4096;
-  public final double ENCODER_COUNTS_PER_FT = 15689.8;
+  public final double ENCODER_COUNTS_PER_FT = 4096;
   //in theory should equal: (ENCODER_COUNTS_PER_REV * 12) / (Math.PI * WHEEL_DIAMETER_IN)
   
   public Drivebase () {
@@ -76,14 +76,16 @@ public class Drivebase extends Subsystem implements PIDOutput {
     leftMotorOne.config_kI(0, kI);
     leftMotorOne.config_kD(0, kD);
     leftMotorOne.config_kF(0, kF);
+    leftMotorOne.configAllowableClosedloopError(0, allowableError, 5000);
+    leftMotorOne.configMotionAcceleration(20000);
+    leftMotorOne.configMotionCruiseVelocity(15000);
 
     rightMotorOne.config_kP(0, kP);
     rightMotorOne.config_kI(0, kI);
     rightMotorOne.config_kD(0, kD);
-    rightMotorOne.config_kF(0, kF);
-    leftMotorOne.configAllowableClosedloopError(0, allowableError, 10);
-    rightMotorOne.configAllowableClosedloopError(0, allowableError, 10);
-    
+    leftMotorOne.config_kF(0, kF);
+    rightMotorOne.configAllowableClosedloopError(0, allowableError, 5000);
+
     Robot.masterTalon(leftMotorOne);
     Robot.masterTalon(rightMotorOne);
     leftMotorOne.configOpenloopRamp(.4);
@@ -152,13 +154,10 @@ public class Drivebase extends Subsystem implements PIDOutput {
   }
 
   
-  public void DriveFeet(double feet){
-    resetEncoders();
-
-    leftMotorOne.set(ControlMode.Position, feet * ENCODER_COUNTS_PER_FT);
-    
+  public void driveFeet(double feet) {
+    this.resetEncoders();
+    leftMotorOne.set(ControlMode.MotionMagic, -feet * ENCODER_COUNTS_PER_FT);
     rightMotorOne.follow(leftMotorOne);
-    //rightMotorOne.set(ControlMode.Position, feet * ENCODER_COUNTS_PER_FT);
   }
   
   public void resetEncoders() {

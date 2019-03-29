@@ -11,10 +11,12 @@ package frc.robot;
 import java.awt.Button;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ArmPIDBalance;
 import frc.robot.commands.AutoClimb;
 import frc.robot.commands.ClimberPIDControl;
@@ -25,12 +27,15 @@ import frc.robot.commands.ManualClimberControl;
 import frc.robot.commands.OuttakeCargo;
 import frc.robot.commands.SlowRoll;
 import frc.robot.commands.ToggleClimbTime;
+import frc.robot.commands.TurnToAngle;
+import frc.robot.triggers.DrivetrainOverride;
 import frc.robot.triggers.IntakeTrigger;
 import frc.robot.triggers.LeftTriggerPressed;
 import frc.robot.triggers.ManualArmTrigger;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.CameraToggle;
 import frc.robot.commands.TurnToLine;
+import frc.robot.commands.computerVisionTarget;
 
 public class OI {
 
@@ -43,6 +48,7 @@ public class OI {
   private IntakeTrigger SlowMode;
   private LeftTriggerPressed CargoOuttake;
   private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, ArmDPadRight;
+  public DrivetrainOverride drivetrainOverride;
 
   public OI() { 
     
@@ -68,13 +74,14 @@ public class OI {
     ArmRightBumper = new JoystickButton(ARM_CONTROLLER, 6);
     SlowMode = new IntakeTrigger();
     CargoOuttake = new LeftTriggerPressed();
+    drivetrainOverride = new DrivetrainOverride();
 
     RightBumper.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
     //BButton.whenPressed(new DriveForward(5.0, 50000));
     //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
-    //AButton.whenPressed(new TurnToLine(10));
+    AButton.whenPressed(new TurnToLine(10));
     MainDPadUp.whileHeld(new ManualClimberControl(.8));
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
@@ -88,6 +95,31 @@ public class OI {
     CargoOuttake.whileActive(new OuttakeCargo(.9));
     ArmLeftBumper.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
+    //drivetrainOverride.whileActive(new ArcadeDrive());
+
+    //AButton.whenPressed(new DriveForward(6));
+    //YButton.whenPressed(new computerVisionTarget());
+  }
+
+  public void rumbleMain() {
+    MAIN_CONTROLLER.setRumble(RumbleType.kLeftRumble, 0.6);
+    MAIN_CONTROLLER.setRumble(RumbleType.kRightRumble,  0.6);
+  }
+
+  public void rumbleArm() {
+    ARM_CONTROLLER.setRumble(RumbleType.kLeftRumble,  0.6);
+    ARM_CONTROLLER.setRumble(RumbleType.kRightRumble,  0.6);
+  }
+
+  public void stopRumble(boolean mainStop, boolean armStop) {
+    if (mainStop) {
+      MAIN_CONTROLLER.setRumble(RumbleType.kLeftRumble, 0.0);
+      MAIN_CONTROLLER.setRumble(RumbleType.kRightRumble,  0.0);
+    }
+    if (armStop) {
+      ARM_CONTROLLER.setRumble(RumbleType.kLeftRumble,  0.0);
+      ARM_CONTROLLER.setRumble(RumbleType.kRightRumble,  0.0);
+    }
   }
 
   //Drivebase control

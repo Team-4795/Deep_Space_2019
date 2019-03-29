@@ -12,9 +12,9 @@ public class GoToTargetAuto extends CommandGroup {
     double z = SmartDashboard.getNumber("Z", 0.0);
     double angle = SmartDashboard.getNumber("Angle", 0.0);
     addSequential(new TurnToAngle(angle - 90, 5000));
-    addSequential(new DriveForward(x, 5000));
-    addSequential(new TurnToAngle(90, 5000));
-    addSequential(new DriveForward(z, 5000));
+    //addSequential(new DriveForward(5000));
+    //addSequential(new TurnToAngle(90, 5000));
+    //addSequential(new DriveForward(5000));
     /* Alternative Implementation:
     addSequential(new TurnToAngle(angle, 1000));
     addSequential(new DriveForward(Math.sqrt(x * x + z * z)));

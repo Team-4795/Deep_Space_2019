@@ -8,66 +8,61 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.ColorSensor;
+import frc.robot.Robot;
 import frc.robot.ColorSensor.ColorData;
 
-public class TurnToLine extends Command {
+public class DriveTillLine extends Command {
 
   ColorSensor csLeft = ColorSensor.getInstanceMXP();
   ColorSensor csRight = ColorSensor.getInstanceOnboard();
-  
-  double threshold = 7;
-  public TurnToLine(double timeout) {
-    requires(Robot.drivebase);
-    setTimeout(timeout);
+
+  double thresh = 10.0;
+
+  boolean done = false;
+
+  public DriveTillLine() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
   }
 
+  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     ColorData dataLeft = csLeft.getColor();
     ColorData dataRight = csRight.getColor();
     double leftClear = dataLeft.clear * 10000;
-    double rightClear = dataRight.clear * 10000;  
-    SmartDashboard.putNumber("leftClear", leftClear);
-    SmartDashboard.putNumber("rightClear", rightClear);
+    double rightClear = dataRight.clear * 10000; 
 
-    if(leftClear > threshold || rightClear > threshold)
+    if(leftClear > thresh || rightClear > thresh)
     {
-      if(leftClear > rightClear)
-        curveLeft();
-      if(leftClear < rightClear)
-        curveRight();
+      Robot.drivebase.setMotors(0.0, 0.0);
+      done = true;
+    }
+    else
+    {
+      Robot.drivebase.setMotors(-0.4, -0.4);
     }
   }
 
-  public void curveRight()
-  {
-    Robot.drivebase.setMotors(-0.05, -0.25);
-  }
-
-  
-  public void curveLeft()
-  {
-    Robot.drivebase.setMotors(-0.25, -0.05);
-  }
-
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return done;
   }
 
-
+  // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivebase.setMotors(0.0, 0.0);
   }
 
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }

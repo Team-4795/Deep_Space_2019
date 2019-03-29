@@ -20,13 +20,13 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class Intake extends Subsystem {
+public class CargoIntake extends Subsystem {
 
   private final TalonSRX wheelMotor;
   private final TalonSRX rollerMotor;
   private DigitalInput cargoZero, cargoOne, cargoTwo, cargoThree;
 
-  public Intake() {
+  public CargoIntake() {
     wheelMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
     rollerMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
 
@@ -55,9 +55,8 @@ public class Intake extends Subsystem {
     return cargoThree.get();
   }
   
-
   public boolean hasBall() {
-    return cargoZero.get() || cargoTwo.get() || cargoThree.get();
+    return cargoZero.get() || cargoOne.get();
   }
 
   public void setWheels(double speed)

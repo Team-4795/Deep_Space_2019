@@ -11,6 +11,8 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.hal.PDPJNI;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -25,7 +27,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivebase;
 import frc.robot.subsystems.Hatch;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.CargoIntake;
 
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -39,7 +41,7 @@ public class Robot extends TimedRobot {
   public static OI oi;
   public static Drivebase drivebase;
   public static Arm arm;
-  public static Intake intake;
+  public static CargoIntake intake;
   public static ColorSensor colorsensor;
   public static Hatch hatch;
   public static Climber climber;
@@ -49,15 +51,17 @@ public class Robot extends TimedRobot {
   public static VideoSink switcher;
   public static ColorSensor csLeft = ColorSensor.getInstanceMXP();
   public static ColorSensor csRight = ColorSensor.getInstanceOnboard();
+  public static PowerDistributionPanel pdp;
 
   @Override
   public void robotInit() {
 
+    pdp = new PowerDistributionPanel();
     ahrs = new AHRS(SPI.Port.kMXP);
     drivebase = new Drivebase();
     arm = new Arm();
     climber = new Climber();
-    intake = new Intake();
+    intake = new CargoIntake();
     hatch = new Hatch();
     oi = new OI();
     oi.init();
@@ -112,6 +116,16 @@ public class Robot extends TimedRobot {
   }
 
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("current (0)", pdp.getCurrent(0));
+    SmartDashboard.putNumber("current (1)", pdp.getCurrent(1));
+    SmartDashboard.putNumber("current (2)", pdp.getCurrent(2));
+    SmartDashboard.putNumber("current (3)", pdp.getCurrent(3));
+    SmartDashboard.putNumber("current (4)", pdp.getCurrent(4));
+    SmartDashboard.putNumber("current (5)", pdp.getCurrent(5));
+    SmartDashboard.putNumber("current (6)", pdp.getCurrent(6));
+    SmartDashboard.putNumber("current (7)", pdp.getCurrent(7));
+    SmartDashboard.putNumber("current (8)", pdp.getCurrent(8));
+    SmartDashboard.putNumber("current (9)", pdp.getCurrent(9));
     SmartDashboard.putBoolean("withinTolerance", Robot.arm.withinTolerance());
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
@@ -130,6 +144,13 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putBoolean("Arm Trigger", Robot.oi.ArmOverride.get());
     if (Robot.arm.getTopLimit()) {
       Robot.arm.resetEnc();
+    }
+    if (Robot.climber.getClimbTime()) {
+      Robot.oi.rumbleArm();
+      Robot.oi.rumbleMain();
+    }
+    else {
+      Robot.oi.stopRumble(true, true);
     }
   }
 
