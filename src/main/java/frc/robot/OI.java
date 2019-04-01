@@ -86,7 +86,7 @@ public class OI {
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
 
-    ArmDPadDown.whenPressed(new ArmToPosition(-79.0));
+    ArmDPadDown.whenPressed(new ArmToPosition(-78.5));
     ArmDPadUp.whenPressed(new ArmToPosition(-17.38));
     ArmDPadRight.whenPressed(new ArmToPosition(-42.3));
 
