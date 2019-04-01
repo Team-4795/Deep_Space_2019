@@ -10,66 +10,67 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
 
-  boolean beenPressed = false;
-  boolean reachedFront = false;
-
-  public ManualHatchControl(){
+  public ManualHatchControl() {
     requires(Robot.hatch);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.hatch.armUp = true;
+    Robot.hatch.kickerUp = false;
   }
 
+  public static void hatchDown() {
+    Robot.hatch.kickerUp = false;
+  }
   // Called repeatedly when this Command is scheduled to run
-   // Called repeatedly when this Command is scheduled to run
-   @Override
-   protected void execute() {
+  @Override
+  protected void execute() {
+    boolean hatchActuallyUp = Robot.hatch.hatchKicker.getSensorCollection().isFwdLimitSwitchClosed();
+    boolean hatchActuallyDown = Robot.hatch.hatchKicker.getSensorCollection().isRevLimitSwitchClosed();
 
-    if(Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed() && beenPressed)
-    {
-     beenPressed = false;
-     reachedFront = false;
-     Robot.hatch.set(0.0);
+    if (Robot.oi.getMainBButtonPressed()) {
+      Robot.hatch.armUp = false;
+    } else  if (Robot.oi.getMainYButtonPressed()) {
+      Robot.hatch.armUp = true;
+    }
+    if (Robot.oi.getMainLeftBumperPressed() && !Robot.hatch.armUp) { 
+      Robot.hatch.kickerUp = !Robot.hatch.kickerUp;
     }
 
-     if(Robot.oi.getArmYButton())
-     {
-       beenPressed = true;
-     } 
-     if(beenPressed)
-     {
-       if(Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed())
-       {
-         reachedFront = true;
-       }
-       if(!reachedFront && !Robot.climber.getClimbTime())
-       {
-         Robot.hatch.setRamp(0.0);
-         Robot.hatch.set(1.0);
-       }
-       else if (!Robot.climber.getClimbTime())
-       {
-         Robot.hatch.setRamp(0.6);
-         Robot.hatch.set(-0.3);
-       }
-     }
-     if (Robot.climber.getClimbTime() && !Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed())
-     {
+    if (hatchActuallyUp) {
+      Robot.hatch.kickerUp = false;
+    }
+
+    if (Robot.climber.getClimbTime()) {
       Robot.hatch.setRamp(0.3);
-      Robot.hatch.set(0.35);
-     }
-     else if (Robot.climber.getClimbTime())
-     {
-      Robot.hatch.set(0.0);
-     }
-   }
- 
+      Robot.hatch.setKicker(hatchActuallyUp ? 0.0 : 0.35);
+    } else if (Robot.hatch.kickerUp) {
+      //Robot.hatch.armUp = false;
+      Robot.hatch.setRamp(0.0);
+      Robot.hatch.setKicker(.85);
+    } else if (hatchActuallyDown) {
+      Robot.hatch.setKicker(0.0);
+    } else {
+      Robot.hatch.setRamp(0.6);
+      Robot.hatch.setKicker(-0.225);
+    }
+
+    Robot.hatch.setArmUp(Robot.hatch.armUp);
+
+    SmartDashboard.putBoolean("Reverse Limit", hatchActuallyUp);
+    SmartDashboard.putBoolean("Forward Limit", hatchActuallyDown);
+    SmartDashboard.putBoolean("armUp", Robot.hatch.armUp);
+    SmartDashboard.putBoolean("kickerUp", Robot.hatch.kickerUp);
+    SmartDashboard.putNumber("Arm Encoder", Robot.hatch.getArmEncoder());
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

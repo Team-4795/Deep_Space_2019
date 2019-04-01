@@ -9,6 +9,7 @@ import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANDigitalInput.LimitSwitchPolarity;
+import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -38,12 +39,16 @@ public class Climber extends Subsystem {
       climbEnc = new CANEncoder(climberMotor);
       climberMotor.setIdleMode(IdleMode.kBrake);
       climberMotor.setOpenLoopRampRate(0.5);
-      climberMotor.setClosedLoopRampRate(0.5);
-      climbPID.setP(0.005);
+      climberMotor.setClosedLoopRampRate(0.4);
+      climbPID.setP(0.0035);
       climbPID.setI(0.0000);
-      climbPID.setD(0.0);
-      climbPID.setFF(0.0);
-      climbPID.setOutputRange(0, 0.65);
+      climbPID.setD(-0.0005);
+      climbPID.setFF(0.00325);
+      climbPID.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
+      climbPID.setSmartMotionMaxAccel(4000, 0);
+      climbPID.setSmartMotionMaxVelocity(5000, 0);
+      climbPID.setOutputRange(0, 0.8);
+      climbPID.setSmartMotionAllowedClosedLoopError(1.0, 0);
       climbTime = false;
     }
   
@@ -60,9 +65,9 @@ public class Climber extends Subsystem {
       climberMotor.setEncPosition(0.0);
     }
 
-    public void setPIDPos (double goal) {
+    public void setPos (double goal) {
       if (climbTime) {
-      climbPID.setReference(goal, ControlType.kPosition);
+      climbPID.setReference(goal, ControlType.kSmartMotion);
       SmartDashboard.putNumber("Elevator Position (PID)", climbEnc.getPosition());
       SmartDashboard.putNumber("Elevator Output", climberMotor.getAppliedOutput());
       }
@@ -82,8 +87,12 @@ public class Climber extends Subsystem {
     }
 
     public void set(double speed) {
+      speed = climbEnc.getPosition() > 40 ? speed : 0.35 * speed;
+      if (speed > 0 && climbEnc.getPosition() > 235) {
+        speed = 0.0;
+      }
       if (climbTime) {
-      climberMotor.set(speed);
+        climberMotor.set(speed);
       }
       else {
         climberMotor.set(0.0);

@@ -8,36 +8,40 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-import frc.robot.triggers.DrivetrainOverride;
 
-public class DriveForward extends InstantCommand {
+public class ArmToPosition extends Command {
+  private double position;
 
-  private double feet;
-
-  public DriveForward(double feet) {
+  public ArmToPosition(double pos) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivebase);
-    this.feet = feet;
-    setTimeout(5.0);
+    requires(Robot.arm);
+    position = pos;
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivebase.driveFeet(feet);
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    Robot.arm.autoActuate(position);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return Robot.arm.withinTolerance();
+    //return Math.abs(Robot.arm.getPos() - position) < 2;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivebase.setMotors(0.0, 0.0);
+    Scheduler.getInstance().add(new ManualArmControl());
   }
 
   // Called when another command which requires one or more of the same

@@ -13,10 +13,10 @@ import frc.robot.subsystems.Drivebase;
 
 public class TurnToAngle extends Command {
 
-  private final double angle;
-  boolean isFinished = false;
-  boolean inErrorZone = false;
-  int count;
+  private double angle;
+  private boolean isFinished = false;
+  private boolean inErrorZone = false;
+  private int count;
 
   public TurnToAngle(double angle, double timeout) {
     requires(Robot.drivebase);

@@ -8,36 +8,57 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.ColorSensor;
 import frc.robot.Robot;
-import frc.robot.triggers.DrivetrainOverride;
+import frc.robot.ColorSensor.ColorData;
 
-public class DriveForward extends InstantCommand {
+public class DriveTillLine extends Command {
 
-  private double feet;
+  ColorSensor csLeft = ColorSensor.getInstanceMXP();
+  ColorSensor csRight = ColorSensor.getInstanceOnboard();
 
-  public DriveForward(double feet) {
+  double thresh = 10.0;
+
+  boolean done = false;
+
+  public DriveTillLine() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivebase);
-    this.feet = feet;
-    setTimeout(5.0);
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivebase.driveFeet(feet);
+  }
+
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+    ColorData dataLeft = csLeft.getColor();
+    ColorData dataRight = csRight.getColor();
+    double leftClear = dataLeft.clear * 10000;
+    double rightClear = dataRight.clear * 10000; 
+
+    if(leftClear > thresh || rightClear > thresh)
+    {
+      Robot.drivebase.setMotors(0.0, 0.0);
+      done = true;
+    }
+    else
+    {
+      Robot.drivebase.setMotors(-0.3, -0.3);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    return done;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivebase.setMotors(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same

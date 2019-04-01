@@ -30,19 +30,7 @@ public class ManualClimberControl extends Command {
     if (Robot.climber.getTopLimit()) {
       Robot.climber.resetEnc();
     }
-    /*
-    if (Robot.oi.getMainYButton() && Robot.climber.getClimbTime() && !Robot.climber.getTopLimit()){
-      output = speed;
-      Robot.climber.set(speed);
-    }
-    else if(Robot.oi.getMainAButton() && Robot.climber.getClimbTime()){
-        output = -speed;
-        Robot.climber.set(output);
-    }
-    else
-    {
-        Robot.climber.set(output);
-    }*/
+    
     Robot.climber.set(speed);
     
   }

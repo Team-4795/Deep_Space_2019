@@ -10,26 +10,53 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualIntakeControl;
+import frc.robot.commands.SlowRoll;
 import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class Intake extends Subsystem {
-  public final TalonSRX wheelMotor;
-  public final TalonSRX rollerMotor;
+public class CargoIntake extends Subsystem {
 
-  public Intake() {
-    wheelMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
-    rollerMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
+  private final TalonSRX wheelMotor;
+  private final TalonSRX rollerMotor;
+  private DigitalInput cargoZero, cargoOne, cargoTwo, cargoThree;
 
-    Robot.masterTalon(wheelMotor);
+  public CargoIntake() {
+    wheelMotor = new TalonSRX(RobotMap.CLIMBER_WHEELS.value);
+    rollerMotor = new TalonSRX(RobotMap.INTAKE_MOTOR.value);
+
+    Robot.initTalon(wheelMotor);
     Robot.initTalon(rollerMotor);
 
-    wheelMotor.configOpenloopRamp(0.0);
-    rollerMotor.configOpenloopRamp(0.0);
+    wheelMotor.configOpenloopRamp(0);
+    rollerMotor.configOpenloopRamp(0);
+
+    cargoZero = new DigitalInput(0);
+    cargoOne = new DigitalInput(1);
+    cargoTwo = new DigitalInput(2);
+    cargoThree = new DigitalInput(3);
+
+  }
+  public boolean getLimitZero() {
+    return cargoZero.get();
+  }
+  public boolean getLimitOne() {
+    return cargoOne.get();
+  }
+  public boolean getLimitTwo() {
+    return cargoTwo.get();
+  }
+  public boolean getLimitThree() {
+    return cargoThree.get();
+  }
+  
+  public boolean hasBall() {
+    return cargoZero.get() || cargoOne.get();
   }
 
   public void setWheels(double speed)
@@ -42,6 +69,7 @@ public class Intake extends Subsystem {
     rollerMotor.set(ControlMode.PercentOutput, speed);
   }
 
+  /*
   public boolean getRevLimitSwitch() {
     return wheelMotor.getSensorCollection().isRevLimitSwitchClosed();
   }
@@ -49,10 +77,10 @@ public class Intake extends Subsystem {
   public boolean getFwdLimitSwitch() {
     return wheelMotor.getSensorCollection().isFwdLimitSwitchClosed();
   }
-
+*/
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new ManualIntakeControl());
+    setDefaultCommand(new SlowRoll());
   }
 }

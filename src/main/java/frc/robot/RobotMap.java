@@ -12,6 +12,14 @@ public enum RobotMap {
   //Controller Mappings
   MAIN_CONTROLLER(0),
   ARM_CONTROLLER(1),
+  //Servo mappings (pwm)
+  HATCH_ARM(8),
+  SERVO_TWO(9),
+  //Proximity sensor mappings (DIO)
+  SENSOR_ZERO(0),
+  SENSOR_ONE(1),
+  SENSOR_TWO(2),
+  SENSOR_THREE(3),
   //CAN Motor Controller Mappings
   LEFT_MOTOR_ONE(1),
   LEFT_MOTOR_TWO(2),
@@ -20,8 +28,8 @@ public enum RobotMap {
   RIGHT_MOTOR_TWO(5),
   RIGHT_MOTOR_THREE(6),
   ARM_MOTOR(7),
-  INTAKE_MOTOR(12),
-  CLIMBER_WHEELS(11),
+  INTAKE_MOTOR(11),
+  CLIMBER_WHEELS(12),
   HATCH_MOTOR(8),
   CLIMBER_MOTOR(20),
   ARM_MOTOR_FOLLOWER(22);
