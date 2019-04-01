@@ -11,17 +11,10 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-/**
- * Add your docs here.
- */
 public class ToggleClimbTime extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
+
   public ToggleClimbTime() {
     super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
   }
 
   // Called once when the command executes

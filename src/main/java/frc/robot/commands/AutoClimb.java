@@ -14,17 +14,8 @@ public class AutoClimb extends CommandGroup {
    * Add your docs here.
    */
   public AutoClimb() {
-    // Add Commands here:
-    // e.g. addSequential(new Command1());
-    // addSequential(new Command2());
-    // these will run in order.
+  
     addParallel(new ClimberToPosition(220));
     addParallel(new ArmBalance());
-
-    // To run multiple commands at the same time,
-    // use addParallel()
-    // e.g. addParallel(new Command1());
-    // addSequential(new Command2());
-    // Command1 and Command2 will run in parallel.
   }
 }

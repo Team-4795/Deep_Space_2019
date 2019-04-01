@@ -9,19 +9,12 @@ package frc.robot;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
-import edu.wpi.cscore.VideoSource.ConnectionStrategy;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.hal.PDPJNI;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.DriveForward;
-import frc.robot.commands.ManualHatchControl;
-import frc.robot.commands.TurnToAngle;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivebase;
@@ -64,30 +57,6 @@ public class Robot extends TimedRobot {
     hatch = new Hatch();
     oi = new OI();
     oi.init();
-    //hatchCam = new UsbCamera("hatch", 0);
-    //hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
-    //CameraServer.getInstance().addCamera(hatchCam);
-    //CameraServer.getInstance().startAutomaticCapture(hatchCam);
-    //CameraServer.getInstance().removeCamera("hatchCam");
-    //cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
-
-    /*hatchCam.setFPS(25);
-    hatchCam.setResolution(240, 360);
-    hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-    
-    hatchCam.setExposureAuto();
-    hatchCam.setWhiteBalanceAuto();
-    
-    cargoCam.setFPS(15);
-    cargoCam.setResolution(240, 360);
-    cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-    
-    cargoCam.setExposureAuto();
-    cargoCam.setWhiteBalanceAuto();
-    
-    switcher = CameraServer.getInstance().addSwitchedCamera("Switched Camera");
-    switcher.setSource(CameraServer.getInstance().startAutomaticCapture(0));
-    */
   }
 
   @Override

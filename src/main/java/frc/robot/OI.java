@@ -8,14 +8,10 @@
 // test comment
 package frc.robot;
 
-import java.awt.Button;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.POVButton;
-import edu.wpi.first.wpilibj.buttons.Trigger;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.ArmBalance;
 import frc.robot.commands.AutoClimb;
@@ -33,7 +29,6 @@ import frc.robot.triggers.IntakeTrigger;
 import frc.robot.triggers.LeftTriggerPressed;
 import frc.robot.triggers.ManualArmTrigger;
 import frc.robot.commands.ArmToPosition;
-import frc.robot.commands.CameraToggle;
 import frc.robot.commands.TurnToLine;
 import frc.robot.commands.ToTarget;
 
@@ -76,12 +71,8 @@ public class OI {
     CargoOuttake = new LeftTriggerPressed();
     drivetrainOverride = new DrivetrainOverride();
 
-    RightBumper.whenPressed(new CameraToggle());
     ArmBButton.whenPressed(new ToggleClimbTime());
     
-    //BButton.whenPressed(new DriveForward(5.0, 50000));
-    //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
-    //AButton.whenPressed(new TurnToLine(10));
     MainDPadUp.whileHeld(new ManualClimberControl(.8));
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
@@ -93,12 +84,10 @@ public class OI {
     ArmOverride.whileActive(new ManualArmControl());
     ArmRightBumper.whileHeld(new IntakeCargo());
     CargoOuttake.whileActive(new OuttakeCargo(.9));
-    //ArmLeftBumper.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
     //drivetrainOverride.whileActive(new ArcadeDrive());
 
-    //AButton.whenPressed(new DriveForward(6));
-    //YButton.whenPressed(new computerVisionTarget());
+    //AButton.whenPressed(new TurnToLine(5));
   }
 
   public void rumbleMain() {
@@ -128,7 +117,7 @@ public class OI {
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
   }
   
-  //For tankdrive control
+  //For tankdrive control (unused)
   public double getMainRightJoyY() {
     double value = MAIN_CONTROLLER.getRawAxis(5);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
@@ -144,14 +133,12 @@ public class OI {
   public double getMainRightTrigger() {
     double value = MAIN_CONTROLLER.getRawAxis(3);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
-    //return Math.abs(value) > DEADZONE ? value : 0.0;
   }
 
-  //Climber wheel actuation
+  //Climber wheel actuation & outtaking
   public double getMainLeftTrigger() {
     double value = MAIN_CONTROLLER.getRawAxis(2);
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
-    //return Math.abs(value) > DEADZONE ? value : 0.0;
   }
 
   public boolean getMainBButtonPressed() {
@@ -179,17 +166,14 @@ public class OI {
     return MAIN_CONTROLLER.getRawButtonPressed(6);
   }
 
-  //Cargo outtake
   public boolean getArmXButton() {
     return ARM_CONTROLLER.getRawButton(3);
   }
 
-  //Cargo intake
   public boolean getArmAButton() {
     return ARM_CONTROLLER.getRawButton(1);
   }
 
-  //Hatch control
   public boolean getArmYButton() {
     return ARM_CONTROLLER.getRawButton(4);
   }
