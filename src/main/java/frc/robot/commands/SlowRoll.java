@@ -13,7 +13,6 @@ import frc.robot.Robot;
 public class SlowRoll extends Command {
   public SlowRoll() {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
     requires(Robot.intake);
   }
 
@@ -26,7 +25,7 @@ public class SlowRoll extends Command {
   @Override
   protected void execute() {
     Robot.intake.setRoller(0.0);
-    Robot.intake.setWheels(0.1);
+    Robot.intake.setWheels(0.15);
   }
 
   // Make this return true when this Command no longer needs to run execute()

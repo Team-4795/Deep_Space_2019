@@ -16,6 +16,6 @@ import frc.robot.Robot;
 public class IntakeTrigger extends Trigger {
   @Override
   public boolean get() {
-    return !Robot.oi.getArmLeftBumper() && !Robot.oi.getArmRightBumper();
+    return !Robot.oi.getArmLeftBumper() && !Robot.oi.getArmRightBumper() && !(Robot.oi.getMainLeftTrigger() > 0);
   }
 }

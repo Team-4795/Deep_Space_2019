@@ -36,13 +36,18 @@ public class ManualHatchControl extends Command {
     boolean hatchActuallyDown = Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed();
 
     if (Robot.oi.getMainBButtonPressed()) {
-      Robot.hatch.servoUp = !Robot.hatch.servoUp;
+      Robot.hatch.servoUp = false;
+    } else  if (Robot.oi.getMainYButtonPressed()) {
+      Robot.hatch.servoUp = true;
     }
-    if (Robot.oi.getMainLeftBumperPressed()) { //&& !Robot.oi.servoUp
+    if (Robot.oi.getMainLeftBumperPressed() && !Robot.hatch.servoUp) { 
       Robot.hatch.hatchUp = !Robot.hatch.hatchUp;
     }
 
-    if (hatchActuallyUp) Robot.hatch.hatchUp = false;
+    if (hatchActuallyUp) {
+      Robot.hatch.hatchUp = false;
+    }
+
     if (Robot.climber.getClimbTime()) {
       Robot.hatch.setRamp(0.3);
       Robot.hatch.set(hatchActuallyUp ? 0.0 : 0.35);

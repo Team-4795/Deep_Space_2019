@@ -23,7 +23,7 @@ public class DriveTillLine extends Command {
 
   public DriveTillLine() {
     // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+    requires(Robot.drivebase);
   }
 
   // Called just before this Command runs the first time
@@ -46,7 +46,7 @@ public class DriveTillLine extends Command {
     }
     else
     {
-      Robot.drivebase.setMotors(-0.4, -0.4);
+      Robot.drivebase.setMotors(-0.3, -0.3);
     }
   }
 

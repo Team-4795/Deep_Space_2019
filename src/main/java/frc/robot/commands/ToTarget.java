@@ -10,15 +10,15 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class computerVisionTarget extends CommandGroup {
+public class ToTarget extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public computerVisionTarget() {
+  public ToTarget() {
     double radangle = SmartDashboard.getNumber("Angle", 0);
     double angle = Math.toDegrees(radangle);
 
-    SmartDashboard.putNumber("fuckduck", angle);
+    //SmartDashboard.putNumber("Angle", angle);
     
     double feet = SmartDashboard.getNumber("Z", 1);
 

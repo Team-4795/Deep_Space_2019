@@ -28,8 +28,14 @@ public class OuttakeCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if (Robot.oi.getMainRightTrigger() > 0) {
+      Robot.intake.setRoller(-speed * .6);
+      Robot.intake.setWheels(-speed * .6);
+    }
+    else {
     Robot.intake.setRoller(-speed);
     Robot.intake.setWheels(-speed);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

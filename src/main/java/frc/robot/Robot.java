@@ -66,38 +66,39 @@ public class Robot extends TimedRobot {
     oi = new OI();
     oi.init();
     //hatchCam = new UsbCamera("hatch", 0);
-    hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
+    //hatchCam = CameraServer.getInstance().startAutomaticCapture(0);
     //CameraServer.getInstance().addCamera(hatchCam);
     //CameraServer.getInstance().startAutomaticCapture(hatchCam);
     //CameraServer.getInstance().removeCamera("hatchCam");
-    cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
+    //cargoCam = CameraServer.getInstance().startAutomaticCapture(1);
 
     /*hatchCam.setFPS(25);
     hatchCam.setResolution(240, 360);
     hatchCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-    */
+    
     hatchCam.setExposureAuto();
     hatchCam.setWhiteBalanceAuto();
-    /*
+    
     cargoCam.setFPS(15);
     cargoCam.setResolution(240, 360);
     cargoCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-    */
+    
     cargoCam.setExposureAuto();
     cargoCam.setWhiteBalanceAuto();
     
     switcher = CameraServer.getInstance().addSwitchedCamera("Switched Camera");
     switcher.setSource(CameraServer.getInstance().startAutomaticCapture(0));
+    */
   }
 
   @Override
   public void disabledInit() {
     Robot.climber.setClimbTime(false);
-    ManualHatchControl.hatchDown();
+    Robot.hatch.servoUp = true;
+    Robot.hatch.hatchUp = false;
   }
 
   public void disabledPeriodic() {
-    Scheduler.getInstance().run();
     SmartDashboard.putNumber("Roll", ahrs.getRoll());
   }
 

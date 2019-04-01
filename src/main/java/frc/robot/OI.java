@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.ArmPIDBalance;
+import frc.robot.commands.ArmBalance;
 import frc.robot.commands.AutoClimb;
-import frc.robot.commands.ClimberPIDControl;
+import frc.robot.commands.ClimberToPosition;
 import frc.robot.commands.DriveForward;
 import frc.robot.commands.IntakeCargo;
 import frc.robot.commands.ManualArmControl;
@@ -35,7 +35,7 @@ import frc.robot.triggers.ManualArmTrigger;
 import frc.robot.commands.ArmToPosition;
 import frc.robot.commands.CameraToggle;
 import frc.robot.commands.TurnToLine;
-import frc.robot.commands.computerVisionTarget;
+import frc.robot.commands.ToTarget;
 
 public class OI {
 
@@ -81,19 +81,19 @@ public class OI {
     
     //BButton.whenPressed(new DriveForward(5.0, 50000));
     //BButton.whenPressed(new DriveForward(SmartDashboard.getNumber("Z", 0.0) - 1.0, 20));
-    AButton.whenPressed(new TurnToLine(10));
+    //AButton.whenPressed(new TurnToLine(10));
     MainDPadUp.whileHeld(new ManualClimberControl(.8));
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
     XButton.whenPressed(new AutoClimb());
 
-    ArmDPadDown.whenPressed(new ArmToPosition(-76.0));
+    ArmDPadDown.whenPressed(new ArmToPosition(-79.0));
     ArmDPadUp.whenPressed(new ArmToPosition(-17.38));
     ArmDPadRight.whenPressed(new ArmToPosition(-42.3));
 
     ArmOverride.whileActive(new ManualArmControl());
     ArmRightBumper.whileHeld(new IntakeCargo());
     CargoOuttake.whileActive(new OuttakeCargo(.9));
-    ArmLeftBumper.whileActive(new OuttakeCargo(.9));
+    //ArmLeftBumper.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
     //drivetrainOverride.whileActive(new ArcadeDrive());
 
@@ -158,6 +158,10 @@ public class OI {
     return MAIN_CONTROLLER.getRawButtonPressed(2);
   }
 
+  public boolean getMainBButton() {
+    return MAIN_CONTROLLER.getRawButton(2);
+  }
+
   public boolean getMainLeftBumperPressed() {
     return MAIN_CONTROLLER.getRawButtonPressed(5);
   }
@@ -188,6 +192,10 @@ public class OI {
   //Hatch control
   public boolean getArmYButton() {
     return ARM_CONTROLLER.getRawButton(4);
+  }
+
+  public boolean getMainYButtonPressed() {
+    return MAIN_CONTROLLER.getRawButtonPressed(4);
   }
 
   //Arm control

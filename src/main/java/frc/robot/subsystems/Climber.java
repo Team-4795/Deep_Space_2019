@@ -40,7 +40,6 @@ public class Climber extends Subsystem {
       climberMotor.setIdleMode(IdleMode.kBrake);
       climberMotor.setOpenLoopRampRate(0.5);
       climberMotor.setClosedLoopRampRate(0.4);
-      //climbPID.setP(0.0059);
       climbPID.setP(0.0035);
       climbPID.setI(0.0000);
       climbPID.setD(-0.0005);
@@ -66,7 +65,7 @@ public class Climber extends Subsystem {
       climberMotor.setEncPosition(0.0);
     }
 
-    public void setPIDPos (double goal) {
+    public void setPos (double goal) {
       if (climbTime) {
       climbPID.setReference(goal, ControlType.kSmartMotion);
       SmartDashboard.putNumber("Elevator Position (PID)", climbEnc.getPosition());
