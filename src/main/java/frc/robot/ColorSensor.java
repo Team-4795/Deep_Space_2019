@@ -30,7 +30,7 @@ public class ColorSensor {
     }
 
     public int getVal() {
-      return val;
+      return 0x80 | val;
     }
   };
   
@@ -93,7 +93,7 @@ public class ColorSensor {
   private short read16(reg_t reg) {
     byte[] vals = new byte[2];
     readLen(reg, vals);
-    return (short) (vals[0] | (vals[1] << 8));
+    return (short) ((vals[0] & 0xff) | ((vals[1] & 0xff) << 8));
   }
 
   // return true if successful

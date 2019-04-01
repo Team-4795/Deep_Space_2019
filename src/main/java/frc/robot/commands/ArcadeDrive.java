@@ -11,19 +11,22 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.ColorSensor;
+import frc.robot.ProximitySensor;
 
 public class ArcadeDrive extends Command {
 
   /*private double maxVel;
   private double pastVel;
   private double maxAccel;*/
-  //ColorSensor cs;
   private Boolean beenPressed;
+  ColorSensor cs;
+  ProximitySensor ps;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
     beenPressed = false;
-   // cs = ColorSensor.getInstanceOnboard();
+    cs = ColorSensor.getInstanceOnboard();
+    ps = ProximitySensor.getInstanceOnboard();
   }
 
   @Override
@@ -60,14 +63,15 @@ public class ArcadeDrive extends Command {
     
     SmartDashboard.putNumber("Left Encoder Feet", Robot.drivebase.getLeftEncoderFeet());
     SmartDashboard.putNumber("Right Encoder Feet", Robot.drivebase.getRightEncoderFeet());
-    /*
+    
     SmartDashboard.putNumber("Left Velocity", Robot.drivebase.getLeftVelocity());
     SmartDashboard.putNumber("Right Velocity", Robot.drivebase.getRightVelocity());
     SmartDashboard.putNumber("Clear", cs.getColor().clear);
     SmartDashboard.putNumber("Red", cs.getColor().red);
     SmartDashboard.putNumber("Green", cs.getColor().green);
     SmartDashboard.putNumber("Blue", cs.getColor().blue);
-    
+    SmartDashboard.putNumber("Distance", ps.getMillimeters());
+    /*
     maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
     SmartDashboard.putNumber("Max Velocity", maxVel);
     maxAccel = Math.abs(Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) > Math.abs(maxAccel) ? (Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) / 0.05 : maxAccel;
