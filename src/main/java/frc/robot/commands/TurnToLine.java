@@ -33,6 +33,7 @@ public class TurnToLine extends Command {
     ColorData dataLeft = csLeft.getColor();
     ColorData dataRight = csRight.getColor();
 
+
     /*
     double leftClear = dataLeft.clear * 300;
     double rightClear = dataRight.clear * 300;
@@ -63,6 +64,7 @@ public class TurnToLine extends Command {
   public void curveLeft()
   {
     Robot.drivebase.setMotors(-0.25, -0.05);
+
   }
 
   @Override
