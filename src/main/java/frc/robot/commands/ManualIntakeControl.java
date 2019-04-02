@@ -25,14 +25,14 @@ public class ManualIntakeControl extends Command {
   @Override
   protected void execute() {
     
-    if (Robot.oi.getArmRightBumper() && !Robot.intake.hasBall()){
+    if (Robot.oi.getArmRightBumper() && true){ //!Robot.intake.hasBall()
       Robot.intake.setRoller(0.6);
       Robot.intake.setWheels(1.0);
     }
-    else if (Robot.oi.getArmRightBumper()){
+    /*else if (Robot.oi.getArmRightBumper()){
       Robot.intake.setRoller(0.1);
       Robot.intake.setWheels(0.1);
-    }
+    }*/
     else if(Robot.oi.getArmLeftBumper())
     {
       Robot.intake.setRoller(-1.0);

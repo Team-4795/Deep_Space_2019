@@ -13,7 +13,7 @@ public enum RobotMap {
   MAIN_CONTROLLER(0),
   ARM_CONTROLLER(1),
   //Servo mappings (pwm)
-  SERVO_ONE(8),
+  HATCH_ARM(8),
   SERVO_TWO(9),
   //Proximity sensor mappings (DIO)
   SENSOR_ZERO(0),

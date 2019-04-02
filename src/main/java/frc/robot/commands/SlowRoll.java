@@ -10,13 +10,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class AutoPositionArm extends Command {
-  private double position;
-
-  public AutoPositionArm(double pos) {
+public class SlowRoll extends Command {
+  public SlowRoll() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.arm);
-    position = pos;
+    requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
@@ -27,7 +24,8 @@ public class AutoPositionArm extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.arm.autoActuate(position);
+    Robot.intake.setRoller(0.0);
+    Robot.intake.setWheels(0.15);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +37,6 @@ public class AutoPositionArm extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.arm.actuate(0.0);
   }
 
   // Called when another command which requires one or more of the same

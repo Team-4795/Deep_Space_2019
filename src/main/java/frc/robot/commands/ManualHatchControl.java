@@ -11,12 +11,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Robot;
 
 public class ManualHatchControl extends Command {
-
-  private boolean servoUp = true;
-  private static boolean hatchUp = false;
 
   public ManualHatchControl() {
     requires(Robot.hatch);
@@ -25,47 +23,53 @@ public class ManualHatchControl extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    servoUp = true;
-    hatchUp = false;
+    Robot.hatch.armUp = true;
+    Robot.hatch.kickerUp = false;
   }
 
   public static void hatchDown() {
-    hatchUp = false;
+    Robot.hatch.kickerUp = false;
   }
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    boolean hatchActuallyUp = Robot.hatch.hatchMotor.getSensorCollection().isFwdLimitSwitchClosed();
-    boolean hatchActuallyDown = Robot.hatch.hatchMotor.getSensorCollection().isRevLimitSwitchClosed();
+    boolean hatchActuallyUp = Robot.hatch.hatchKicker.getSensorCollection().isFwdLimitSwitchClosed();
+    boolean hatchActuallyDown = Robot.hatch.hatchKicker.getSensorCollection().isRevLimitSwitchClosed();
 
     if (Robot.oi.getMainBButtonPressed()) {
-      servoUp = !servoUp;
+      Robot.hatch.armUp = false;
+    } else  if (Robot.oi.getMainYButtonPressed()) {
+      Robot.hatch.armUp = true;
     }
-    if (Robot.oi.getMainLeftBumperPressed() && !servoUp) {
-      hatchUp = !hatchUp;
+    if (Robot.oi.getMainLeftBumperPressed() && !Robot.hatch.armUp) { 
+      Robot.hatch.kickerUp = !Robot.hatch.kickerUp;
     }
 
-    if (hatchActuallyUp) hatchUp = false;
+    if (hatchActuallyUp) {
+      Robot.hatch.kickerUp = false;
+    }
+
     if (Robot.climber.getClimbTime()) {
       Robot.hatch.setRamp(0.3);
-      Robot.hatch.set(hatchActuallyUp ? 0.0 : 0.35);
-    } else if (hatchUp) {
-      servoUp = false;
+      Robot.hatch.setKicker(hatchActuallyUp ? 0.0 : 0.35);
+    } else if (Robot.hatch.kickerUp) {
+      //Robot.hatch.armUp = false;
       Robot.hatch.setRamp(0.0);
-      Robot.hatch.set(.85);
+      Robot.hatch.setKicker(.85);
     } else if (hatchActuallyDown) {
-      Robot.hatch.set(0.0);
+      Robot.hatch.setKicker(0.0);
     } else {
       Robot.hatch.setRamp(0.6);
-      Robot.hatch.set(-0.225);
+      Robot.hatch.setKicker(-0.225);
     }
 
-    Robot.hatch.setServoUp(servoUp);
+    Robot.hatch.setArmUp(Robot.hatch.armUp);
 
     SmartDashboard.putBoolean("Reverse Limit", hatchActuallyUp);
     SmartDashboard.putBoolean("Forward Limit", hatchActuallyDown);
-    SmartDashboard.putBoolean("servoUp", servoUp);
-    SmartDashboard.putBoolean("hatchUp", hatchUp);
+    SmartDashboard.putBoolean("armUp", Robot.hatch.armUp);
+    SmartDashboard.putBoolean("kickerUp", Robot.hatch.kickerUp);
+    SmartDashboard.putNumber("Arm Encoder", Robot.hatch.getArmEncoder());
   }
 
   // Make this return true when this Command no longer needs to run execute()

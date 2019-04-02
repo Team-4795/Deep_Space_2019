@@ -5,23 +5,17 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.triggers;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.buttons.Trigger;
 import frc.robot.Robot;
 
-public class ToggleClimbTime extends InstantCommand {
-
-  public ToggleClimbTime() {
-    super();
-  }
-
-  // Called once when the command executes
+/**
+ * Add your docs here.
+ */
+public class IntakeTrigger extends Trigger {
   @Override
-  protected void initialize() {
-    Robot.climber.changeClimbTime();
-    //SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
+  public boolean get() {
+    return !Robot.oi.getArmLeftBumper() && !Robot.oi.getArmRightBumper() && !(Robot.oi.getMainLeftTrigger() > 0);
   }
-
 }

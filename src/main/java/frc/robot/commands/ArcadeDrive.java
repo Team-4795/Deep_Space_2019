@@ -41,7 +41,7 @@ public class ArcadeDrive extends Command {
       NetworkTableInstance.getDefault().getEntry("CamID").setDouble(beenPressed ? 0 : 1);
     }
 
-    double throttle = 0.9 - (0.65 * Robot.oi.getMainRightTrigger());
+    double throttle = 0.85 - (0.65 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .6 : Robot.oi.getMainRightJoyX() * 0.35;
     if (Robot.oi.getMainRightTrigger() > .5) {
       turn *= 1.3;
@@ -50,7 +50,7 @@ public class ArcadeDrive extends Command {
       throttle *= -1.0;
       turn *= -1.0;
     }
-    //SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
+    SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
 
     if (Robot.climber.getClimbTime()) {
       throttle *= 0.275;
@@ -73,11 +73,7 @@ public class ArcadeDrive extends Command {
     SmartDashboard.putNumber("Red", cs.getColor().red);
     SmartDashboard.putNumber("Green", cs.getColor().green);
     SmartDashboard.putNumber("Blue", cs.getColor().blue);
-    
-    maxVel = Math.abs(Robot.drivebase.getLeftVelocity()) > Math.abs(maxVel) ? Robot.drivebase.getLeftVelocity() : maxVel;
-    SmartDashboard.putNumber("Max Velocity", maxVel);
-    maxAccel = Math.abs(Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) > Math.abs(maxAccel) ? (Math.abs(Robot.drivebase.getLeftVelocity()) - Math.abs(pastVel)) / 0.05 : maxAccel;
-    pastVel = Robot.drivebase.getLeftVelocity();*/
+    */
   }
 
   @Override

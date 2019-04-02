@@ -7,21 +7,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
-public class ToggleClimbTime extends InstantCommand {
+public class ToTarget extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
+  public ToTarget() {
+    double radangle = SmartDashboard.getNumber("Angle", 0);
+    double angle = Math.toDegrees(radangle);
 
-  public ToggleClimbTime() {
-    super();
+    //SmartDashboard.putNumber("Angle", angle);
+    
+    double feet = SmartDashboard.getNumber("Z", 1);
+
+    addSequential(new TurnToAngle(angle, 2));
+    addSequential(new DriveTillLine());
   }
-
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.climber.changeClimbTime();
-    //SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());
-  }
-
 }
