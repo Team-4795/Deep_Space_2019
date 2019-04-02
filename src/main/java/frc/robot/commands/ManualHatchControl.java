@@ -65,11 +65,11 @@ public class ManualHatchControl extends Command {
 
     Robot.hatch.setArmUp(Robot.hatch.armUp);
 
-    SmartDashboard.putBoolean("Reverse Limit", hatchActuallyUp);
-    SmartDashboard.putBoolean("Forward Limit", hatchActuallyDown);
+    SmartDashboard.putBoolean("Hatch Kicker Reverse Limit", hatchActuallyUp);
+    SmartDashboard.putBoolean("Hatch Kicker Forward Limit", hatchActuallyDown);
     SmartDashboard.putBoolean("armUp", Robot.hatch.armUp);
     SmartDashboard.putBoolean("kickerUp", Robot.hatch.kickerUp);
-    SmartDashboard.putNumber("Arm Encoder", Robot.hatch.getArmEncoder());
+    SmartDashboard.putNumber("Hatch Arm Encoder", Robot.hatch.getArmEncoder());
   }
 
   // Make this return true when this Command no longer needs to run execute()

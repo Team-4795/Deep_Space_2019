@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().enable();
     ahrs.reset();
     Robot.climber.resetEnc();
-    
+    Robot.hatch.resetArmEncoder();
   }
 
   public void autonomousPeriodic() {

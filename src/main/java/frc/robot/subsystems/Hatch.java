@@ -27,18 +27,18 @@ public class Hatch extends Subsystem implements PIDOutput {
   public boolean armUp = true;
   public boolean kickerUp = false;
 
-  public final double posDown = 0; //consistency 
-  public final double posUp = 100.0; //tune later --> encoder ticks to go up
+  public final double posDown = 1800.0;
+  public final double posUp = 0;
 
-  private final double kP = 0.0;
+  private final double kP = 0.0001;
   private final double kI = 0.0;
   private final double kD = 0.0;
   private final double kF = 0.0;
   public final int allowableError = 100; //other PID vals to tune later 
 
   public Hatch() {
-    hatchKicker = new TalonSRX(RobotMap.HATCH_MOTOR.value);
-    hatchArm = new TalonSRX(RobotMap.HATCH_ARM.value);
+    hatchKicker = new TalonSRX(RobotMap.HATCH_KICKER_MOTOR.value);
+    hatchArm = new TalonSRX(RobotMap.HATCH_ARM_MOTOR.value);
 
     Robot.initTalon(hatchKicker);
     hatchKicker.configOpenloopRamp(0.0);
@@ -66,6 +66,10 @@ public class Hatch extends Subsystem implements PIDOutput {
   public int getArmEncoder() {
     return hatchArm.getSensorCollection().getQuadraturePosition();
   }
+  public void resetArmEncoder() {
+    hatchArm.setSelectedSensorPosition(0);
+  }
+
   @Override
   public void pidWrite(double speed) {
     hatchArm.set(ControlMode.PercentOutput, speed);
