@@ -37,13 +37,13 @@ public class OI {
   private static final double DEADZONE = 0.15 ;
 
   public Joystick MAIN_CONTROLLER, ARM_CONTROLLER;
-  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton, RightBumper, ArmLeftBumper, ArmRightBumper;
+  private JoystickButton XButton, YButton, AButton, BButton, ArmBButton, RightBumper, ArmLeftBumper, ArmRightBumper,RightStickIn, MainLeftBumper, LeftStickIn;
   private double value;
   public ManualArmTrigger ArmOverride;
   private IntakeTrigger SlowMode;
   private LeftTriggerPressed CargoOuttake;
-  private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, ArmDPadRight;
-  public DrivetrainOverride drivetrainOverride;
+  private POVButton ArmDPadUp, ArmDPadDown, MainDPadDown, MainDPadUp, MainDPadLeft, MainDPadRight, ArmDPadRight;
+  public DrivetrainOverride ManualDrivebaseControl;
 
   public OI() { 
     
@@ -63,31 +63,40 @@ public class OI {
     ArmDPadDown = new POVButton(ARM_CONTROLLER, 180);
     RightBumper = new JoystickButton(MAIN_CONTROLLER, 6);
     MainDPadUp = new POVButton(MAIN_CONTROLLER, 0);
+    MainDPadLeft = new POVButton(MAIN_CONTROLLER, 270);
+    MainDPadRight = new POVButton(MAIN_CONTROLLER, 90);
     MainDPadDown = new POVButton(MAIN_CONTROLLER, 180);
+    MainLeftBumper = new JoystickButton(MAIN_CONTROLLER, 5);
+    LeftStickIn = new JoystickButton(MAIN_CONTROLLER, 9);
+    RightStickIn = new JoystickButton(MAIN_CONTROLLER, 10);
     ArmDPadRight = new POVButton(ARM_CONTROLLER, 90);
     ArmLeftBumper = new JoystickButton(ARM_CONTROLLER, 5);
     ArmRightBumper = new JoystickButton(ARM_CONTROLLER, 6);
     SlowMode = new IntakeTrigger();
     CargoOuttake = new LeftTriggerPressed();
-    drivetrainOverride = new DrivetrainOverride();
+    ManualDrivebaseControl = new DrivetrainOverride();
 
     ArmBButton.whenPressed(new ToggleClimbTime());
     
     MainDPadUp.whileHeld(new ManualClimberControl(.8));
     MainDPadDown.whileHeld(new ManualClimberControl(-.8));
+
     XButton.whenPressed(new AutoClimb());
 
     ArmDPadDown.whenPressed(new ArmToPosition(-78.5));
     ArmDPadUp.whenPressed(new ArmToPosition(-17.38));
     ArmDPadRight.whenPressed(new ArmToPosition(-42.3));
 
+    //MainLeftBumper.whenPressed(new ArmToPosition(-78.5));
+    //LeftStickIn.whenPressed(new ArmToPosition(-17.38));
+
     ArmOverride.whileActive(new ManualArmControl());
     ArmRightBumper.whileHeld(new IntakeCargo());
     CargoOuttake.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
-    //drivetrainOverride.whileActive(new ArcadeDrive());
+    //ManualDrivebaseControl.whileActive(new ArcadeDrive());
 
-    //AButton.whenPressed(new TurnToLine(5));
+    AButton.whenPressed(new TurnToLine(1.5));
   }
 
   public void rumbleMain() {
@@ -129,6 +138,9 @@ public class OI {
     return Math.abs(value) > DEADZONE ? ((Math.abs(value) - DEADZONE) * Math.abs(value) / (0.85 * value)) : 0.0;
   }
 
+  public boolean getMainDPadRight() {
+    return MainDPadRight.get();
+  }
   //Drivebase throttle
   public double getMainRightTrigger() {
     double value = MAIN_CONTROLLER.getRawAxis(3);
@@ -147,6 +159,10 @@ public class OI {
 
   public boolean getMainBButton() {
     return MAIN_CONTROLLER.getRawButton(2);
+  }
+
+  public boolean getMainAButton() {
+    return MAIN_CONTROLLER.getRawButton(1);
   }
 
   public boolean getMainLeftBumperPressed() {

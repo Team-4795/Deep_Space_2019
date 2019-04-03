@@ -21,16 +21,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 
-public class Hatch extends Subsystem implements PIDOutput {
-  public final TalonSRX hatchKicker; // TODO: maybe make this private
-  private final TalonSRX hatchArm;
+public class Hatch extends Subsystem {
+  public final TalonSRX hatchKicker;
+  public final TalonSRX hatchArm;
   public boolean armUp = true;
   public boolean kickerUp = false;
+  private boolean stalled = false;
 
-  public final double posDown = 1800.0;
-  public final double posUp = 0;
+  private final double posDown = -1800.0;
+  private final double posUp = 0.0;
 
-  private final double kP = 0.0001;
+  private final double kP = 0.005;
   private final double kI = 0.0;
   private final double kD = 0.0;
   private final double kF = 0.0;
@@ -44,7 +45,8 @@ public class Hatch extends Subsystem implements PIDOutput {
     hatchKicker.configOpenloopRamp(0.0);
 
     Robot.initTalon(hatchArm);
-    hatchArm.configOpenloopRamp(0.0);
+    hatchArm.configClosedLoopPeakOutput(0, .3);
+    hatchArm.configClosedloopRamp(0.5);
     hatchArm.config_kP(0, kP);
     hatchArm.config_kI(0, kI);
     hatchArm.config_kD(0, kD);
@@ -60,7 +62,23 @@ public class Hatch extends Subsystem implements PIDOutput {
   }
 
   public void setArmUp(boolean up) {
-    hatchArm.set(ControlMode.Position, up ? posUp : posDown);
+    //hatchArm.set(ControlMode.Position, up ? posUp : posDown);
+    if (hatchArm.getOutputCurrent() > 2.5 && !up) {
+      hatchArm.set(ControlMode.PercentOutput, 0.0);
+      stalled = true;
+    }
+    else if (!up && !stalled) {
+      hatchArm.set(ControlMode.PercentOutput, -0.2);
+    }
+    else if (up) {
+      hatchArm.set(ControlMode.PercentOutput, 0.5);
+    }
+    else {
+      hatchArm.set(ControlMode.PercentOutput, 0.0);
+    }
+    if (hatchArm.getOutputCurrent() < 2.5) {
+      stalled = false;
+    }
   }
 
   public int getArmEncoder() {
@@ -70,10 +88,6 @@ public class Hatch extends Subsystem implements PIDOutput {
     hatchArm.setSelectedSensorPosition(0);
   }
 
-  @Override
-  public void pidWrite(double speed) {
-    hatchArm.set(ControlMode.PercentOutput, speed);
-  }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

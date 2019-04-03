@@ -41,7 +41,7 @@ public class ArmToPosition extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Scheduler.getInstance().add(new ManualArmControl());
+    //Scheduler.getInstance().add(new ManualArmControl());
   }
 
   // Called when another command which requires one or more of the same

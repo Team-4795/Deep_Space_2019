@@ -25,7 +25,7 @@ public class SlowRoll extends Command {
   @Override
   protected void execute() {
     Robot.intake.setRoller(0.0);
-    Robot.intake.setWheels(0.15);
+    Robot.intake.setWheels(0.0);
   }
 
   // Make this return true when this Command no longer needs to run execute()

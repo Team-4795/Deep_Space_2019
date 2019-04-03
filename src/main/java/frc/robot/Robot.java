@@ -47,7 +47,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
     pdp = new PowerDistributionPanel();
     ahrs = new AHRS(SPI.Port.kMXP);
     drivebase = new Drivebase();
@@ -71,10 +70,10 @@ public class Robot extends TimedRobot {
   }
 
   public void autonomousInit() {
+    Robot.hatch.resetArmEncoder();
     Scheduler.getInstance().enable();
     ahrs.reset();
     Robot.climber.resetEnc();
-    Robot.hatch.resetArmEncoder();
   }
 
   public void autonomousPeriodic() {
@@ -85,6 +84,7 @@ public class Robot extends TimedRobot {
   }
 
   public void teleopPeriodic() {
+    SmartDashboard.putNumber("current", Robot.hatch.hatchArm.getOutputCurrent());
     SmartDashboard.putNumber("current (0)", pdp.getCurrent(0));
     SmartDashboard.putNumber("current (1)", pdp.getCurrent(1));
     SmartDashboard.putNumber("current (2)", pdp.getCurrent(2));

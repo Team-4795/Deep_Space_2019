@@ -35,7 +35,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualArmControl;
 
-public class Arm extends Subsystem implements PIDOutput, PIDSource{
+public class Arm extends Subsystem implements PIDOutput, PIDSource {
   
   private final CANSparkMax leftArmMotor;
   private final CANSparkMax rightArmMotor;
@@ -46,7 +46,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   private final CANPIDController armController;
 
   //PIDF values for balancing when climbing
-  private static double Pb = 0.0225;
+  private static double Pb = 0.0235;
   private static double Ib = 0.0;
   private static double Db = 0.00;
 
@@ -55,7 +55,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
   private static double P = 0.00015;
   private static double I = 0.000001;
   private static double D = 0.0000000;
-  private static double F = 0.0002;
+  private static double F = 0.0003;
 
   private final static double Tolerance = 5.0f;
   private final PIDController armBalancer;
@@ -94,8 +94,8 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource{
     armController.setIZone(20, 0);
     armController.setD(D, 0);
     armController.setFF(F, 0);
-    armController.setOutputRange(-0.55, 0.55, 0);
-    armController.setSmartMotionMaxVelocity(4200, 0);
+    armController.setOutputRange(-0.6, 0.6, 0);
+    armController.setSmartMotionMaxVelocity(4500, 0);
     armController.setSmartMotionMaxAccel(2750, 0); 
     armController.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
     armController.setSmartMotionAllowedClosedLoopError(1.0, 0); 
