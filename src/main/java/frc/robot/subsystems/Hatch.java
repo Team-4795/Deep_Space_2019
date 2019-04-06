@@ -56,6 +56,9 @@ public class Hatch extends Subsystem {
     hatchArm.config_kD(0, kD);
     hatchArm.config_kF(0, kF);
     hatchArm.configAllowableClosedloopError(0, allowableError, 5000);
+    hatchArm.configPeakCurrentLimit(8, 10);
+    hatchArm.configPeakCurrentDuration(200, 10);
+    hatchArm.configContinuousCurrentLimit(7, 10);
   }
 
   public void setRamp(double rate) {
