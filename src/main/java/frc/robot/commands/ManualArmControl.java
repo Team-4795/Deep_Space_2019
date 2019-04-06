@@ -17,8 +17,8 @@ public class ManualArmControl extends Command {
 
   public ManualArmControl() {
     requires(Robot.arm);
-  }
-
+  } 
+  
   @Override
   protected void initialize() {
   }

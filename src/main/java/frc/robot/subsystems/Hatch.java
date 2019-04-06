@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.robot.Robot;
@@ -16,6 +17,7 @@ import frc.robot.commands.ManualArmControl;
 import frc.robot.commands.ManualHatchControl;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Add your docs here.
@@ -31,6 +33,7 @@ public class Hatch extends Subsystem {
   private final double posDown = -1800.0;
   private final double posUp = 0.0;
 
+  //not used
   private final double kP = 0.005;
   private final double kI = 0.0;
   private final double kD = 0.0;
@@ -46,7 +49,8 @@ public class Hatch extends Subsystem {
 
     Robot.initTalon(hatchArm);
     hatchArm.configClosedLoopPeakOutput(0, .3);
-    hatchArm.configClosedloopRamp(0.5);
+    hatchArm.setNeutralMode(NeutralMode.Brake);
+    hatchArm.configOpenloopRamp(0.1);
     hatchArm.config_kP(0, kP);
     hatchArm.config_kI(0, kI);
     hatchArm.config_kD(0, kD);
@@ -63,22 +67,27 @@ public class Hatch extends Subsystem {
 
   public void setArmUp(boolean up) {
     //hatchArm.set(ControlMode.Position, up ? posUp : posDown);
-    if (hatchArm.getOutputCurrent() > 2.5 && !up) {
+    if (hatchArm.getSensorCollection().getQuadraturePosition() < -2000 && !up) {
       hatchArm.set(ControlMode.PercentOutput, 0.0);
-      stalled = true;
+      stalled = false;
     }
-    else if (!up && !stalled) {
-      hatchArm.set(ControlMode.PercentOutput, -0.2);
+    else if (!up) {
+      hatchArm.set(ControlMode.PercentOutput, -01);
+    }
+    else if (up && hatchArm.getSensorCollection().getQuadraturePosition() > -100) {
+      hatchArm.set(ControlMode.PercentOutput, 0.3);
     }
     else if (up) {
-      hatchArm.set(ControlMode.PercentOutput, 0.5);
+      hatchArm.set(ControlMode.PercentOutput, 0.7);
     }
     else {
       hatchArm.set(ControlMode.PercentOutput, 0.0);
     }
-    if (hatchArm.getOutputCurrent() < 2.5) {
-      stalled = false;
+    if (hatchArm.getOutputCurrent() > 9) {
+      stalled = true;
     }
+    SmartDashboard.putNumber("hatch current", hatchArm.getOutputCurrent());
+    SmartDashboard.putBoolean("stalled", stalled);
   }
 
   public int getArmEncoder() {

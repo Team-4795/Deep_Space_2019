@@ -5,7 +5,6 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-// test comment
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -94,9 +93,9 @@ public class OI {
     ArmRightBumper.whileHeld(new IntakeCargo());
     CargoOuttake.whileActive(new OuttakeCargo(.9));
     SlowMode.whileActive(new SlowRoll());
-    //ManualDrivebaseControl.whileActive(new ArcadeDrive());
+    ManualDrivebaseControl.whileActive(new ArcadeDrive());
 
-    AButton.whenPressed(new TurnToLine(1.5));
+    AButton.whenPressed(new TurnToLine(2.5));
   }
 
   public void rumbleMain() {

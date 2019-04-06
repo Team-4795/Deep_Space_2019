@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
 
   public void teleopPeriodic() {
     SmartDashboard.putNumber("current", Robot.hatch.hatchArm.getOutputCurrent());
-    SmartDashboard.putNumber("current (0)", pdp.getCurrent(0));
+    /*SmartDashboard.putNumber("current (0)", pdp.getCurrent(0));
     SmartDashboard.putNumber("current (1)", pdp.getCurrent(1));
     SmartDashboard.putNumber("current (2)", pdp.getCurrent(2));
     SmartDashboard.putNumber("current (3)", pdp.getCurrent(3));
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("current (6)", pdp.getCurrent(6));
     SmartDashboard.putNumber("current (7)", pdp.getCurrent(7));
     SmartDashboard.putNumber("current (8)", pdp.getCurrent(8));
-    SmartDashboard.putNumber("current (9)", pdp.getCurrent(9));
+    SmartDashboard.putNumber("current (9)", pdp.getCurrent(9));*/
     SmartDashboard.putBoolean("withinTolerance", Robot.arm.withinTolerance());
     Scheduler.getInstance().run();
     SmartDashboard.putBoolean("ClimbTime", Robot.climber.getClimbTime());

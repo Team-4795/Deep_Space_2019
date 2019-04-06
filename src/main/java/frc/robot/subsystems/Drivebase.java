@@ -50,6 +50,7 @@ public class Drivebase extends Subsystem implements PIDOutput {
   private final double kD = 0.0;
   private final double kF = .065;
   public final int allowableError = 100;
+  public Boolean beenPressed = false;
 
   private final double WHEEL_DIAMETER_IN = 8.0;
   private final int ENCODER_COUNTS_PER_REV = 4096;

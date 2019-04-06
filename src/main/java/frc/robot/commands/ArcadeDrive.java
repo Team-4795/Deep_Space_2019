@@ -16,23 +16,17 @@ import frc.robot.ProximitySensor;
 
 public class ArcadeDrive extends Command {
 
-  /*private double maxVel;
-  private double pastVel;
-  private double maxAccel;*/
-  private Boolean beenPressed;
   ColorSensor cs;
   ProximitySensor ps;
 
   public ArcadeDrive() {
     requires(Robot.drivebase);
-    beenPressed = false;
     cs = ColorSensor.getInstanceOnboard();
     ps = ProximitySensor.getInstanceOnboard();
   }
 
   @Override
   protected void initialize() {
-    Robot.drivebase.resetEncoders();
   }
 
 
@@ -40,8 +34,8 @@ public class ArcadeDrive extends Command {
   protected void execute() {
 
     if (Robot.oi.getMainRightBumperPressed()){
-      beenPressed = !beenPressed;
-      NetworkTableInstance.getDefault().getEntry("CamID").setDouble(beenPressed ? 0 : 1);
+      Robot.drivebase.beenPressed = !Robot.drivebase.beenPressed;
+      NetworkTableInstance.getDefault().getEntry("CamID").setDouble(Robot.drivebase.beenPressed ? 0 : 1);
     }
 
     double throttle = 0.85 - (0.65 * Robot.oi.getMainRightTrigger());
@@ -49,14 +43,15 @@ public class ArcadeDrive extends Command {
     if (Robot.oi.getMainRightTrigger() > .5) {
       turn *= 1.3;
     }
-    if (beenPressed) {
+    if (Robot.drivebase.beenPressed) {
       throttle *= -1.0;
       turn *= -1.0;
     }
-    SmartDashboard.putBoolean("FrontSwitch (Drivebase)", beenPressed);
+    SmartDashboard.putBoolean("FrontSwitch (Drivebase)", Robot.drivebase.beenPressed);
 
     if (Robot.climber.getClimbTime()) {
       throttle *= 0.275;
+      turn *= 1.3;
     }
 
     Robot.drivebase.setMotors((Robot.oi.getMainLeftJoyY() - turn) * throttle, (Robot.oi.getMainLeftJoyY() + turn) * throttle);
