@@ -70,18 +70,19 @@ public class Hatch extends Subsystem {
 
   public void setArmUp(boolean up) {
     //hatchArm.set(ControlMode.Position, up ? posUp : posDown);
-    if (hatchArm.getSensorCollection().getQuadraturePosition() < -2000 && !up) {
+    if (hatchArm.getSensorCollection().getQuadraturePosition() < 800 && !up) {
       hatchArm.set(ControlMode.PercentOutput, 0.0);
       stalled = false;
     }
     else if (!up) {
-      hatchArm.set(ControlMode.PercentOutput, -01);
+      hatchArm.set(ControlMode.PercentOutput, -0.3);
     }
-    else if (up && hatchArm.getSensorCollection().getQuadraturePosition() > -100) {
-      hatchArm.set(ControlMode.PercentOutput, 0.3);
+    else if (up && hatchArm.getSensorCollection().getQuadraturePosition() > 3300) {
+      hatchArm.set(ControlMode.PercentOutput, 0.0);
+      stalled = false;
     }
     else if (up) {
-      hatchArm.set(ControlMode.PercentOutput, 0.7);
+      hatchArm.set(ControlMode.PercentOutput, 0.225 + (0.000075 * (3300 - hatchArm.getSensorCollection().getQuadraturePosition())) );
     }
     else {
       hatchArm.set(ControlMode.PercentOutput, 0.0);

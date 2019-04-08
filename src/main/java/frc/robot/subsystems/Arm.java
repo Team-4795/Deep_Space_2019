@@ -46,7 +46,7 @@ public class Arm extends Subsystem implements PIDOutput, PIDSource {
   private final CANPIDController armController;
 
   //PIDF values for balancing when climbing
-  private static double Pb = 0.0235;
+  private static double Pb = 0.035;
   private static double Ib = 0.0;
   private static double Db = 0.00;
 

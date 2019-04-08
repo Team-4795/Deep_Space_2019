@@ -25,7 +25,7 @@ public class ManualArmControl extends Command {
 
   @Override
   protected void execute() {
-    throttle = (0.55 - (0.3 * Robot.oi.getArmRightTrigger()));
+    throttle = (0.60 - (0.3 * Robot.oi.getArmRightTrigger()));
     Robot.arm.actuate(Robot.oi.getArmLeftJoyY() * throttle);
   }
   

@@ -43,11 +43,11 @@ public class Climber extends Subsystem {
       climbPID.setP(0.0035);
       climbPID.setI(0.0000);
       climbPID.setD(-0.0005);
-      climbPID.setFF(0.00325);
+      climbPID.setFF(0.0039);
       climbPID.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
-      climbPID.setSmartMotionMaxAccel(4000, 0);
-      climbPID.setSmartMotionMaxVelocity(5000, 0);
-      climbPID.setOutputRange(0, 0.8);
+      climbPID.setSmartMotionMaxAccel(6750, 0);
+      climbPID.setSmartMotionMaxVelocity(11000, 0);
+      climbPID.setOutputRange(0, 0.9);
       climbPID.setSmartMotionAllowedClosedLoopError(1.0, 0);
       climbTime = false;
     }

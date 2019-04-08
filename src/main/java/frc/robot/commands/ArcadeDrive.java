@@ -41,7 +41,7 @@ public class ArcadeDrive extends Command {
     double throttle = 0.85 - (0.65 * Robot.oi.getMainRightTrigger());
     double turn = Robot.oi.getMainLeftJoyY() == 0.0 ? Robot.oi.getMainRightJoyX() * .6 : Robot.oi.getMainRightJoyX() * 0.35;
     if (Robot.oi.getMainRightTrigger() > .5) {
-      turn *= 1.3;
+      turn *= 1.5;
     }
     if (Robot.drivebase.beenPressed) {
       throttle *= -1.0;
